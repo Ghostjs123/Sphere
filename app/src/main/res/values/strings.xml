@@ -1,13 +1,24 @@
 <resources>
     <string name="app_name">CSE5236-Sphere</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+
+    <!-- Strings used for Fragment navigation (nav_graph.xml) -->
+    <string name="no_sphere_fragment_label">NoSphereFragment</string>
+    <string name="create_sphere_fragment_label">NewSphereFragment</string>
+    <string name="import_sphere_fragment_label">ImportSphereFragment</string>
+
+    <!-- IDK -->
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Misc Menu Strings -->
+    <string name="no_sphere_found">No Sphere Found</string>
+    <string name="CreateNewSphere"><u>Create New Sphere</u></string>
+    <string name="ImportSphere"><u>Import Sphere</u></string>
+    <string name="EnterSphereName">Enter Sphere Name</string>
+    <string name="Create">Create</string>
+    <string name="Import">Import</string>
+
+    <!-- Title Strings -->
     <string name="title_activity_launcher">LauncherActivity</string>
 </resources>

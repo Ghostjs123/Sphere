@@ -5,27 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.navigation.fragment.findNavController
 import com.example.cse5236_sphere.R
-import com.example.cse5236_sphere.databinding.FragmentNewSphereBinding
+import com.example.cse5236_sphere.databinding.FragmentImportSphereBinding
 import com.google.android.material.snackbar.Snackbar
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
-class NewSphereFragment : Fragment() {
 
-    private var _binding: FragmentNewSphereBinding? = null
+/**
+ * A simple [Fragment] subclass.
+ */
+class ImportSphereFragment : Fragment() {
+
+    private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentNewSphereBinding.inflate(inflater, container, false)
+        _binding = FragmentImportSphereBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -33,10 +32,10 @@ class NewSphereFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.createSphereButton.setOnClickListener { view ->
+        binding.importSphereButton.setOnClickListener { view ->
             val sphereName = binding.sphereNameInput.text.toString()
 
-            Snackbar.make(view, "Creating $sphereName", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Importing $sphereName", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
     }

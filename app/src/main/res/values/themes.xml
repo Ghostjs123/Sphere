@@ -14,8 +14,8 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.CSE5236Sphere.NoActionBar">
-        <item name="windowActionBar">false</item>
+    <style name="Theme.CSE5236Sphere.DarkActionBar">
+        <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
     </style>
 

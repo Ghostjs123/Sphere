@@ -3,13 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/drawable-v21/app_widget_background.xml" value="0.21979166666666666" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/activity_launcher.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/activity_menu.xml" value="0.25625" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/activity_open_gles20.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/activity_sphere.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/content_launcher.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/content_main.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_first.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_first2.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_import_sphere.xml" value="0.20364583333333333" />
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_new_sphere.xml" value="0.20364583333333333" />
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_no_sphere.xml" value="0.1" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_second.xml" value="0.30416666666666664" />
       </map>
     </option>

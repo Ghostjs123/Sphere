@@ -15,26 +15,27 @@ import com.example.cse5236_sphere.databinding.FragmentNoSphereBinding
 class NoSphereFragment : Fragment() {
 
     private var _binding: FragmentNoSphereBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
+            inflater: LayoutInflater,
+            container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentNoSphereBinding.inflate(inflater, container, false)
-        return binding.root
 
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        binding.createNewSphereText.setOnClickListener {
+            findNavController().navigate(R.id.action_NoSphereFragment_to_NewSphereFragment)
+        }
+        binding.importSphereText.setOnClickListener {
+            findNavController().navigate(R.id.action_NoSphereFragment_to_ImportSphereFragment)
         }
     }
 

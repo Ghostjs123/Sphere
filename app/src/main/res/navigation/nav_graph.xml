@@ -3,26 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/NoSphereFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/NoSphereFragment"
         android:name="com.example.cse5236_sphere.menu.activity.NoSphereFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/no_sphere_fragment_label"
         tools:layout="@layout/fragment_no_sphere">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_NoSphereFragment_to_NewSphereFragment"
+            app:destination="@id/NewSphereFragment" />
+        <action
+            android:id="@+id/action_NoSphereFragment_to_ImportSphereFragment"
+            app:destination="@id/ImportSphereFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/NewSphereFragment"
         android:name="com.example.cse5236_sphere.menu.activity.NewSphereFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/create_sphere_fragment_label"
         tools:layout="@layout/fragment_new_sphere">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_NewSphereFragment_to_NoSphereFragment"
+            app:destination="@id/NoSphereFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ImportSphereFragment"
+        android:name="com.example.cse5236_sphere.menu.activity.ImportSphereFragment"
+        android:label="@string/import_sphere_fragment_label"
+        tools:layout="@layout/fragment_import_sphere">
+
+        <action
+            android:id="@+id/action_ImportSphereFragment_to_NoSphereFragment"
+            app:destination="@id/NoSphereFragment" />
     </fragment>
 </navigation>
