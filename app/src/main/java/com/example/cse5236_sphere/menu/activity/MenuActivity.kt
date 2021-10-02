@@ -1,4 +1,4 @@
-package com.example.cse5236_sphere
+package com.example.cse5236_sphere.menu.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,20 +11,21 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import com.example.cse5236_sphere.databinding.ActivityMainBinding
+import com.example.cse5236_sphere.SphereActivity
+import com.example.cse5236_sphere.R
+import com.example.cse5236_sphere.databinding.ActivityMenuBinding
 
 const val EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE"
 
-class MainActivity : AppCompatActivity() {
+class MenuActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun sendMessage(view: View) {
-        val intent = Intent(this, OpenGLES20Activity::class.java).apply {}
+        val intent = Intent(this, SphereActivity::class.java).apply {}
         startActivity(intent)
     }
 }

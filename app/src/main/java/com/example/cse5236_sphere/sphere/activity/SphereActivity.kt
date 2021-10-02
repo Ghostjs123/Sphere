@@ -6,12 +6,10 @@ import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.MotionEvent
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
-import java.nio.ShortBuffer
 import javax.microedition.khronos.opengles.GL10
 import javax.microedition.khronos.egl.EGLConfig
 
@@ -255,7 +253,7 @@ class MyGLSurfaceView(context: Context) : GLSurfaceView(context) {
     }
 }
 
-class OpenGLES20Activity : Activity() {
+class SphereActivity : Activity() {
 
     private lateinit var gLView: GLSurfaceView
 

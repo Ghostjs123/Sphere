@@ -14,22 +14,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSE5236Sphere">
         <activity
-            android:name=".OpenGLES20Activity"
-            android:exported="true">
+            android:name=".LauncherActivity"
+            android:exported="true"
+            android:label="@string/title_activity_launcher"
+            android:theme="@style/Theme.CSE5236Sphere.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.CSE5236Sphere.NoActionBar">
+            android:name=".SphereActivity"
+            android:exported="true">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".menu.activity.MenuActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.CSE5236Sphere.NoActionBar">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 
