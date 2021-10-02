@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/NoSphereFragment"
-        android:name="com.example.cse5236_sphere.menu.activity.NoSphereFragment"
+        android:name="com.sphere.menu.NoSphereFragment"
         android:label="@string/no_sphere_fragment_label"
         tools:layout="@layout/fragment_no_sphere">
 
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/NewSphereFragment"
-        android:name="com.example.cse5236_sphere.menu.activity.NewSphereFragment"
+        android:name="com.sphere.menu.NewSphereFragment"
         android:label="@string/create_sphere_fragment_label"
         tools:layout="@layout/fragment_new_sphere">
 
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/ImportSphereFragment"
-        android:name="com.example.cse5236_sphere.menu.activity.ImportSphereFragment"
+        android:name="com.sphere.menu.ImportSphereFragment"
         android:label="@string/import_sphere_fragment_label"
         tools:layout="@layout/fragment_import_sphere">
 

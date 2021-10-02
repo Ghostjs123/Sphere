@@ -1,4 +1,4 @@
-package com.example.cse5236_sphere
+package com.sphere
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.example.cse5236_sphere
+package com.sphere
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

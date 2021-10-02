@@ -1,14 +1,11 @@
-package com.example.cse5236_sphere.menu.activity
+package com.sphere.menu
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.navigation.fragment.findNavController
-import com.example.cse5236_sphere.R
-import com.example.cse5236_sphere.databinding.FragmentNewSphereBinding
+import com.sphere.databinding.FragmentNewSphereBinding
 import com.google.android.material.snackbar.Snackbar
 
 /**
