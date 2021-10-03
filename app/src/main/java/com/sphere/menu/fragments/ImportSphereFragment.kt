@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.sphere.databinding.FragmentImportSphereBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -16,6 +17,7 @@ class ImportSphereFragment : Fragment() {
 
     private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
+    private val model: MenuViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +32,8 @@ class ImportSphereFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // TODO : Can use the modelView from here
 
         binding.importSphereButton.setOnClickListener { view ->
             val sphereName = binding.sphereNameInput.text.toString()
