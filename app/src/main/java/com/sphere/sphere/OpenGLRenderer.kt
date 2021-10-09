@@ -1,106 +1,84 @@
 package com.sphere.sphere
 
-import android.opengl.GLES20
 import android.opengl.GLSurfaceView
-import android.opengl.Matrix
+import android.opengl.GLU
+import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
-import com.sphere.sphere.Triangle
+import android.util.Log
+
+private const val TAG = "OpenGLRenderer"
+
+
+var cameraDistance = 3.0f
 
 
 class OpenGLRenderer : GLSurfaceView.Renderer {
 
     @Volatile
-    var angle: Float = 0f
+    var cameraAngleX = 0f
 
-    private lateinit var triangle: Triangle
+    @Volatile
+    var cameraAngleY = 0f
 
-    // vPMatrix is an abbreviation for "Model View Projection Matrix"
-    private val vPMatrix = FloatArray(16)
-    private val projectionMatrix = FloatArray(16)
-    private val viewMatrix = FloatArray(16)
-    private val rotationMatrix = FloatArray(16)
+    private lateinit var icosphere: Icosphere
 
-    override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
-        // Set the background frame color
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
-        // initialize a triangle
-        triangle = Triangle()
+    override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
+        Log.i(TAG, "onSurfaceCreated() Started")
+        gl.glShadeModel(GL10.GL_SMOOTH)
+        gl.glPixelStorei(GL10.GL_UNPACK_ALIGNMENT, 4)
+
+        gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST)
+        gl.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST)
+
+        gl.glEnable(GL10.GL_DEPTH_TEST)
+        gl.glEnable(GL10.GL_LIGHTING)
+        gl.glEnable(GL10.GL_TEXTURE_2D)
+        gl.glEnable(GL10.GL_CULL_FACE)
+        gl.glEnable(GL10.GL_BLEND)
+        gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA)
+
+        gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
+        gl.glClearDepthf(1f)
+        gl.glClearStencil(0)
+        gl.glDepthFunc(GL10.GL_LEQUAL)
+
+        icosphere = Icosphere()
+        Log.i(TAG, "onSurfaceCreated() Finished")
     }
 
     override fun onDrawFrame(gl: GL10) {
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT or GL10.GL_DEPTH_BUFFER_BIT or GL10.GL_STENCIL_BUFFER_BIT)
 
-        // Redraw background color
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
+        gl.glLoadIdentity()
 
-        // Set the camera position (View matrix)
-        Matrix.setLookAtM(
-            viewMatrix,
-            0,
-            0f,
-            0f,
-            -3f,
-            0f,
-            0f,
-            0f,
-            0f,
-            1.0f,
-            0.0f
-        )
+        gl.glTranslatef(0f, 0f, -cameraDistance)
+        gl.glRotatef(cameraAngleX, 1f, 0f, 0f)   // pitch
+        gl.glRotatef(cameraAngleY, 0f, 1f, 0f)   // heading
 
-        // Calculate the projection and view transformation
-        Matrix.multiplyMM(
-            vPMatrix,
-            0,
-            projectionMatrix,
-            0,
-            viewMatrix,
-            0
-        )
+        gl.glRotatef(-90f, 1f, 0f, 0f)
 
-        val scratch = FloatArray(16)
+        val ambient = FloatBuffer.wrap(floatArrayOf(0.2f, 0.2f, 0.2f, 1f ))
+        val diffuse = FloatBuffer.wrap(floatArrayOf(0.8f, 0.8f, 0.8f, 1f))
+        val specular = FloatBuffer.wrap(floatArrayOf(1.0f, 1.0f, 1.0f, 1f))
+        val shininess = 128f
+        gl.glMaterialfv(GL10.GL_FRONT, GL10.GL_AMBIENT, ambient)
+        gl.glMaterialfv(GL10.GL_FRONT, GL10.GL_DIFFUSE, diffuse)
+        gl.glMaterialfv(GL10.GL_FRONT, GL10.GL_SPECULAR, specular)
+        gl.glMaterialf(GL10.GL_FRONT, GL10.GL_SHININESS, shininess)
 
-        // Create a rotation transformation for the triangle
-        Matrix.setRotateM(
-            rotationMatrix,
-            0,
-            angle / 8,
-            0f,
-            0f,
-            1.0f
-        )
-
-        // Combine the rotation matrix with the projection and camera view
-        // Note that the vPMatrix factor *must be first* in order
-        // for the matrix multiplication product to be correct.
-        Matrix.multiplyMM(
-            scratch,
-            0,
-            vPMatrix,
-            0,
-            rotationMatrix,
-            0
-        )
-
-        triangle.draw(scratch)
+        icosphere.draw(gl)
     }
 
-    override fun onSurfaceChanged(unused: GL10, width: Int, height: Int) {
-        GLES20.glViewport(0, 0, width, height)
+    override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
+        gl.glViewport(0, 0, width, height)
 
-        val ratio: Float = width.toFloat() / height.toFloat()
+        gl.glMatrixMode(GL10.GL_PROJECTION)
+        gl.glLoadIdentity()
 
-        // this projection matrix is applied to object coordinates
-        // in the onDrawFrame() method
-        Matrix.frustumM(
-            projectionMatrix,
-            0,
-            -ratio,
-            ratio,
-            -1f,
-            1f,
-            3f,
-            7f
-        )
+        GLU.gluPerspective(gl, 45.0f, width.toFloat() / height.toFloat(),0.1f, 100.0f)
+
+        gl.glMatrixMode(GL10.GL_MODELVIEW)
+        gl.glLoadIdentity()
     }
 }
