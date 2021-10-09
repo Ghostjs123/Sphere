@@ -23,9 +23,9 @@
         android:id="@+id/sphere_name_input"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
         android:layout_marginTop="376dp"
         android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,10 +33,10 @@
         android:id="@+id/create_sphere_button"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
         android:layout_marginTop="444dp"
         android:gravity="center"
         android:text="@string/Create"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
