@@ -32,18 +32,27 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST)
 
         gl.glEnable(GL10.GL_CULL_FACE)
+
+        gl.glDisable(GL10.GL_LIGHTING)
+        gl.glDisable(GL10.GL_TEXTURE_2D)
+
         gl.glEnable(GL10.GL_DEPTH_TEST)
-        gl.glEnable(GL10.GL_LIGHTING)
-        gl.glEnable(GL10.GL_TEXTURE_2D)
         gl.glEnable(GL10.GL_BLEND)
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA)
 
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f)
+        gl.glClearColor(0.15f, 0.15f, 0.15f, 1.0f)
         gl.glClearDepthf(1f)
         gl.glClearStencil(0)
         gl.glDepthFunc(GL10.GL_LEQUAL)
 
         icosphere = Icosphere()
+
+        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, floatArrayOf(0.3f, 0.3f, 0.3f, 1.0f), 0)
+        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, floatArrayOf(0.7f, 0.7f, 0.7f, 1.0f), 0)
+        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, floatArrayOf(1.0f, 1.0f, 1.0f, 1.0f), 0)
+        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, floatArrayOf(0.0f, 0.0f, 1.0f, 0.0f), 0)
+        gl.glEnable(GL10.GL_LIGHT0)
+
         Log.i(TAG, "onSurfaceCreated() Finished")
     }
 
