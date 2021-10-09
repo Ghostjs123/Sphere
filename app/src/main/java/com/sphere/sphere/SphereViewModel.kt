@@ -15,6 +15,8 @@ class SphereViewModel: ViewModel() {
     private var indices: MutableList<Short> = mutableListOf()
     // Collection of current line indices
     private var lineIndices: MutableList<Short> = mutableListOf()
+    // Collection of sphere colors
+    private var colors: MutableList<Float> = mutableListOf()
     // Seed value of this sphere
     private var seed = 0
 
@@ -24,6 +26,7 @@ class SphereViewModel: ViewModel() {
         normals = mutableListOf()
         indices = mutableListOf()
         lineIndices = mutableListOf()
+        colors = mutableListOf()
         seed = 0
     }
 
@@ -37,16 +40,19 @@ class SphereViewModel: ViewModel() {
         normals = mutableListOf()
         indices = mutableListOf()
         lineIndices = mutableListOf()
+        colors = mutableListOf()
         seed = (0..99999).random()
     }
 
     fun loadSphere(name:String, loadedVertices: MutableList<Float>, loadedNormals: MutableList<Float>,
-                   loadedIndices: MutableList<Short>, loadedLineIndices: MutableList<Short>, importSeed: Int) {
+                   loadedIndices: MutableList<Short>, loadedLineIndices: MutableList<Short>,
+                   loadedColors: MutableList<Float>, importSeed: Int) {
         currSphere = name
         vertices = loadedVertices
         normals = loadedNormals
         indices = loadedIndices
         lineIndices = loadedLineIndices
+        colors = loadedColors
         seed = importSeed
     }
 
@@ -84,6 +90,26 @@ class SphereViewModel: ViewModel() {
         vertices[n] = newVertice[0]
         vertices[n+1] = newVertice[1]
         vertices[n+2] = newVertice[2]
+    }
+
+    // Returns this sphere's normals
+    fun getAllNormals(): MutableList<Float> {
+        return normals
+    }
+
+    // Returns this sphere's indices
+    fun getAllIndices(): MutableList<Short> {
+        return indices
+    }
+
+    // Returns this sphere's line indices
+    fun getAllLineIndices(): MutableList<Short> {
+        return lineIndices
+    }
+
+    // Returns this sphere's line indices
+    fun getAllColors(): MutableList<Float> {
+        return colors
     }
 
     fun mutateSphere() {
