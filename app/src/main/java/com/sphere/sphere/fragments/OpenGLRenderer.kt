@@ -31,10 +31,10 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_NICEST)
         gl.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST)
 
+        gl.glEnable(GL10.GL_CULL_FACE)
         gl.glEnable(GL10.GL_DEPTH_TEST)
         gl.glEnable(GL10.GL_LIGHTING)
         gl.glEnable(GL10.GL_TEXTURE_2D)
-        gl.glEnable(GL10.GL_CULL_FACE)
         gl.glEnable(GL10.GL_BLEND)
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA)
 

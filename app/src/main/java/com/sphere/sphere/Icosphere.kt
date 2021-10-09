@@ -9,8 +9,8 @@ import kotlin.math.*
 private const val TAG = "Icosphere"
 
 private val PI = acos(-1.0)
-private val EPSILON = 0.000001f;
-private const val RADIUS = 0.7f
+private const val EPSILON = 0.000001f;
+private const val RADIUS = 0.65f
 
 private const val CORDS_PER_VERTEX = 3
 
@@ -64,11 +64,10 @@ class Icosphere {
 
     private lateinit var vertexBuffer: FloatBuffer
     private lateinit var normalsBuffer: FloatBuffer
-    private lateinit var indiciesBuffer: ShortBuffer
-    private lateinit var lineIndiciesBuffer: ShortBuffer
+    private lateinit var indicesBuffer: ShortBuffer
+    private lateinit var lineIndicesBuffer: ShortBuffer
 
-
-    private var subdivision = 3
+    private var subdivision = 2
 
     init {
         Log.i(TAG, "Icosphere init() Started")
@@ -106,6 +105,21 @@ class Icosphere {
         indices.add(i1.toShort())
         indices.add(i2.toShort())
         indices.add(i3.toShort())
+    }
+
+    private fun addInitialLineIndices(index: Int) {
+        lineIndices.add(index.toShort())
+        lineIndices.add((index + 1).toShort())
+        lineIndices.add((index + 3).toShort())
+        lineIndices.add((index + 4).toShort())
+        lineIndices.add((index + 3).toShort())
+        lineIndices.add((index + 5).toShort())
+        lineIndices.add((index + 4).toShort())
+        lineIndices.add((index + 5).toShort())
+        lineIndices.add((index + 9).toShort())
+        lineIndices.add((index + 10).toShort())
+        lineIndices.add((index + 9).toShort())
+        lineIndices.add((index + 11).toShort())
     }
 
     private fun fetchVertex(tmpVertices: MutableList<Float>, i: Int): MutableList<Float> {
@@ -208,27 +222,12 @@ class Icosphere {
 
             addInitialLineIndices(index)
 
-            index += 12
+//            index += 12
         }
 
         subdivideVertices()
 
         setBuffers()
-    }
-
-    private fun addInitialLineIndices(index: Int) {
-        lineIndices.add(index.toShort())
-        lineIndices.add((index + 1).toShort())
-        lineIndices.add((index + 3).toShort())
-        lineIndices.add((index + 4).toShort())
-        lineIndices.add((index + 3).toShort())
-        lineIndices.add((index + 5).toShort())
-        lineIndices.add((index + 4).toShort())
-        lineIndices.add((index + 5).toShort())
-        lineIndices.add((index + 9).toShort())
-        lineIndices.add((index + 10).toShort())
-        lineIndices.add((index + 9).toShort())
-        lineIndices.add((index + 11).toShort())
     }
 
     // subdivideVerticesFlat
@@ -321,15 +320,15 @@ class Icosphere {
 
         val libb = ByteBuffer.allocateDirect(lineIndices.size * Short.SIZE_BYTES)
         libb.order(ByteOrder.nativeOrder())
-        lineIndiciesBuffer = libb.asShortBuffer()
-        lineIndiciesBuffer.put(lineIndices.toShortArray())
-        lineIndiciesBuffer.position(0)
+        lineIndicesBuffer = libb.asShortBuffer()
+        lineIndicesBuffer.put(lineIndices.toShortArray())
+        lineIndicesBuffer.position(0)
 
         val ibb = ByteBuffer.allocateDirect(indices.size * Short.SIZE_BYTES)
         ibb.order(ByteOrder.nativeOrder())
-        indiciesBuffer = ibb.asShortBuffer()
-        indiciesBuffer.put(indices.toShortArray())
-        indiciesBuffer.position(0)
+        indicesBuffer = ibb.asShortBuffer()
+        indicesBuffer.put(indices.toShortArray())
+        indicesBuffer.position(0)
 
 
     }
@@ -345,10 +344,12 @@ class Icosphere {
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY)
         gl.glEnableClientState(GL10.GL_NORMAL_ARRAY)
 
+        gl.glColor4f(0.2f, 1f, 0.2f, 1f)
+
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer)
         gl.glNormalPointer(GL10.GL_FLOAT, 0, normalsBuffer)
 
-        gl.glDrawElements(GL10.GL_TRIANGLES, indices.size, GL10.GL_UNSIGNED_SHORT, indiciesBuffer)
+        gl.glDrawElements(GL10.GL_TRIANGLES, indices.size, GL10.GL_UNSIGNED_SHORT, indicesBuffer)
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY)
         gl.glDisableClientState(GL10.GL_NORMAL_ARRAY)
@@ -368,7 +369,7 @@ class Icosphere {
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY)
 
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer)
-        gl.glDrawElements(GL10.GL_LINES, lineIndices.size, GL10.GL_UNSIGNED_SHORT, lineIndiciesBuffer)
+        gl.glDrawElements(GL10.GL_LINES, lineIndices.size, GL10.GL_UNSIGNED_SHORT, lineIndicesBuffer)
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY)
         gl.glEnable(GL10.GL_LIGHTING)
