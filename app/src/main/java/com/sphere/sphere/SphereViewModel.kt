@@ -1,9 +1,23 @@
 package com.sphere.sphere
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 
-class SphereViewModel: ViewModel() {
+class SphereViewModel(private val repository: SphereRepository): ViewModel() {
+
+    // Using LiveData and caching what allWords returns has several benefits:
+    // - We can put an observer on the data (instead of polling for changes) and only update the
+    //   the UI when the data actually changes.
+    // - Repository is completely separated from the UI through the ViewModel.
+    val allSpheres: LiveData<List<Sphere>> = repository.allSpheres.asLiveData()
+
+    /**
+     * Launching a new coroutine to insert the data in a non-blocking way
+     */
+    fun insert(sphere: Sphere) = viewModelScope.launch {
+        repository.insert(sphere)
+    }
 
     // Name of the current sphere
     private var currSphere = ""
@@ -121,5 +135,15 @@ class SphereViewModel: ViewModel() {
 
     init {
         Log.i("SphereViewModel", "SphereViewModel created")
+    }
+}
+
+class SphereViewModelFactory(private val repository: SphereRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SphereViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return SphereViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
