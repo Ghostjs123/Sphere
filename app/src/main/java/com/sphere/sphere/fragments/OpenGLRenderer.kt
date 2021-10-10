@@ -1,4 +1,4 @@
-package com.sphere.sphere
+package com.sphere.sphere.fragments
 
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
@@ -6,6 +6,7 @@ import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import android.util.Log
+import com.sphere.sphere.Icosphere
 
 private const val TAG = "OpenGLRenderer"
 
@@ -21,7 +22,7 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
     @Volatile
     var cameraAngleY = 0f
 
-    private lateinit var icosphere: Icosphere
+    lateinit var icosphere: Icosphere
 
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
         Log.i(TAG, "onSurfaceCreated() Started")
@@ -32,13 +33,13 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glHint(GL10.GL_LINE_SMOOTH_HINT, GL10.GL_NICEST)
 
         gl.glEnable(GL10.GL_CULL_FACE)
-
-        gl.glDisable(GL10.GL_LIGHTING)
-        gl.glDisable(GL10.GL_TEXTURE_2D)
-
+        gl.glEnable(GL10.GL_LIGHTING)
+        gl.glEnable(GL10.GL_TEXTURE_2D)
         gl.glEnable(GL10.GL_DEPTH_TEST)
         gl.glEnable(GL10.GL_BLEND)
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA)
+
+        gl.glEnable(GL10.GL_COLOR_MATERIAL)
 
         gl.glClearColor(0.15f, 0.15f, 0.15f, 1.0f)
         gl.glClearDepthf(1f)

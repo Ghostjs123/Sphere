@@ -1,4 +1,4 @@
-package com.sphere.menu
+package com.sphere.menu.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +10,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.sphere.R
 import com.sphere.databinding.FragmentNoSphereBinding
+import com.sphere.menu.MenuViewModel
 
 private const val TAG = "NoSphereFragment"
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
+
 class NoSphereFragment : Fragment() {
 
     private var _binding: FragmentNoSphereBinding? = null
@@ -33,6 +32,7 @@ class NoSphereFragment : Fragment() {
         _binding = FragmentNoSphereBinding.inflate(inflater, container, false)
 
         Log.i(TAG, "onCreateView() Returning")
+
         return binding.root
     }
 

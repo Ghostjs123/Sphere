@@ -6,7 +6,7 @@
     android:name="NoSphereFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".menu.NoSphereFragment">
+    tools:context=".menu.fragments.NoSphereFragment">
 
     <TextView
         android:id="@+id/no_sphere_found_text"

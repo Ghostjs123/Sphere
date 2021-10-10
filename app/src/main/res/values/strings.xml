@@ -7,9 +7,6 @@
     <string name="create_sphere_fragment_label">NewSphereFragment</string>
     <string name="import_sphere_fragment_label">ImportSphereFragment</string>
 
-    <!-- IDK -->
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <!-- Misc Menu Strings -->
     <string name="no_sphere_found">No Sphere Found</string>
@@ -18,7 +15,12 @@
     <string name="EnterSphereName">Enter Sphere Name</string>
     <string name="Create">Create</string>
     <string name="Import">Import</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="Mutate">Mutate</string>
 
     <!-- Title Strings -->
     <string name="title_activity_launcher">LauncherActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

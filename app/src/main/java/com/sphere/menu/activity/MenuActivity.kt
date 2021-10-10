@@ -37,10 +37,6 @@ class MenuActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment_container)
 
-        Log.i(TAG, "onSupportNavigateUp() Started")
-
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-
-        Log.i(TAG, "onSupportNavigateUp() Finished")
     }
 }

@@ -26,7 +26,9 @@
         </activity>
         <activity
             android:name="com.sphere.sphere.activity.SphereActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.CSE5236Sphere.DarkActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

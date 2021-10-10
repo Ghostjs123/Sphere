@@ -1,4 +1,4 @@
-package com.sphere.menu
+package com.sphere.menu.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.sphere.databinding.FragmentNewSphereBinding
 import com.google.android.material.snackbar.Snackbar
+import com.sphere.menu.MenuViewModel
 
 private const val TAG = "NewSphereFragment"
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
+
 class NewSphereFragment : Fragment() {
 
     private var _binding: FragmentNewSphereBinding? = null

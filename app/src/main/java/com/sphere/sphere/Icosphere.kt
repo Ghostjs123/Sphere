@@ -1,17 +1,25 @@
 package com.sphere.sphere
 
+import android.opengl.GLES20
 import android.util.Log
 import java.nio.*
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.*
+import com.sphere.sphere.OpenSimplex2F
+import kotlin.random.Random
 
 
 private const val TAG = "Icosphere"
 
 private val PI = acos(-1.0)
-private const val EPSILON = 0.000001f;
+private const val EPSILON = 0.000001f
 
 private const val CORDS_PER_VERTEX = 3
+
+private const val MIN_RADIUS = 0.3f
+private const val MAX_RADIUS = 0.8f
+
+private var hasSetBuffers = false
 
 private fun computeIcosahedronVertices(radius: Float) : MutableList<Float> {
     val hANGLE = (PI / 180 * 72).toFloat()
@@ -58,20 +66,20 @@ class Icosphere {
 
     private var vertices: MutableList<Float> = mutableListOf()
     private var normals: MutableList<Float> = mutableListOf()
-    private var indices: MutableList<Short> = mutableListOf()
-    private var lineIndices: MutableList<Short> = mutableListOf()
+    private var indices: MutableList<Int> = mutableListOf()
+    private var lineIndices: MutableList<Int> = mutableListOf()
     private var colors: MutableList<Float> = mutableListOf()
 
     private lateinit var vertexBuffer: FloatBuffer
     private lateinit var normalsBuffer: FloatBuffer
-    private lateinit var indicesBuffer: ShortBuffer
-    private lateinit var lineIndicesBuffer: ShortBuffer
+    private lateinit var indicesBuffer: IntBuffer
+    private lateinit var lineIndicesBuffer: IntBuffer
     private lateinit var colorsBuffer: FloatBuffer
 
-    private var subdivision = 3
+    private var subdivision = 4
     private var radius = 0.65f
 
-    private var defaultColor = mutableListOf(0.337f, 0.49f, 0.275f, 1.0f)
+    private var defaultColor = mutableListOf(0.3f, 0.3f, 0.3f, 1.0f)
 
     init {
         Log.i(TAG, "Icosphere init() Started")
@@ -105,24 +113,24 @@ class Icosphere {
     }
 
     private fun addIndices(i1: Int, i2: Int, i3: Int) {
-        indices.add(i1.toShort())
-        indices.add(i2.toShort())
-        indices.add(i3.toShort())
+        indices.add(i1)
+        indices.add(i2)
+        indices.add(i3)
     }
 
     private fun addInitialLineIndices(index: Int) {
-        lineIndices.add(index.toShort())
-        lineIndices.add((index + 1).toShort())
-        lineIndices.add((index + 3).toShort())
-        lineIndices.add((index + 4).toShort())
-        lineIndices.add((index + 3).toShort())
-        lineIndices.add((index + 5).toShort())
-        lineIndices.add((index + 4).toShort())
-        lineIndices.add((index + 5).toShort())
-        lineIndices.add((index + 9).toShort())
-        lineIndices.add((index + 10).toShort())
-        lineIndices.add((index + 9).toShort())
-        lineIndices.add((index + 11).toShort())
+        lineIndices.add(index)
+        lineIndices.add(index + 1)
+        lineIndices.add(index + 3)
+        lineIndices.add(index + 4)
+        lineIndices.add(index + 3)
+        lineIndices.add(index + 5)
+        lineIndices.add(index + 4)
+        lineIndices.add(index + 5)
+        lineIndices.add(index + 9)
+        lineIndices.add(index + 10)
+        lineIndices.add(index + 9)
+        lineIndices.add(index + 11)
     }
 
     private fun fetchVertex(tmpVertices: MutableList<Float>, i: Int): MutableList<Float> {
@@ -184,20 +192,20 @@ class Icosphere {
     }
 
     private fun addSubLineIndices(i1: Int, i2: Int, i3: Int, i4: Int, i5: Int, i6: Int) {
-        lineIndices.add(i1.toShort())
-        lineIndices.add(i2.toShort())
-        lineIndices.add(i2.toShort())
-        lineIndices.add(i6.toShort())
-        lineIndices.add(i2.toShort())
-        lineIndices.add(i3.toShort())
-        lineIndices.add(i2.toShort())
-        lineIndices.add(i4.toShort())
-        lineIndices.add(i6.toShort())
-        lineIndices.add(i4.toShort())
-        lineIndices.add(i3.toShort())
-        lineIndices.add(i4.toShort())
-        lineIndices.add(i4.toShort())
-        lineIndices.add(i5.toShort())
+        lineIndices.add(i1)
+        lineIndices.add(i2)
+        lineIndices.add(i2)
+        lineIndices.add(i6)
+        lineIndices.add(i2)
+        lineIndices.add(i3)
+        lineIndices.add(i2)
+        lineIndices.add(i4)
+        lineIndices.add(i6)
+        lineIndices.add(i4)
+        lineIndices.add(i3)
+        lineIndices.add(i4)
+        lineIndices.add(i4)
+        lineIndices.add(i5)
     }
 
     private fun addDefaultColor() {
@@ -317,26 +325,26 @@ class Icosphere {
                 val newV2 = computeHalfVertex(v2, v3)
                 val newV3 = computeHalfVertex(v1, v3)
 
-                computeFaceNormal(v1, newV1, newV3, normal)
                 addVertices(v1, newV1, newV3)
+                computeFaceNormal(v1, newV1, newV3, normal)
                 addNormal(normal)
                 addIndices(index, index + 1, index + 2)
                 addDefaultColor()
 
-                computeFaceNormal(newV1, v2, newV2, normal)
                 addVertices(newV1, v2, newV2)
+                computeFaceNormal(newV1, v2, newV2, normal)
                 addNormal(normal)
                 addIndices(index + 3, index + 4, index + 5)
                 addDefaultColor()
 
-                computeFaceNormal(newV1, newV2, newV3, normal)
                 addVertices(newV1, newV2, newV3)
+                computeFaceNormal(newV1, newV2, newV3, normal)
                 addNormal(normal)
                 addIndices(index + 6, index + 7, index + 8)
                 addDefaultColor()
 
-                computeFaceNormal(newV3, newV2, v3, normal)
                 addVertices(newV3, newV2, v3)
+                computeFaceNormal(newV3, newV2, v3, normal)
                 addNormal(normal)
                 addIndices(index + 9, index + 10, index + 11)
                 addDefaultColor()
@@ -355,37 +363,142 @@ class Icosphere {
         }
     }
 
-    private fun setBuffers() {
-        val vbb = ByteBuffer.allocateDirect(vertices.size * Float.SIZE_BYTES)
-        vbb.order(ByteOrder.nativeOrder())
-        vertexBuffer = vbb.asFloatBuffer()
-        vertexBuffer.put(vertices.toFloatArray())
-        vertexBuffer.position(0)
+    // ====================================================================
+    // Mutate Functions
 
-        val nbb = ByteBuffer.allocateDirect(normals.size * Float.SIZE_BYTES)
-        nbb.order(ByteOrder.nativeOrder())
-        normalsBuffer = nbb.asFloatBuffer()
-        normalsBuffer.put(normals.toFloatArray())
-        normalsBuffer.position(0)
-
-        val libb = ByteBuffer.allocateDirect(lineIndices.size * Short.SIZE_BYTES)
-        libb.order(ByteOrder.nativeOrder())
-        lineIndicesBuffer = libb.asShortBuffer()
-        lineIndicesBuffer.put(lineIndices.toShortArray())
-        lineIndicesBuffer.position(0)
-
-        val ibb = ByteBuffer.allocateDirect(indices.size * Short.SIZE_BYTES)
-        ibb.order(ByteOrder.nativeOrder())
-        indicesBuffer = ibb.asShortBuffer()
-        indicesBuffer.put(indices.toShortArray())
-        indicesBuffer.position(0)
-
-        val cbb = ByteBuffer.allocateDirect(colors.size * Float.SIZE_BYTES)
-        cbb.order(ByteOrder.nativeOrder())
-        colorsBuffer = cbb.asFloatBuffer()
-        colorsBuffer.put(colors.toFloatArray())
-        colorsBuffer.position(0)
+    private fun transformNoiseToRadius(noiseValue: Double): Float{
+        // https://en.wikipedia.org/wiki/Linear_interpolation
+        // linear interpolation: [-1, 1] -> [MIN_RADIUS, MAX_RADIUS]
+        return (noiseValue.toFloat() + 1) / 2 * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS
     }
+
+    private fun transformRadiusToColor(radius: Float): Float {
+        // linear interpolation: [MIN_RADIUS, MAX_RADIUS] -> [0, 1]
+        return (radius - MIN_RADIUS) / (MAX_RADIUS - MIN_RADIUS)
+    }
+
+    private fun mutateVertex(i: Int, noise: OpenSimplex2F): MutableList<Float> {
+        val vertex = fetchVertex(vertices, i)
+
+        val x = vertex[0]
+        val y = vertex[1]
+        val z = vertex[2]
+
+        val r = sqrt(x * x + y * y + z * z)
+        val theta = atan2(y, x)
+        val rho = atan2(sqrt(x * x + y * y), z)
+
+        val newR = transformNoiseToRadius(
+            noise.noise3_XZBeforeY(
+                theta.toDouble() * 180f / PI,
+                r.toDouble(),
+                rho.toDouble() * 180f / PI
+            )
+        )
+
+        vertices[i] = newR * sin(rho) * cos(theta)
+        vertices[i + 1] = newR * sin(rho) * sin(theta)
+        vertices[i + 2] = newR * cos(rho)
+
+        val scl = transformRadiusToColor(newR)
+        colors.add(0.1f)
+        colors.add(scl)
+        colors.add(0.1f)
+        colors.add(1.0f)
+
+        return mutableListOf(vertices[i], vertices[i + 1], vertices[i + 2])
+    }
+
+    fun mutate() {
+        Log.i(TAG, "Beginning Sphere Mutation")
+
+        buildVertices()
+
+        // TODO: make call to getSeed() here which will use device sensor(s)
+        val seed: Long = 1000
+        val noise = OpenSimplex2F(seed)
+        val normal = floatArrayOf(0f, 0f, 0f)
+        val count = indices.size
+
+        normals.clear()
+        colors.clear()
+
+        for (i in 0 until count step 3) {
+            val v1 = mutateVertex(indices[i] * 3, noise)
+            val v2 = mutateVertex(indices[i + 1] * 3, noise)
+            val v3 = mutateVertex(indices[i + 2] * 3, noise)
+
+            computeFaceNormal(v1, v2, v3, normal)
+            addNormal(normal)
+        }
+
+        setBuffers()
+
+        Log.i(TAG, "Done Mutating Sphere")
+    }
+
+    // ====================================================================
+    // Buffer Functions
+
+    private fun setBuffers() {
+        if (!hasSetBuffers) {
+            val vbb = ByteBuffer.allocateDirect(vertices.size * Float.SIZE_BYTES)
+            vbb.order(ByteOrder.nativeOrder())
+            vertexBuffer = vbb.asFloatBuffer()
+            vertexBuffer.put(vertices.toFloatArray())
+            vertexBuffer.position(0)
+
+            val nbb = ByteBuffer.allocateDirect(normals.size * Float.SIZE_BYTES)
+            nbb.order(ByteOrder.nativeOrder())
+            normalsBuffer = nbb.asFloatBuffer()
+            normalsBuffer.put(normals.toFloatArray())
+            normalsBuffer.position(0)
+
+            val libb = ByteBuffer.allocateDirect(lineIndices.size * Int.SIZE_BYTES)
+            libb.order(ByteOrder.nativeOrder())
+            lineIndicesBuffer = libb.asIntBuffer()
+            lineIndicesBuffer.put(lineIndices.toIntArray())
+            lineIndicesBuffer.position(0)
+
+            val ibb = ByteBuffer.allocateDirect(indices.size * Int.SIZE_BYTES)
+            ibb.order(ByteOrder.nativeOrder())
+            indicesBuffer = ibb.asIntBuffer()
+            indicesBuffer.put(indices.toIntArray())
+            indicesBuffer.position(0)
+
+            val cbb = ByteBuffer.allocateDirect(colors.size * Float.SIZE_BYTES)
+            cbb.order(ByteOrder.nativeOrder())
+            colorsBuffer = cbb.asFloatBuffer()
+            colorsBuffer.put(colors.toFloatArray())
+            colorsBuffer.position(0)
+
+            hasSetBuffers = true
+        }
+        else {
+            vertexBuffer.clear()
+            vertexBuffer.put(vertices.toFloatArray())
+            vertexBuffer.position(0)
+
+            normalsBuffer.clear()
+            normalsBuffer.put(normals.toFloatArray())
+            normalsBuffer.position(0)
+
+            lineIndicesBuffer.clear()
+            lineIndicesBuffer.put(lineIndices.toIntArray())
+            lineIndicesBuffer.position(0)
+
+            indicesBuffer.clear()
+            indicesBuffer.put(indices.toIntArray())
+            indicesBuffer.position(0)
+
+            colorsBuffer.clear()
+            colorsBuffer.put(colors.toFloatArray())
+            colorsBuffer.position(0)
+        }
+    }
+
+    // ====================================================================
+    // Draw Function
 
     fun draw(gl: GL10) {
 
@@ -403,7 +516,7 @@ class Icosphere {
         gl.glNormalPointer(GL10.GL_FLOAT, 0, normalsBuffer)
         gl.glColorPointer(4, GL10.GL_FLOAT, 0, colorsBuffer)
 
-        gl.glDrawElements(GL10.GL_TRIANGLES, indices.size, GL10.GL_UNSIGNED_SHORT, indicesBuffer)
+        gl.glDrawElements(GL10.GL_TRIANGLES, indices.size, GLES20.GL_UNSIGNED_INT, indicesBuffer)
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY)
         gl.glDisableClientState(GL10.GL_NORMAL_ARRAY)
@@ -414,6 +527,9 @@ class Icosphere {
         // =====================================================
         // drawLines()
 
+        gl.glDisable(GL10.GL_LIGHTING)
+        gl.glDisable(GL10.GL_TEXTURE_2D)
+
         val color = floatArrayOf(0.3f, 0.3f, 0.3f, 1f)
 
         gl.glColor4f(color[0], color[1], color[2], color[3])
@@ -422,9 +538,12 @@ class Icosphere {
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY)
 
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer)
-        gl.glDrawElements(GL10.GL_LINES, lineIndices.size, GL10.GL_UNSIGNED_SHORT, lineIndicesBuffer)
+        gl.glDrawElements(GL10.GL_LINES, lineIndices.size, GLES20.GL_UNSIGNED_INT, lineIndicesBuffer)
 
         gl.glDisableClientState(GL10.GL_VERTEX_ARRAY)
+
+        gl.glEnable(GL10.GL_LIGHTING)
+        gl.glEnable(GL10.GL_TEXTURE_2D)
 
         // =====================================================
     }

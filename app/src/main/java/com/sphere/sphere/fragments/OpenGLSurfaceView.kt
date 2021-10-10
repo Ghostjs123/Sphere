@@ -1,10 +1,11 @@
-package com.sphere.sphere
+package com.sphere.sphere.fragments
 
 import android.content.Context
 import android.opengl.GLSurfaceView
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
+import com.sphere.sphere.fragments.OpenGLRenderer
 import kotlin.math.abs
 
 
@@ -12,7 +13,7 @@ private const val TOUCH_SCALE_FACTOR: Float = 0.2f
 
 class OpenGLSurfaceView(context: Context) : GLSurfaceView(context) {
 
-    private val renderer: OpenGLRenderer
+    val renderer: OpenGLRenderer
 
     private var prevX: Float = 0f
     private var prevY: Float = 0f
@@ -33,11 +34,13 @@ class OpenGLSurfaceView(context: Context) : GLSurfaceView(context) {
             MotionEvent.ACTION_MOVE -> {
                 renderer.cameraAngleX += (y - prevY) * TOUCH_SCALE_FACTOR
 
-                var directionHandler = abs((renderer.cameraAngleX.toInt()+90) / 180) % 2
+                var directionHandler = abs((renderer.cameraAngleX.toInt() + 90) / 180) % 2
+
                 if (directionHandler != 0)
                     renderer.cameraAngleY -= (x - prevX) * TOUCH_SCALE_FACTOR
                 else
-                renderer.cameraAngleY += (x - prevX) * TOUCH_SCALE_FACTOR
+                    renderer.cameraAngleY += (x - prevX) * TOUCH_SCALE_FACTOR
+
                 requestRender()
             }
         }
