@@ -1,9 +1,23 @@
 package com.sphere.sphere
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 
-class SphereViewModel: ViewModel() {
+class SphereViewModel(private val repository: SphereRepository): ViewModel() {
+
+    // Using LiveData and caching what allWords returns has several benefits:
+    // - We can put an observer on the data (instead of polling for changes) and only update the
+    //   the UI when the data actually changes.
+    // - Repository is completely separated from the UI through the ViewModel.
+    val allSpheres: LiveData<List<Sphere>> = repository.allSpheres.asLiveData()
+
+    /**
+     * Launching a new coroutine to insert the data in a non-blocking way
+     */
+    fun insert(sphere: Sphere) = viewModelScope.launch {
+        repository.insert(sphere)
+    }
 
     // Name of the current sphere
     private var currSphere = ""
@@ -15,6 +29,8 @@ class SphereViewModel: ViewModel() {
     private var indices: MutableList<Short> = mutableListOf()
     // Collection of current line indices
     private var lineIndices: MutableList<Short> = mutableListOf()
+    // Collection of sphere colors
+    private var colors: MutableList<Float> = mutableListOf()
     // Seed value of this sphere
     private var seed = 0
 
@@ -24,6 +40,7 @@ class SphereViewModel: ViewModel() {
         normals = mutableListOf()
         indices = mutableListOf()
         lineIndices = mutableListOf()
+        colors = mutableListOf()
         seed = 0
     }
 
@@ -37,16 +54,19 @@ class SphereViewModel: ViewModel() {
         normals = mutableListOf()
         indices = mutableListOf()
         lineIndices = mutableListOf()
+        colors = mutableListOf()
         seed = (0..99999).random()
     }
 
     fun loadSphere(name:String, loadedVertices: MutableList<Float>, loadedNormals: MutableList<Float>,
-                   loadedIndices: MutableList<Short>, loadedLineIndices: MutableList<Short>, importSeed: Int) {
+                   loadedIndices: MutableList<Short>, loadedLineIndices: MutableList<Short>,
+                   loadedColors: MutableList<Float>, importSeed: Int) {
         currSphere = name
         vertices = loadedVertices
         normals = loadedNormals
         indices = loadedIndices
         lineIndices = loadedLineIndices
+        colors = loadedColors
         seed = importSeed
     }
 
@@ -86,6 +106,26 @@ class SphereViewModel: ViewModel() {
         vertices[n+2] = newVertice[2]
     }
 
+    // Returns this sphere's normals
+    fun getAllNormals(): MutableList<Float> {
+        return normals
+    }
+
+    // Returns this sphere's indices
+    fun getAllIndices(): MutableList<Short> {
+        return indices
+    }
+
+    // Returns this sphere's line indices
+    fun getAllLineIndices(): MutableList<Short> {
+        return lineIndices
+    }
+
+    // Returns this sphere's line indices
+    fun getAllColors(): MutableList<Float> {
+        return colors
+    }
+
     fun mutateSphere() {
         // TODO : should be passed the params it's going to use to change the vertices.
         // Also a selection of vertices should be passed, if user didn't select any it's just all of them
@@ -95,5 +135,15 @@ class SphereViewModel: ViewModel() {
 
     init {
         Log.i("SphereViewModel", "SphereViewModel created")
+    }
+}
+
+class SphereViewModelFactory(private val repository: SphereRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(SphereViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return SphereViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

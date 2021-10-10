@@ -18,6 +18,15 @@
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_no_sphere.xml" value="0.1" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_second.xml" value="0.30416666666666664" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_sphere.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/activity_menu.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/activity_sphere.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/content_main.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/fragment_import_sphere.xml" value="0.276268115942029" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/fragment_my_spheres.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/fragment_new_sphere.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/fragment_no_sphere.xml" value="0.276268115942029" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/fragment_options_menu.xml" value="0.22" />
+        <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/recyclerview_item.xml" value="0.20471014492753623" />
       </map>
     </option>
   </component>

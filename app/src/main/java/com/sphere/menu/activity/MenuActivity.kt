@@ -7,8 +7,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sphere.R
 import com.sphere.databinding.ActivityMenuBinding
+import com.sphere.sphere.SphereListAdapter
 
 private const val TAG = "MenuActivity"
 
@@ -24,6 +27,12 @@ class MenuActivity : AppCompatActivity() {
 
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // ViewModel Code
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        val adapter = SphereListAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         setSupportActionBar(binding.toolbar)
 
