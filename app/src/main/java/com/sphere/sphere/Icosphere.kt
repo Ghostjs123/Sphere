@@ -7,6 +7,16 @@ import javax.microedition.khronos.opengles.GL10
 import kotlin.math.*
 import com.sphere.sphere.OpenSimplex2F
 import kotlin.random.Random
+import android.view.ViewGroup
+
+import android.widget.LinearLayout
+import android.R
+
+
+
+
+
+
 
 
 private const val TAG = "Icosphere"
@@ -76,7 +86,7 @@ class Icosphere {
     private lateinit var lineIndicesBuffer: IntBuffer
     private lateinit var colorsBuffer: FloatBuffer
 
-    private var subdivision = 4
+    private var subdivision = 5
     private var radius = 0.65f
 
     private var defaultColor = mutableListOf(0.3f, 0.3f, 0.3f, 1.0f)
@@ -389,12 +399,38 @@ class Icosphere {
         val rho = atan2(sqrt(x * x + y * y), z)
 
         val newR = transformNoiseToRadius(
-            noise.noise3_XZBeforeY(
-                theta.toDouble() * 180f / PI,
-                r.toDouble(),
-                rho.toDouble() * 180f / PI
+            noise.noise3_Classic(
+                x.toDouble(),
+                y.toDouble(),
+                z.toDouble()
             )
         )
+//        val newR = transformNoiseToRadius(
+//            noise.noise3_Classic(
+//                r.toDouble(),
+//                theta.toDouble(),
+//                rho.toDouble()
+//            )
+//        )
+//        val newR = transformNoiseToRadius(
+//            noise.noise3_XZBeforeY(
+//                x.toDouble(),
+//                y.toDouble(),
+//                z.toDouble()
+//            )
+//        )
+//        val newR = transformNoiseToRadius(
+//            noise.noise2(
+//                (x * y * z).toDouble(),
+//                (r * rho * theta).toDouble()
+//            )
+//        )
+//        val newR = transformNoiseToRadius(
+//            noise.noise2(
+//                theta.toDouble(),
+//                rho.toDouble()
+//            )
+//        )
 
         vertices[i] = newR * sin(rho) * cos(theta)
         vertices[i + 1] = newR * sin(rho) * sin(theta)

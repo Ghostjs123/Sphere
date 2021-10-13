@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/drawable-v21/app_widget_background.xml" value="0.21979166666666666" />
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/drawable/button_round.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/activity_launcher.xml" value="0.24635416666666668" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/activity_menu.xml" value="0.25625" />
@@ -18,6 +19,8 @@
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_no_sphere.xml" value="0.1" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_second.xml" value="0.30416666666666664" />
         <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/layout/fragment_sphere.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/menu/menu_main.xml" value="0.20677083333333332" />
+        <entry key="..\:/Users/Collin/AndroidStudioProjects/CSE5236Sphere/app/src/main/res/menu/sphere_menu.xml" value="0.20677083333333332" />
         <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/activity_menu.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/activity_sphere.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/Eric/Desktop/Sphere/app/src/main/res/layout/content_main.xml" value="0.20833333333333334" />

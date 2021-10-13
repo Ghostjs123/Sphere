@@ -2,16 +2,18 @@ package com.sphere.sphere.fragments
 
 import android.content.Context
 import android.opengl.GLSurfaceView
+import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import com.sphere.sphere.fragments.OpenGLRenderer
 import kotlin.math.abs
 
 
 private const val TOUCH_SCALE_FACTOR: Float = 0.2f
 
-class OpenGLSurfaceView(context: Context) : GLSurfaceView(context) {
+class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(context, attrs) {
 
     val renderer: OpenGLRenderer
 

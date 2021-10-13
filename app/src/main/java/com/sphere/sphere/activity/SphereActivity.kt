@@ -1,57 +1,90 @@
 package com.sphere.sphere.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginBottom
-import com.google.android.material.snackbar.Snackbar
+import android.view.*
+import android.widget.*
 import com.sphere.R
+import com.sphere.menu.activity.MenuActivity
 import com.sphere.sphere.fragments.OpenGLSurfaceView
 
 private const val TAG = "SphereActivity"
+private const val EXTRA_MESSAGE = "com.sphere.MESSAGE"
 
-class SphereActivity : Activity() {
+class SphereActivity : Activity(), PopupMenu.OnMenuItemClickListener {
 
-    lateinit var glView: OpenGLSurfaceView
+    private lateinit var glView: OpenGLSurfaceView
+    private lateinit var mButton: Button
+    private lateinit var mImageButton: ImageButton
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Log.i(TAG, "onCreate() Started")
 
+        setContentView(R.layout.activity_sphere)
+
         // create GLSurfaceView
+        glView = findViewById(R.id.gl_surface_view)
 
-        glView = OpenGLSurfaceView(this)
-
-        setContentView(glView)
-
-        // add mutate button
-
-        val button = Button(this).apply {
-            text = resources.getString(R.string.Mutate)
-            setOnClickListener  {
-                glView.renderer.icosphere.mutate()
-                glView.requestRender()
-            }
+        // mutate Button
+        mButton = findViewById(R.id.mutate_button)
+        mButton.setOnClickListener {
+            glView.renderer.icosphere.mutate()
+            glView.requestRender()
         }
-        val layoutParams = RelativeLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply {
-            addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-            addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+
+        // options Button
+        mImageButton = findViewById(R.id.sphere_options_button)
+        mImageButton.setOnClickListener {
+            showPopup(it)
         }
-        addContentView(button, layoutParams)
-
-        // add options button
-
-        // TODO
 
         Log.i(TAG, "onCreate() Finished")
+    }
+
+    private fun showPopup(v: View) {
+        Log.i(TAG, "Showing PopupMenu")
+        val popup = PopupMenu(this, v)
+        popup.setOnMenuItemClickListener(this)
+        popup.menuInflater.inflate(R.menu.sphere_menu, popup.menu)
+        popup.show()
+    }
+
+    private fun startMenuActivityWithExtra(id: Int) {
+        startActivity(Intent(this, MenuActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE, id)
+        })
+    }
+
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        Log.i(TAG, "Selected Item: " + item.title)
+
+        when (item.itemId) {
+            R.id.my_spheres_menu_item -> {
+                startMenuActivityWithExtra(item.itemId)
+                return true
+            }
+            R.id.import_sphere_menu_item -> {
+                startMenuActivityWithExtra(item.itemId)
+                return true
+            }
+            R.id.create_sphere_menu_item -> {
+                startMenuActivityWithExtra(item.itemId)
+                return true
+            }
+            R.id.settings_menu_item -> {
+                startMenuActivityWithExtra(item.itemId)
+                return true
+            }
+            R.id.export_sphere_menu_item -> {
+                startMenuActivityWithExtra(item.itemId)
+                return true
+            }
+        }
+
+        return false
     }
 }

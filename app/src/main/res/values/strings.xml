@@ -19,6 +19,13 @@
     <string name="previous">Previous</string>
     <string name="Mutate">Mutate</string>
 
+    <!-- Sphere Menu Strings -->
+    <string name="MySpheres">My Spheres</string>
+    <!-- Import is above -->
+    <string name="CreateNew">Create New</string>
+    <string name="Settings">Settings</string>
+    <string name="Export">Export</string>
+
     <!-- Title Strings -->
     <string name="title_activity_launcher">LauncherActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
