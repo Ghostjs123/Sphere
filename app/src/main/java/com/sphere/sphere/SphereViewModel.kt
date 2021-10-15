@@ -2,6 +2,8 @@ package com.sphere.sphere
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.sphere.sphere.room_code.Sphere
+import com.sphere.sphere.room_code.SphereRepository
 import kotlinx.coroutines.launch
 
 class SphereViewModel(private val repository: SphereRepository): ViewModel() {
@@ -10,7 +12,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     // - We can put an observer on the data (instead of polling for changes) and only update the
     //   the UI when the data actually changes.
     // - Repository is completely separated from the UI through the ViewModel.
-    val allSpheres: LiveData<List<Sphere>> = repository.allSpheres.asLiveData()
+    val allSpheres: LiveData<List<Sphere>> = repository.allSpheres
 
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
@@ -19,20 +21,13 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
         repository.insert(sphere)
     }
 
-    // Name of the current sphere
+    // Current Sphere info
     private var currSphere = ""
-    // Collection of current vertices
     private var vertices: MutableList<Float> = mutableListOf()
-    // Collection of current normals
     private var normals: MutableList<Float> = mutableListOf()
-    // Collection of current indices
     private var indices: MutableList<Short> = mutableListOf()
-    // Collection of current line indices
     private var lineIndices: MutableList<Short> = mutableListOf()
-    // Collection of sphere colors
     private var colors: MutableList<Float> = mutableListOf()
-    // Seed value of this sphere
-    private var seed = 0
 
     private fun unloadSphere() {
         currSphere = ""
@@ -41,36 +36,37 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
         indices = mutableListOf()
         lineIndices = mutableListOf()
         colors = mutableListOf()
-        seed = 0
     }
 
     // --- Functions for retrieving and changing ViewModel data ---
 
     fun newSphere(name: String) {
         currSphere = name
-        // TODO : This needs to get changed eventually so it's not
-        //        just the unloadSphere implementation.
+        // TODO : This needs to get changed eventually so it's not just the unloadSphere implementation.
         vertices = mutableListOf()
         normals = mutableListOf()
         indices = mutableListOf()
         lineIndices = mutableListOf()
         colors = mutableListOf()
-        seed = (0..99999).random()
     }
 
-    fun loadSphere(name:String, loadedVertices: MutableList<Float>, loadedNormals: MutableList<Float>,
-                   loadedIndices: MutableList<Short>, loadedLineIndices: MutableList<Short>,
-                   loadedColors: MutableList<Float>, importSeed: Int) {
+    fun loadSphere(
+        name:String,
+        loadedVertices:MutableList<Float>,
+        loadedNormals: MutableList<Float>,
+        loadedIndices: MutableList<Short>,
+        loadedLineIndices: MutableList<Short>,
+        loadedColors: MutableList<Float>,
+    ) {
         currSphere = name
         vertices = loadedVertices
         normals = loadedNormals
         indices = loadedIndices
         lineIndices = loadedLineIndices
         colors = loadedColors
-        seed = importSeed
     }
 
-    // Grabs the nth vertice and returns it as MutableList<Float>
+    // Grabs the nth vertex and returns it as MutableList<Float>
     // Keep in mind to grab the first vert, n = 0 must be used.
     fun getVert(n: Int): MutableList<Float> {
         return mutableListOf(vertices[n * 3], vertices[(n * 3) + 1], vertices[(n * 3) + 2])

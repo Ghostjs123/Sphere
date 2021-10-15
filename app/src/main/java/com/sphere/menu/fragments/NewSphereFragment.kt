@@ -1,15 +1,15 @@
 package com.sphere.menu.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import com.sphere.databinding.FragmentNewSphereBinding
 import com.google.android.material.snackbar.Snackbar
-import com.sphere.menu.MenuViewModel
+import com.sphere.sphere.activity.SphereActivity
 
 private const val TAG = "NewSphereFragment"
 
@@ -18,14 +18,13 @@ class NewSphereFragment : Fragment() {
 
     private var _binding: FragmentNewSphereBinding? = null
     private val binding get() = _binding!!
-    private val model: MenuViewModel by activityViewModels()
 
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         Log.i(TAG, "onCreateView() Started")
 
@@ -43,11 +42,14 @@ class NewSphereFragment : Fragment() {
 
         // TODO : Can use modelView from here
 
-        binding.createSphereButton.setOnClickListener { view ->
+        binding.createSphereButton.setOnClickListener {
             val sphereName = binding.sphereNameInput.text.toString()
-
-            Snackbar.make(view, "Creating $sphereName", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            startActivity(Intent(activity, SphereActivity::class.java).apply {
+                putExtra("ACTION", "NewSphere")
+                putExtra("SPHERE_NAME", sphereName)
+            })
+//            Snackbar.make(view, "Creating $sphereName", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
         }
 
         Log.i(TAG, "onViewCreated() Finished")

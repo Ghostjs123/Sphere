@@ -1,17 +1,22 @@
 package com.sphere.menu.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sphere.R
 import com.sphere.databinding.ActivityMenuBinding
-import com.sphere.sphere.SphereListAdapter
+import com.sphere.sphere.SphereViewModel
+import com.sphere.sphere.SphereViewModelFactory
+import com.sphere.sphere.room_code.SphereApplication
+import com.sphere.sphere.room_code.SphereDatabase
+import kotlinx.coroutines.CoroutineScope
 
 private const val TAG = "MenuActivity"
 
@@ -20,6 +25,10 @@ class MenuActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMenuBinding
 
+    private val sphereViewModel: SphereViewModel by viewModels {
+        SphereViewModelFactory((application as SphereApplication).repository)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,12 +36,6 @@ class MenuActivity : AppCompatActivity() {
 
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // ViewModel Code
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = SphereListAdapter()
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
 
         setSupportActionBar(binding.toolbar)
 

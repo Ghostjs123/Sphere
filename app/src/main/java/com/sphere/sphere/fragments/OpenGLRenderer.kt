@@ -22,7 +22,8 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
     @Volatile
     var cameraAngleY = 0f
 
-    lateinit var icosphere: Icosphere
+    @Volatile
+    var icosphere: Icosphere? = null
 
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
         Log.i(TAG, "onSurfaceCreated() Started")
@@ -45,8 +46,6 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glClearDepthf(1f)
         gl.glClearStencil(0)
         gl.glDepthFunc(GL10.GL_LEQUAL)
-
-        icosphere = Icosphere()
 
         gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, floatArrayOf(0.3f, 0.3f, 0.3f, 1.0f), 0)
         gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, floatArrayOf(0.7f, 0.7f, 0.7f, 1.0f), 0)
@@ -77,7 +76,7 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glMaterialfv(GL10.GL_FRONT, GL10.GL_SPECULAR, specular)
         gl.glMaterialf(GL10.GL_FRONT, GL10.GL_SHININESS, shininess)
 
-        icosphere.draw(gl)
+        icosphere?.draw(gl)
     }
 
     override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {

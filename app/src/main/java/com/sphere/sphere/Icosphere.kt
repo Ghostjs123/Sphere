@@ -5,18 +5,7 @@ import android.util.Log
 import java.nio.*
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.*
-import com.sphere.sphere.OpenSimplex2F
-import kotlin.random.Random
-import android.view.ViewGroup
-
-import android.widget.LinearLayout
-import android.R
-
-
-
-
-
-
+import com.sphere.sphere.misc.OpenSimplex2F
 
 
 private const val TAG = "Icosphere"
@@ -72,7 +61,7 @@ private fun computeIcosahedronVertices(radius: Float) : MutableList<Float> {
 }
 
 
-class Icosphere {
+class Icosphere(private var sphere_name: String) {
 
     private var vertices: MutableList<Float> = mutableListOf()
     private var normals: MutableList<Float> = mutableListOf()

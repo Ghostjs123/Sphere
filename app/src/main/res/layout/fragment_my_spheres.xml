@@ -6,7 +6,7 @@
     tools:context=".menu.fragments.MySpheresFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+        android:id="@+id/spheres_recycler_view"
         android:layout_width="111dp"
         android:layout_height="113dp"
         tools:listitem="@layout/recyclerview_item" />

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sphere.R
+import com.sphere.sphere.room_code.Sphere
 
 class SphereListAdapter : ListAdapter<Sphere, SphereListAdapter.SphereViewHolder>(SpheresComparator()) {
 
