@@ -6,11 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.sphere.R
 import com.sphere.databinding.FragmentNoSphereBinding
-import com.sphere.menu.MenuViewModel
 
 private const val TAG = "NoSphereFragment"
 
@@ -19,13 +17,12 @@ class NoSphereFragment : Fragment() {
 
     private var _binding: FragmentNoSphereBinding? = null
     private val binding get() = _binding!!
-    private val model: MenuViewModel by activityViewModels()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         Log.i(TAG, "onCreateView() Started")
 
@@ -41,13 +38,17 @@ class NoSphereFragment : Fragment() {
 
         Log.i(TAG, "onViewCreated() Started")
 
-        // TODO : Can use ViewModel from here
-
         binding.createNewSphereText.setOnClickListener {
-            findNavController().navigate(R.id.action_NoSphereFragment_to_NewSphereFragment)
+            parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, NewSphereFragment())
+            .addToBackStack(null)
+            .commit()
         }
         binding.importSphereText.setOnClickListener {
-            findNavController().navigate(R.id.action_NoSphereFragment_to_ImportSphereFragment)
+            parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, ImportSphereFragment())
+            .addToBackStack(null)
+            .commit()
         }
 
         Log.i(TAG, "onViewCreated() Finished")

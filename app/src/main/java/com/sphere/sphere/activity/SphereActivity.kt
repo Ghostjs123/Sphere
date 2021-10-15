@@ -77,7 +77,7 @@ class SphereActivity : Activity(), PopupMenu.OnMenuItemClickListener {
                 mSphereName.text = sphereName
             }
             else -> {
-                Log.i(TAG, "Un-handled intent action: $intentAction")
+                Log.i(TAG, "Un-handled Intent ACTION: $intentAction")
             }
         }
     }
@@ -99,34 +99,36 @@ class SphereActivity : Activity(), PopupMenu.OnMenuItemClickListener {
         popup.show()
     }
 
-    private fun startMenuActivityWithExtra(id: Int) {
-        startActivity(Intent(this, MenuActivity::class.java).apply {
-            putExtra("EXTRA_MESSAGE", id)
-        })
-    }
-
     override fun onMenuItemClick(item: MenuItem): Boolean {
         Log.i(TAG, "Selected Item: " + item.title)
 
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
-                startMenuActivityWithExtra(item.itemId)
+                startActivity(Intent(this, MenuActivity::class.java).apply {
+                    putExtra("ACTION", "MySpheres")
+                })
                 return true
             }
             R.id.import_sphere_menu_item -> {
-                startMenuActivityWithExtra(item.itemId)
+                startActivity(Intent(this, MenuActivity::class.java).apply {
+                    putExtra("ACTION", "ImportSphere")
+                })
                 return true
             }
             R.id.create_sphere_menu_item -> {
-                startMenuActivityWithExtra(item.itemId)
+                startActivity(Intent(this, MenuActivity::class.java).apply {
+                    putExtra("ACTION", "NewSphere")
+                })
                 return true
             }
             R.id.settings_menu_item -> {
-                startMenuActivityWithExtra(item.itemId)
+                startActivity(Intent(this, MenuActivity::class.java).apply {
+                    putExtra("ACTION", "SettingsMenu")
+                })
                 return true
             }
             R.id.export_sphere_menu_item -> {
-                startMenuActivityWithExtra(item.itemId)
+                // TODO: export sphere dialogue
                 return true
             }
         }

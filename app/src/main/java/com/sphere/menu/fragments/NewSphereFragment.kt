@@ -46,6 +46,11 @@ class NewSphereFragment : Fragment() {
             startActivity(Intent(activity, SphereActivity::class.java).apply {
                 putExtra("ACTION", "NewSphere")
                 putExtra("SPHERE_NAME", sphereName)
+                addFlags(
+               Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+                )
             })
         }
 

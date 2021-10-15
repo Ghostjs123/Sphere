@@ -44,6 +44,11 @@ class ImportSphereFragment : Fragment() {
             startActivity(Intent(activity, SphereActivity::class.java).apply {
                 putExtra("ACTION", "ImportSphere")
                 putExtra("SPHERE_NAME", sphereName)
+                addFlags(
+               Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+                )
             })
         }
 
