@@ -1,16 +1,14 @@
 package com.sphere.menu.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.sphere.databinding.FragmentImportSphereBinding
-import com.google.android.material.snackbar.Snackbar
-import com.sphere.menu.MenuViewModel
+import com.sphere.sphere.activity.SphereActivity
 
 private const val TAG = "ImportSphereFragment"
 
@@ -19,7 +17,6 @@ class ImportSphereFragment : Fragment() {
 
     private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
-    private val model: MenuViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,13 +38,13 @@ class ImportSphereFragment : Fragment() {
 
         Log.i(TAG, "onViewCreated() Started")
 
-        // TODO : Can use the modelView from here
+        binding.importSphereButton.setOnClickListener {
+            val sphereName: String = binding.sphereNameInput.text.toString()
 
-        binding.importSphereButton.setOnClickListener { view ->
-            val sphereName = binding.sphereNameInput.text.toString()
-
-            Snackbar.make(view, "Importing $sphereName", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            startActivity(Intent(activity, SphereActivity::class.java).apply {
+                putExtra("ACTION", "ImportSphere")
+                putExtra("SPHERE_NAME", sphereName)
+            })
         }
 
         Log.i(TAG, "onViewCreated() Finished")

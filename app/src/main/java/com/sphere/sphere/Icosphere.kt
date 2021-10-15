@@ -18,8 +18,6 @@ private const val CORDS_PER_VERTEX = 3
 private const val MIN_RADIUS = 0.3f
 private const val MAX_RADIUS = 0.8f
 
-private var hasSetBuffers = false
-
 private fun computeIcosahedronVertices(radius: Float) : MutableList<Float> {
     val hANGLE = (PI / 180 * 72).toFloat()
     val vANGLE = (atan(1.0 / 2)).toFloat()
@@ -79,14 +77,6 @@ class Icosphere(private var sphere_name: String) {
     private var radius = 0.65f
 
     private var defaultColor = mutableListOf(0.3f, 0.3f, 0.3f, 1.0f)
-
-    init {
-        Log.i(TAG, "Icosphere init() Started")
-
-        buildVertices()
-
-        Log.i(TAG, "Icosphere init() Finished")
-    }
 
     // ====================================================================
     // Utility Functions
@@ -238,7 +228,7 @@ class Icosphere(private var sphere_name: String) {
     // Vertices Functions
 
     // buildVerticesFlat
-    private fun buildVertices() {
+    fun buildVertices() {
         val tmpVertices = computeIcosahedronVertices(radius)
         val normal = floatArrayOf(0f, 0f, 0f)
         var index = 0
@@ -434,13 +424,11 @@ class Icosphere(private var sphere_name: String) {
         return mutableListOf(vertices[i], vertices[i + 1], vertices[i + 2])
     }
 
-    fun mutate() {
+    fun mutate(seed: Long = 1000) {
         Log.i(TAG, "Beginning Sphere Mutation")
 
         buildVertices()
 
-        // TODO: make call to getSeed() here which will use device sensor(s)
-        val seed: Long = 1000
         val noise = OpenSimplex2F(seed)
         val normal = floatArrayOf(0f, 0f, 0f)
         val count = indices.size
@@ -466,60 +454,35 @@ class Icosphere(private var sphere_name: String) {
     // Buffer Functions
 
     private fun setBuffers() {
-        if (!hasSetBuffers) {
-            val vbb = ByteBuffer.allocateDirect(vertices.size * Float.SIZE_BYTES)
-            vbb.order(ByteOrder.nativeOrder())
-            vertexBuffer = vbb.asFloatBuffer()
-            vertexBuffer.put(vertices.toFloatArray())
-            vertexBuffer.position(0)
+        val vbb = ByteBuffer.allocateDirect(vertices.size * Float.SIZE_BYTES)
+        vbb.order(ByteOrder.nativeOrder())
+        vertexBuffer = vbb.asFloatBuffer()
+        vertexBuffer.put(vertices.toFloatArray())
+        vertexBuffer.position(0)
 
-            val nbb = ByteBuffer.allocateDirect(normals.size * Float.SIZE_BYTES)
-            nbb.order(ByteOrder.nativeOrder())
-            normalsBuffer = nbb.asFloatBuffer()
-            normalsBuffer.put(normals.toFloatArray())
-            normalsBuffer.position(0)
+        val nbb = ByteBuffer.allocateDirect(normals.size * Float.SIZE_BYTES)
+        nbb.order(ByteOrder.nativeOrder())
+        normalsBuffer = nbb.asFloatBuffer()
+        normalsBuffer.put(normals.toFloatArray())
+        normalsBuffer.position(0)
 
-            val libb = ByteBuffer.allocateDirect(lineIndices.size * Int.SIZE_BYTES)
-            libb.order(ByteOrder.nativeOrder())
-            lineIndicesBuffer = libb.asIntBuffer()
-            lineIndicesBuffer.put(lineIndices.toIntArray())
-            lineIndicesBuffer.position(0)
+        val libb = ByteBuffer.allocateDirect(lineIndices.size * Int.SIZE_BYTES)
+        libb.order(ByteOrder.nativeOrder())
+        lineIndicesBuffer = libb.asIntBuffer()
+        lineIndicesBuffer.put(lineIndices.toIntArray())
+        lineIndicesBuffer.position(0)
 
-            val ibb = ByteBuffer.allocateDirect(indices.size * Int.SIZE_BYTES)
-            ibb.order(ByteOrder.nativeOrder())
-            indicesBuffer = ibb.asIntBuffer()
-            indicesBuffer.put(indices.toIntArray())
-            indicesBuffer.position(0)
+        val ibb = ByteBuffer.allocateDirect(indices.size * Int.SIZE_BYTES)
+        ibb.order(ByteOrder.nativeOrder())
+        indicesBuffer = ibb.asIntBuffer()
+        indicesBuffer.put(indices.toIntArray())
+        indicesBuffer.position(0)
 
-            val cbb = ByteBuffer.allocateDirect(colors.size * Float.SIZE_BYTES)
-            cbb.order(ByteOrder.nativeOrder())
-            colorsBuffer = cbb.asFloatBuffer()
-            colorsBuffer.put(colors.toFloatArray())
-            colorsBuffer.position(0)
-
-            hasSetBuffers = true
-        }
-        else {
-            vertexBuffer.clear()
-            vertexBuffer.put(vertices.toFloatArray())
-            vertexBuffer.position(0)
-
-            normalsBuffer.clear()
-            normalsBuffer.put(normals.toFloatArray())
-            normalsBuffer.position(0)
-
-            lineIndicesBuffer.clear()
-            lineIndicesBuffer.put(lineIndices.toIntArray())
-            lineIndicesBuffer.position(0)
-
-            indicesBuffer.clear()
-            indicesBuffer.put(indices.toIntArray())
-            indicesBuffer.position(0)
-
-            colorsBuffer.clear()
-            colorsBuffer.put(colors.toFloatArray())
-            colorsBuffer.position(0)
-        }
+        val cbb = ByteBuffer.allocateDirect(colors.size * Float.SIZE_BYTES)
+        cbb.order(ByteOrder.nativeOrder())
+        colorsBuffer = cbb.asFloatBuffer()
+        colorsBuffer.put(colors.toFloatArray())
+        colorsBuffer.position(0)
     }
 
     // ====================================================================

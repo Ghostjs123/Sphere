@@ -40,16 +40,13 @@ class NewSphereFragment : Fragment() {
 
         Log.i(TAG, "onViewCreated() Started")
 
-        // TODO : Can use modelView from here
-
         binding.createSphereButton.setOnClickListener {
             val sphereName = binding.sphereNameInput.text.toString()
+
             startActivity(Intent(activity, SphereActivity::class.java).apply {
                 putExtra("ACTION", "NewSphere")
                 putExtra("SPHERE_NAME", sphereName)
             })
-//            Snackbar.make(view, "Creating $sphereName", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
         }
 
         Log.i(TAG, "onViewCreated() Finished")

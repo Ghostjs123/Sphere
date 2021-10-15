@@ -32,13 +32,25 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
 
     fun createNewSphere(sphere_name: String) {
         Log.i(TAG, "Creating Sphere named: $sphere_name")
+
         renderer.icosphere = Icosphere(sphere_name)
+        renderer.icosphere!!.buildVertices()
         requestRender()
     }
 
-    fun mutateSphere() {
-        Log.i(TAG, "Attempting to mutate Sphere")
-        renderer.icosphere?.mutate()
+    fun createNewSphereUsingSeed(sphere_name: String, seed: Long) {
+        Log.i(TAG, "Creating Sphere named: $sphere_name from seed: $seed")
+
+        renderer.icosphere = Icosphere(sphere_name)
+        renderer.icosphere!!.buildVertices()
+        renderer.icosphere!!.mutate(seed)
+        requestRender()
+    }
+
+    fun mutateSphere(seed: Long) {
+        Log.i(TAG, "Attempting to mutate Sphere using seed: $seed")
+
+        renderer.icosphere?.mutate(seed)
         requestRender()
     }
 

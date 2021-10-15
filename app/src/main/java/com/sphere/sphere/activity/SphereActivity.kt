@@ -35,7 +35,7 @@ class SphereActivity : Activity(), PopupMenu.OnMenuItemClickListener {
         // mutate Button
         mButton = findViewById(R.id.mutate_button)
         mButton.setOnClickListener {
-            glView.mutateSphere()
+            glView.mutateSphere(fetchSeed())
         }
 
         // options Button
@@ -45,19 +45,50 @@ class SphereActivity : Activity(), PopupMenu.OnMenuItemClickListener {
         }
 
         // handle intent
+        handleIntent()
+
+        Log.i(TAG, "onCreate() Finished")
+    }
+
+    private fun fetchSeed(): Long {
+        // TODO: generate seed from device sensors here
+        return 1000
+    }
+
+    // ================================================================================
+    // Intent handling
+
+    private fun handleIntent() {
         when (val intentAction = intent.getStringExtra("ACTION")) {
-            "CreateNew" -> {
+            "NewSphere" -> {
+                Log.i(TAG, "Received 'NewSphere' Intent")
+
                 val sphereName = intent.getStringExtra("SPHERE_NAME")
+
                 glView.createNewSphere(sphereName!!)
+                mSphereName.text = sphereName
+            }
+            "ImportSphere" -> {
+                Log.i(TAG, "Received 'ImportSphere' Intent")
+
+                val sphereName = intent.getStringExtra("SPHERE_NAME")
+
+                glView.createNewSphereUsingSeed(sphereName!!, fetchSeedFromFirebase(sphereName))
                 mSphereName.text = sphereName
             }
             else -> {
                 Log.i(TAG, "Un-handled intent action: $intentAction")
             }
         }
-
-        Log.i(TAG, "onCreate() Finished")
     }
+
+    private fun fetchSeedFromFirebase(sphereName: String): Long {
+        // TODO: actually call Firebase here
+        return 1000
+    }
+
+    // ================================================================================
+    // PopupMenu code
 
     private fun showPopup(v: View) {
         Log.i(TAG, "Showing PopupMenu")
@@ -99,7 +130,8 @@ class SphereActivity : Activity(), PopupMenu.OnMenuItemClickListener {
                 return true
             }
         }
-
         return false
     }
+
+    // ================================================================================
 }
