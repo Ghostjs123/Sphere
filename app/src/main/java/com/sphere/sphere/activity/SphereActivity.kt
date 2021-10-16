@@ -32,4 +32,12 @@ class SphereActivity : AppCompatActivity() {
 
         Log.i(TAG, "onCreate() Finished")
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 }

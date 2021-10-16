@@ -1,5 +1,7 @@
 package com.sphere.menu.fragments
 
+import android.app.ActivityManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -48,14 +50,18 @@ class SettingsMenuFragment : Fragment() {
     }
 
     private fun deleteOnDeviceData() {
+        Log.w(TAG, "Deleting all on device data")
         // TODO: clear the ViewModel and Sqlite database (Room)
 
         // clears backstack
-        parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+//        parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+//
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.menu_fragment_container, NoSphereFragment())
+//            .addToBackStack(null)
+//            .commit()
 
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.menu_fragment_container, NoSphereFragment())
-            .addToBackStack(null)
-            .commit()
+        val manager = requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        manager.clearApplicationUserData()
     }
 }

@@ -1,5 +1,13 @@
 package com.sphere.sphere.fragments
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,25 +16,47 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
 import com.sphere.menu.fragments.ImportSphereFragment
 import com.sphere.menu.fragments.MySpheresFragment
 import com.sphere.menu.fragments.NewSphereFragment
 import com.sphere.menu.fragments.SettingsMenuFragment
-import com.sphere.sphere.room_code.Sphere
-import kotlin.random.Random
 
 private const val TAG = "SphereFragment"
 
+private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
+private const val MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 66
 
-class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu.OnMenuItemClickListener {
+
+class SphereFragment(action: String, sphereName: String) :
+    Fragment(),
+    PopupMenu.OnMenuItemClickListener,
+    ActivityCompat.OnRequestPermissionsResultCallback,
+    SensorEventListener {
 
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
 
     private var mAction: String = action
     private var mSphereName: String = sphereName
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationManager: LocationManager
+    private lateinit var sensorManager: SensorManager
+
+    private lateinit var mAmbientTemp: Sensor
+    private var ambientTemp: Float = 0f
+    private lateinit var mLight: Sensor
+    private var illuminance: Float = 0f
+
+    // ========================================================================
+    // Lifecycle Management
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +67,13 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
 
         _binding = FragmentSphereBinding.inflate(inflater, container, false)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        mAmbientTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
+        mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+
         Log.i(TAG, "onCreateView() Returning")
 
         return binding.root
@@ -45,20 +82,23 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
+        val gpsEnabled = prefs.getBoolean("gps_enabled", false)
+        val ambientTempEnabled = prefs.getBoolean("ambient_temp_enabled", false)
+        val ambientLightEnabled = prefs.getBoolean("ambient_light_enabled", false)
+        val deviceTempEnabled = prefs.getBoolean("device_temp_enabled", false)
+
         // mutate button
         binding.mutateButton.setOnClickListener {
             mutateSphere()
         }
+        binding.mutateButton.isEnabled = gpsEnabled || ambientTempEnabled || ambientLightEnabled || deviceTempEnabled
 
         // options Button
         binding.sphereOptionsButton.setOnClickListener {
             showPopup(it)
         }
 
-        handleAction()
-    }
-
-    private fun handleAction() {
         when (mAction) {
             "NewSphere" -> {
                 createNewSphere()
@@ -67,10 +107,36 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
                 createNewSphereUsingSeed()
             }
             else -> {
-                Log.w(TAG, "Recieved un-handled action: $mAction")
+                Log.w(TAG, "Received un-handled action: $mAction")
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        sensorManager.registerListener(this, mAmbientTemp, SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        when (event?.sensor?.type) {
+            Sensor.TYPE_LIGHT -> {
+                illuminance = event.values[0]
+            }
+            Sensor.TYPE_AMBIENT_TEMPERATURE -> {
+                ambientTemp = event.values[0]
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
 
     // ========================================================================
     // Sphere Management
@@ -86,17 +152,92 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
     }
 
     private fun mutateSphere() {
-        binding.glSurfaceView.mutateSphere(fetchSeed())
+        val seed = fetchSeed()
+
+        if (seed != null) {
+            binding.glSurfaceView.mutateSphere(seed)
+        }
     }
 
-    private fun fetchSeed(): Long {
+    private fun fetchSeed(): Long? {
         // TODO: generate seed from device sensors here
-        return Random.nextLong(0, 1000)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
+        val gpsEnabled = prefs.getBoolean("gps_enabled", false)
+        val ambientTempEnabled = prefs.getBoolean("ambient_temp_enabled", false)
+        val ambientLightEnabled = prefs.getBoolean("ambient_light_enabled", false)
+        val deviceTempEnabled = prefs.getBoolean("device_temp_enabled", false)
+
+        return if (gpsEnabled && !hasCoarseLocationAccess()) {
+            requestLocationPermission()
+
+            null
+        } else {
+            var seed: Long = 0
+
+            if (gpsEnabled &&
+                ContextCompat.checkSelfPermission(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED)
+            {
+
+            }
+
+            if (ambientTempEnabled) {
+                seed += ambientTemp.toLong()
+            }
+
+            if (ambientLightEnabled) {
+                seed += illuminance.toLong()
+            }
+
+            seed
+        }
     }
 
     private fun fetchSeedFromFirebase(sphereName: String): Long {
         // TODO: actually call Firebase here
         return 1000
+    }
+
+    // ========================================================================
+    // Location Permissions
+
+    private fun hasCoarseLocationAccess(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireActivity(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+            0
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_LOCATION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mutateSphere()
+                }
+                else {
+                    Log.i(TAG, "Location permissions denied")
+                    // TODO: handle permission denied case
+                }
+            }
+            else -> {
+                Log.i(TAG, "Location permissions denied")
+                // TODO: handle permission denied case
+            }
+        }
     }
 
     // ========================================================================
@@ -150,5 +291,4 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
         }
         return false
     }
-
 }
