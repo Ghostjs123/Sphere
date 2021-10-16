@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.preference.PreferenceFragmentCompat
 import com.sphere.R
 import com.sphere.databinding.FragmentSettingsMenuBinding
 
@@ -38,6 +39,11 @@ class SettingsMenuFragment : Fragment() {
 
         binding.deleteButton.setOnClickListener { deleteOnDeviceData() }
 
+        // NOTE: intentionally not adding this to BackStack
+        childFragmentManager.beginTransaction()
+            .replace(R.id.settings_menu_preferences, PreferencesFragment())
+            .commit()
+
         Log.i(TAG, "onViewCreated() Returning")
     }
 
@@ -48,8 +54,8 @@ class SettingsMenuFragment : Fragment() {
         parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
         parentFragmentManager.beginTransaction()
-        .replace(R.id.menu_fragment_container, NoSphereFragment())
-        .addToBackStack(null)
-        .commit()
+            .replace(R.id.menu_fragment_container, NoSphereFragment())
+            .addToBackStack(null)
+            .commit()
     }
 }

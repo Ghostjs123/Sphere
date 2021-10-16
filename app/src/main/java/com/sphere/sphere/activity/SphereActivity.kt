@@ -20,7 +20,7 @@ class SphereActivity : AppCompatActivity() {
         val intentAction = intent.getStringExtra("ACTION")
         val sphereName = intent.getStringExtra("SPHERE_NAME")
 
-        Log.i(TAG, "Received 'NewSphere' Intent")
+        Log.i(TAG, "Received '$intentAction' Intent")
 
         supportFragmentManager.beginTransaction()
             .replace(
