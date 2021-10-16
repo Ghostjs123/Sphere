@@ -2,20 +2,35 @@ package com.sphere.sphere.activity
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.sphere.R
+import com.sphere.sphere.SphereViewModel
+import com.sphere.sphere.SphereViewModelFactory
 import com.sphere.sphere.fragments.SphereFragment
+import com.sphere.sphere.room_code.SphereApplication
+import com.sphere.sphere.room_code.SphereListAdapter
 
 private const val TAG = "SphereActivity"
 
 class SphereActivity : AppCompatActivity() {
+
+    private val wordViewModel: SphereViewModel by viewModels {
+        SphereViewModelFactory((application as SphereApplication).repository)
+    }
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         Log.i(TAG, "onCreate() Started")
 
+        val adapter = SphereListAdapter()
         setContentView(R.layout.activity_sphere)
+
+        wordViewModel.allSpheres.observe(this) { spheres ->
+            // Update the cached copy of the words in the adapter.
+            spheres.let { adapter.submitList(it) }
+        }
 
         val intentAction = intent.getStringExtra("ACTION")
         val sphereName = intent.getStringExtra("SPHERE_NAME")

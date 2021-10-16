@@ -6,30 +6,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@ProvidedTypeConverter
-class ListConverter {
-
-    @TypeConverter
-    fun FloatListToString(li: MutableList<Float>): String {
-        return li.joinToString(separator = ";")
-    }
-
-    @TypeConverter
-    fun IntListToString(li: MutableList<Int>): String {
-        return li.joinToString(separator = ";")
-    }
-
-    @TypeConverter
-    fun StringToFloatList(str: String): MutableList<Float> {
-        return str.split(";").map { it.toFloat() }.toMutableList()
-    }
-
-    @TypeConverter
-    fun StringToIntList(str: String): MutableList<Int> {
-        return str.split(";").map { it.toInt() }.toMutableList()
-    }
-}
-
 @Database(entities = [Sphere::class], version = 1, exportSchema = false)
 abstract class SphereDatabase : RoomDatabase() {
 
@@ -45,8 +21,7 @@ abstract class SphereDatabase : RoomDatabase() {
                     context.applicationContext,
                     SphereDatabase::class.java,
                     "sphere_database"
-                ).addTypeConverter(ListConverter())
-                 .addCallback(SphereDatabaseCallback(scope))
+                ).addCallback(SphereDatabaseCallback(scope))
                  .build()
 
                 // return instance
