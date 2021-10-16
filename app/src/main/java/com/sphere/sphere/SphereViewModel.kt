@@ -18,12 +18,12 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     }
 
     // Current Sphere info
-    private var currSphere = ""
+    private var sphereName = ""
     private var seed: Long = 0
     private var index: Int = 0
 
     private fun unloadSphere() {
-        currSphere = ""
+        sphereName = ""
         seed = 0
         index = 0
     }
@@ -31,7 +31,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     // --- Functions for retrieving and changing ViewModel data ---
 
     fun newSphere(name: String) {
-        currSphere = name
+        sphereName = name
         seed = 0
         index = 0
     }
@@ -39,9 +39,20 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     // Loads the sphere at sphereIndex from the LiveData
     fun loadSphere(sphereIndex:Int) {
         val currSphereList = allSpheres.value
-        currSphere = currSphereList!![sphereIndex].name
+        sphereName = currSphereList!![sphereIndex].name
         seed = currSphereList!![sphereIndex].seed
         index = sphereIndex
+    }
+
+    // Returns this sphere's name
+    fun getName(): String {
+        return sphereName
+    }
+
+    // Sets this sphere's name
+    fun setName(newName:String) {
+        // TODO : This needs to also update the sphere's name in our LiveData
+        sphereName = newName
     }
 
     // Returns this sphere's seed

@@ -83,11 +83,13 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
     private fun createNewSphere() {
         binding.glSurfaceView.createNewSphere(mSphereName)
         binding.sphereName.text = mSphereName
+        sphereViewModel.setName(mSphereName)
     }
 
     private fun createNewSphereUsingSeed() {
         binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, fetchSeedFromFirebase(mSphereName))
         binding.sphereName.text = mSphereName
+        sphereViewModel.setName(mSphereName)
     }
 
     private fun mutateSphere() {
@@ -103,6 +105,7 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
 
     private fun fetchSeedFromFirebase(sphereName: String): Long {
         // TODO: actually call Firebase here
+        // TODO: like in fetchSeed() this should also make a call to sphereViewModel.setSeed(...)
         return 1000
     }
 
