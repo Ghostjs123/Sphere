@@ -11,8 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface SphereDao {
 
     @Query("SELECT * FROM sphere_table ORDER BY name ASC")
-    fun getAlphabetizedSpheres(): LiveData<List<Sphere>>
-//    fun getAlphabetizedSpheres(): Flow<List<Sphere>>
+    fun getAlphabetizedSpheres(): Flow<List<Sphere>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(sphere: Sphere)
