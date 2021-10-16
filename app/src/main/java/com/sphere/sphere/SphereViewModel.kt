@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.sphere.sphere.room_code.Sphere
 import com.sphere.sphere.room_code.SphereRepository
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class SphereViewModel(private val repository: SphereRepository): ViewModel() {
@@ -15,6 +16,10 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
      */
     fun insert(sphere: Sphere) = viewModelScope.launch {
         repository.insert(sphere)
+    }
+
+    fun update(name: String, seed: Long) = viewModelScope.launch {
+        repository.update(name, seed)
     }
 
     // Current Sphere info
@@ -53,6 +58,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     fun setName(newName:String) {
         // TODO : This needs to also update the sphere's name in our LiveData
         sphereName = newName
+        //update(sphereName, seed)
     }
 
     // Returns this sphere's seed
@@ -64,6 +70,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     fun setSeed(newSeed:Long) {
         // TODO : This needs to also update the sphere's seed in our LiveData
         seed = newSeed
+        //update(sphereName, seed)
     }
 
     init {
