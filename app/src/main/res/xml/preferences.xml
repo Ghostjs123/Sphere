@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <SwitchPreference
+        app:key="gps_enabled"
+        app:title="Use GPS Data" />
+
+    <SwitchPreference
+        app:key="ambient_temp_enabled"
+        app:title="Use Ambient Temperature" />
+
+    <SwitchPreference
+        app:key="ambient_light_enabled"
+        app:title="Use Ambient Light" />
+
+    <SwitchPreference
+        app:key="device_temp_enabled"
+        app:title="Use Device Temperature" />
+
+</PreferenceScreen>
