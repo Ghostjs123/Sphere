@@ -2,25 +2,29 @@ package com.sphere.sphere.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
 import com.sphere.menu.fragments.ImportSphereFragment
 import com.sphere.menu.fragments.MySpheresFragment
 import com.sphere.menu.fragments.NewSphereFragment
 import com.sphere.menu.fragments.SettingsMenuFragment
-import com.sphere.sphere.room_code.Sphere
+import com.sphere.sphere.SphereViewModel
 import kotlin.random.Random
+
 
 private const val TAG = "SphereFragment"
 
 
 class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu.OnMenuItemClickListener {
+
+    private lateinit var sphereViewModel: SphereViewModel
 
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
@@ -36,6 +40,7 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
         Log.i(TAG, "onCreateView() Started")
 
         _binding = FragmentSphereBinding.inflate(inflater, container, false)
+        sphereViewModel = ViewModelProvider(requireActivity()).get(SphereViewModel::class.java)
 
         Log.i(TAG, "onCreateView() Returning")
 
@@ -91,7 +96,9 @@ class SphereFragment(action: String, sphereName: String) : Fragment(), PopupMenu
 
     private fun fetchSeed(): Long {
         // TODO: generate seed from device sensors here
-        return Random.nextLong(0, 1000)
+        val seed = Random.nextLong(0, 1000)
+        sphereViewModel.setSeed(seed)
+        return seed
     }
 
     private fun fetchSeedFromFirebase(sphereName: String): Long {

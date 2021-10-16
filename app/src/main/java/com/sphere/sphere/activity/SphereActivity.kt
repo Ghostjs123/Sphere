@@ -15,7 +15,7 @@ private const val TAG = "SphereActivity"
 
 class SphereActivity : AppCompatActivity() {
 
-    private val wordViewModel: SphereViewModel by viewModels {
+    private val sphereViewModel: SphereViewModel by viewModels {
         SphereViewModelFactory((application as SphereApplication).repository)
     }
 
@@ -27,7 +27,7 @@ class SphereActivity : AppCompatActivity() {
         val adapter = SphereListAdapter()
         setContentView(R.layout.activity_sphere)
 
-        wordViewModel.allSpheres.observe(this) { spheres ->
+        sphereViewModel.allSpheres.observe(this) { spheres ->
             // Update the cached copy of the words in the adapter.
             spheres.let { adapter.submitList(it) }
         }
