@@ -15,27 +15,21 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-<<<<<<< HEAD
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-=======
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
->>>>>>> 2b32a4f6a5146ab1778dcdf20c8d57c20fc395e9
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
 import com.sphere.menu.fragments.ImportSphereFragment
 import com.sphere.menu.fragments.MySpheresFragment
 import com.sphere.menu.fragments.NewSphereFragment
 import com.sphere.menu.fragments.SettingsMenuFragment
-<<<<<<< HEAD
-=======
 import com.sphere.sphere.SphereViewModel
 import kotlin.random.Random
->>>>>>> 2b32a4f6a5146ab1778dcdf20c8d57c20fc395e9
 
 
 private const val TAG = "SphereFragment"
@@ -86,6 +80,9 @@ class SphereFragment(action: String, sphereName: String) :
 
         mAmbientTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+
+        // NOTE/TODO: this is only around for debugging
+        binding.sensorValues.text = "$ambientTemp\n$illuminance"
 
         Log.i(TAG, "onCreateView() Returning")
 
@@ -147,6 +144,9 @@ class SphereFragment(action: String, sphereName: String) :
                 ambientTemp = event.values[0]
             }
         }
+
+        // NOTE/TODO: this is only around for debugging
+        binding.sensorValues.text = "$ambientTemp\n$illuminance"
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
@@ -176,7 +176,6 @@ class SphereFragment(action: String, sphereName: String) :
 
     private fun fetchSeed(): Long? {
         // TODO: generate seed from device sensors here
-<<<<<<< HEAD
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
         val gpsEnabled = prefs.getBoolean("gps_enabled", false)
         val ambientTempEnabled = prefs.getBoolean("ambient_temp_enabled", false)
@@ -207,13 +206,9 @@ class SphereFragment(action: String, sphereName: String) :
                 seed += illuminance.toLong()
             }
 
+            sphereViewModel.setSeed(seed)
             seed
         }
-=======
-        val seed = Random.nextLong(0, 1000)
-        sphereViewModel.setSeed(seed)
-        return seed
->>>>>>> 2b32a4f6a5146ab1778dcdf20c8d57c20fc395e9
     }
 
     private fun fetchSeedFromFirebase(sphereName: String): Long {
