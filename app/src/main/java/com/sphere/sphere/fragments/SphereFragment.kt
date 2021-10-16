@@ -10,23 +10,33 @@ import android.hardware.SensorManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+<<<<<<< HEAD
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+=======
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+>>>>>>> 2b32a4f6a5146ab1778dcdf20c8d57c20fc395e9
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
 import com.sphere.menu.fragments.ImportSphereFragment
 import com.sphere.menu.fragments.MySpheresFragment
 import com.sphere.menu.fragments.NewSphereFragment
 import com.sphere.menu.fragments.SettingsMenuFragment
+<<<<<<< HEAD
+=======
+import com.sphere.sphere.SphereViewModel
+import kotlin.random.Random
+>>>>>>> 2b32a4f6a5146ab1778dcdf20c8d57c20fc395e9
+
 
 private const val TAG = "SphereFragment"
 
@@ -39,6 +49,8 @@ class SphereFragment(action: String, sphereName: String) :
     PopupMenu.OnMenuItemClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
     SensorEventListener {
+
+    private lateinit var sphereViewModel: SphereViewModel
 
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
@@ -66,6 +78,7 @@ class SphereFragment(action: String, sphereName: String) :
         Log.i(TAG, "onCreateView() Started")
 
         _binding = FragmentSphereBinding.inflate(inflater, container, false)
+        sphereViewModel = ViewModelProvider(requireActivity()).get(SphereViewModel::class.java)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -144,11 +157,13 @@ class SphereFragment(action: String, sphereName: String) :
     private fun createNewSphere() {
         binding.glSurfaceView.createNewSphere(mSphereName)
         binding.sphereName.text = mSphereName
+        sphereViewModel.setName(mSphereName)
     }
 
     private fun createNewSphereUsingSeed() {
         binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, fetchSeedFromFirebase(mSphereName))
         binding.sphereName.text = mSphereName
+        sphereViewModel.setName(mSphereName)
     }
 
     private fun mutateSphere() {
@@ -161,6 +176,7 @@ class SphereFragment(action: String, sphereName: String) :
 
     private fun fetchSeed(): Long? {
         // TODO: generate seed from device sensors here
+<<<<<<< HEAD
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
         val gpsEnabled = prefs.getBoolean("gps_enabled", false)
         val ambientTempEnabled = prefs.getBoolean("ambient_temp_enabled", false)
@@ -193,10 +209,16 @@ class SphereFragment(action: String, sphereName: String) :
 
             seed
         }
+=======
+        val seed = Random.nextLong(0, 1000)
+        sphereViewModel.setSeed(seed)
+        return seed
+>>>>>>> 2b32a4f6a5146ab1778dcdf20c8d57c20fc395e9
     }
 
     private fun fetchSeedFromFirebase(sphereName: String): Long {
         // TODO: actually call Firebase here
+        // TODO: like in fetchSeed() this should also make a call to sphereViewModel.setSeed(...)
         return 1000
     }
 

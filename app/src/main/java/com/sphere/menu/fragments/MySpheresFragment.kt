@@ -7,12 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.sphere.R
 import com.sphere.databinding.FragmentMySpheresBinding
-import com.sphere.sphere.SphereListAdapter
+import com.sphere.sphere.room_code.SphereListAdapter
 import com.sphere.sphere.SphereViewModel
 
 private const val TAG = "MySpheresFragment"
