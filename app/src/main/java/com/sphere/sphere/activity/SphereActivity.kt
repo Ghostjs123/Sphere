@@ -99,32 +99,34 @@ class SphereActivity : Activity(), PopupMenu.OnMenuItemClickListener {
         popup.show()
     }
 
+    private fun startMenuActivityWithAction(action: String) {
+        startActivity(Intent(this, MenuActivity::class.java).apply {
+            putExtra("ACTION", action)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or
+                          Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                          Intent.FLAG_ACTIVITY_CLEAR_TOP
+            )
+        })
+    }
+
     override fun onMenuItemClick(item: MenuItem): Boolean {
         Log.i(TAG, "Selected Item: " + item.title)
 
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
-                startActivity(Intent(this, MenuActivity::class.java).apply {
-                    putExtra("ACTION", "MySpheres")
-                })
+                startMenuActivityWithAction("MySpheres")
                 return true
             }
             R.id.import_sphere_menu_item -> {
-                startActivity(Intent(this, MenuActivity::class.java).apply {
-                    putExtra("ACTION", "ImportSphere")
-                })
+                startMenuActivityWithAction("ImportSphere")
                 return true
             }
             R.id.create_sphere_menu_item -> {
-                startActivity(Intent(this, MenuActivity::class.java).apply {
-                    putExtra("ACTION", "NewSphere")
-                })
+                startMenuActivityWithAction("NewSphere")
                 return true
             }
             R.id.settings_menu_item -> {
-                startActivity(Intent(this, MenuActivity::class.java).apply {
-                    putExtra("ACTION", "SettingsMenu")
-                })
+                startMenuActivityWithAction("SettingsMenu")
                 return true
             }
             R.id.export_sphere_menu_item -> {

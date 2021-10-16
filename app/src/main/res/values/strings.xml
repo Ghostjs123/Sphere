@@ -1,14 +1,6 @@
 <resources>
     <string name="app_name">CSE5236-Sphere</string>
     <string name="action_settings">Settings</string>
-
-    <!-- Strings used for Fragment navigation (nav_graph.xml) -->
-    <string name="no_sphere_fragment_label">NoSphereFragment</string>
-    <string name="create_sphere_fragment_label">NewSphereFragment</string>
-    <string name="import_sphere_fragment_label">ImportSphereFragment</string>
-
-
-    <!-- Misc Menu Strings -->
     <string name="no_sphere_found">No Sphere Found</string>
     <string name="CreateNewSphere"><u>Create New Sphere</u></string>
     <string name="ImportSphere"><u>Import Sphere</u></string>
@@ -18,15 +10,10 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="Mutate">Mutate</string>
-
-    <!-- Sphere Menu Strings -->
     <string name="MySpheres">My Spheres</string>
-    <!-- Import is above -->
     <string name="CreateNew">Create New</string>
     <string name="Settings">Settings</string>
     <string name="Export">Export</string>
-
-    <!-- Title Strings -->
     <string name="title_activity_launcher">LauncherActivity</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="DeleteOnDeviceData">Delete On Device Data</string>
 </resources>

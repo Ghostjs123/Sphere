@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sphere.R
 import com.sphere.databinding.FragmentMySpheresBinding
-import com.sphere.databinding.FragmentNewSphereBinding
 import com.sphere.sphere.SphereListAdapter
 import com.sphere.sphere.SphereViewModel
 
