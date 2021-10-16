@@ -11,21 +11,8 @@ data class Sphere(
     @NonNull
     @ColumnInfo(name = "name")
     val name: String,
-
-//    @ColumnInfo(name = "vertices")
-//    val vertices: MutableList<Float>,
-//
-//    @ColumnInfo(name = "normals")
-//    val normals: MutableList<Float>,
-//
-//    @ColumnInfo(name = "indices")
-//    val indices: MutableList<Int>,
-//
-//    @ColumnInfo(name = "line_indices")
-//    val lineIndices: MutableList<Int>,
-//
-//    @ColumnInfo(name = "colors")
-//    val colors: MutableList<Float>
+    @ColumnInfo(name = "seed")
+    var seed: Long
 ) {
 
 }
