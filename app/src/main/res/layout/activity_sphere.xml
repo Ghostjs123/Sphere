@@ -6,47 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".sphere.activity.SphereActivity">
 
-    <com.sphere.sphere.fragments.OpenGLSurfaceView
-        android:id="@+id/gl_surface_view"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/sphere_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <TextView
-        android:id="@+id/sphere_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/background_light"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
-
-    <Button
-        android:id="@+id/mutate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Mutate"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.99"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99" />
-
-    <ImageButton
-        android:id="@+id/sphere_options_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/button_round"
-        app:layout_constraintVertical_bias="0.99" />
+        android:layout_height="match_parent"
+        android:layout_weight="0.1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

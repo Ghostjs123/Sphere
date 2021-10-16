@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.sphere.R
 import com.sphere.databinding.FragmentNoSphereBinding
 
@@ -40,13 +39,13 @@ class NoSphereFragment : Fragment() {
 
         binding.createNewSphereText.setOnClickListener {
             parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, NewSphereFragment())
+            .replace(R.id.menu_fragment_container, NewSphereFragment())
             .addToBackStack(null)
             .commit()
         }
         binding.importSphereText.setOnClickListener {
             parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, ImportSphereFragment())
+            .replace(R.id.menu_fragment_container, ImportSphereFragment())
             .addToBackStack(null)
             .commit()
         }

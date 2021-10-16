@@ -424,7 +424,7 @@ class Icosphere(private var sphere_name: String) {
         return mutableListOf(vertices[i], vertices[i + 1], vertices[i + 2])
     }
 
-    fun mutate(seed: Long = 1000) {
+    fun mutate(seed: Long) {
         Log.i(TAG, "Beginning Sphere Mutation")
 
         buildVertices()

@@ -23,11 +23,15 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
     private var prevY: Float = 0f
 
     init {
+        Log.i(TAG, "init Started")
+
         setEGLContextClientVersion(1)
 
         renderer = OpenGLRenderer()
         setRenderer(renderer)
         renderMode = RENDERMODE_WHEN_DIRTY
+
+        Log.i(TAG, "init Ended")
     }
 
     fun createNewSphere(sphere_name: String) {

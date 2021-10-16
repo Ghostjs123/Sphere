@@ -22,7 +22,7 @@ class ImportSphereFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         Log.i(TAG, "onCreateView() Started")
 

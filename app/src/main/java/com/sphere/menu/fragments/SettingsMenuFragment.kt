@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import com.sphere.R
 import com.sphere.databinding.FragmentSettingsMenuBinding
@@ -49,7 +48,7 @@ class SettingsMenuFragment : Fragment() {
         parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
         parentFragmentManager.beginTransaction()
-        .replace(R.id.fragment_container, NoSphereFragment())
+        .replace(R.id.menu_fragment_container, NoSphereFragment())
         .addToBackStack(null)
         .commit()
     }
