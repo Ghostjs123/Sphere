@@ -9,7 +9,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.cse5236_sphere"
+        applicationId "com.sphere"
         minSdk 21
         targetSdk 31
         versionCode 1
@@ -37,8 +37,15 @@ android {
     buildToolsVersion '31.0.0'
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
 dependencies {
     implementation "com.google.android.gms:play-services-location:18.0.0"
+
+    implementation platform('com.google.firebase:firebase-bom:28.4.2')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     // ViewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-rc01'
@@ -51,6 +58,7 @@ dependencies {
     // alternately - if using Java8, use the following instead of lifecycle-compiler
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.0-rc01'
     implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:22.1.2'
 
     def room_version = "2.3.0"
 
@@ -73,3 +81,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

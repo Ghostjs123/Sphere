@@ -1,6 +1,7 @@
 package com.sphere.sphere.fragments
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -30,6 +31,9 @@ import com.sphere.menu.fragments.NewSphereFragment
 import com.sphere.menu.fragments.SettingsMenuFragment
 import com.sphere.sphere.SphereViewModel
 import kotlin.random.Random
+import android.content.DialogInterface
+import android.widget.Toast
+import com.sphere.utility.addSphereToFirestore
 
 
 private const val TAG = "SphereFragment"
@@ -302,10 +306,34 @@ class SphereFragment(action: String, sphereName: String) :
                 return true
             }
             R.id.export_sphere_menu_item -> {
-                // TODO: export sphere dialogue
+                exportDialog()
                 return true
             }
         }
         return false
+    }
+
+    // ========================================================================
+    // Export Dialogue
+
+    private fun exportDialog() {
+        val dialogClickListener =
+            DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        // TODO: fetch seed from view model here
+                        addSphereToFirestore(requireContext(), mSphereName, 100)
+                    }
+                    DialogInterface.BUTTON_NEGATIVE -> {
+
+                    }
+                }
+            }
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Export Sphere $mSphereName")
+            .setPositiveButton("Yes", dialogClickListener)
+            .setNegativeButton("No", dialogClickListener)
+            .show()
     }
 }
