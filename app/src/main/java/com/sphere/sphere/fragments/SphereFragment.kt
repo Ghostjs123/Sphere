@@ -96,17 +96,10 @@ class SphereFragment(action: String, sphereName: String) :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
-        val gpsEnabled = prefs.getBoolean("gps_enabled", false)
-        val ambientTempEnabled = prefs.getBoolean("ambient_temp_enabled", false)
-        val ambientLightEnabled = prefs.getBoolean("ambient_light_enabled", false)
-        val deviceTempEnabled = prefs.getBoolean("device_temp_enabled", false)
-
         // mutate button
         binding.mutateButton.setOnClickListener {
             mutateSphere()
         }
-        binding.mutateButton.isEnabled = gpsEnabled || ambientTempEnabled || ambientLightEnabled || deviceTempEnabled
 
         // options Button
         binding.sphereOptionsButton.setOnClickListener {
@@ -171,6 +164,21 @@ class SphereFragment(action: String, sphereName: String) :
     }
 
     private fun mutateSphere() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
+        val gpsEnabled = prefs.getBoolean("gps_enabled", false)
+        val ambientTempEnabled = prefs.getBoolean("ambient_temp_enabled", false)
+        val ambientLightEnabled = prefs.getBoolean("ambient_light_enabled", false)
+        val deviceTempEnabled = prefs.getBoolean("device_temp_enabled", false)
+
+        if (!(gpsEnabled || ambientTempEnabled || ambientLightEnabled || deviceTempEnabled)) {
+            Toast.makeText(
+                requireContext(),
+                "Enable at least one sensor in settings before mutating",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
         val seed = fetchSeed()
 
         if (seed != null) {
