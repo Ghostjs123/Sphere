@@ -33,17 +33,18 @@ import com.sphere.sphere.SphereViewModel
 import android.content.DialogInterface
 import android.widget.Toast
 import com.sphere.utility.addSphereToFirestore
+import com.sphere.utility.hasCoarseLocationAccess
 import com.sphere.utility.readSphereFromFirestore
+import com.sphere.utility.requestLocationPermission
 
 
 private const val TAG = "SphereFragment"
 
-private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
-private const val MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 66
 
-
-class SphereFragment(action: String, sphereName: String) :
-    Fragment(),
+class SphereFragment(
+    action: String,
+    sphereName: String
+) : Fragment(),
     PopupMenu.OnMenuItemClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
     SensorEventListener {
@@ -86,8 +87,7 @@ class SphereFragment(action: String, sphereName: String) :
         mAmbientTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
 
-        // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "$ambientTemp\n$illuminance"
+        updateUI()
 
         Log.i(TAG, "onCreateView() Returning")
 
@@ -154,9 +154,7 @@ class SphereFragment(action: String, sphereName: String) :
                 ambientTemp = event.values[0]
             }
         }
-
-        // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "$ambientTemp\n$illuminance"
+        updateUI()  // TODO: debug only
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
@@ -164,25 +162,35 @@ class SphereFragment(action: String, sphereName: String) :
     // ========================================================================
     // Sphere Management
 
+    private fun updateUI() {
+        // NOTE/TODO: this is only around for debugging
+        binding.sensorValues.text = "$ambientTemp\n$illuminance\nseed: $mSeed"
+
+        binding.sphereName.text = mSphereName
+    }
+
     private fun createNewSphere() {
         binding.glSurfaceView.createNewSphere(mSphereName)
-        binding.sphereName.text = mSphereName
         sphereViewModel.setName(mSphereName)
+
+        updateUI()
     }
 
     private fun createNewSphereWithName(sphereName: String) {
         mSphereName = sphereName
         binding.glSurfaceView.createNewSphere(mSphereName)
-        binding.sphereName.text = mSphereName
         sphereViewModel.setName(mSphereName)
+
+        updateUI()
     }
 
     private fun createNewSphereUsingSeedAndName(seed: Long?, sphereName: String) {
         mSphereName = sphereName
         mSeed = seed
         binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, mSeed)
-        binding.sphereName.text = mSphereName
         sphereViewModel.setName(mSphereName)
+
+        updateUI()
     }
 
     private fun mutateSphere() {
@@ -201,11 +209,16 @@ class SphereFragment(action: String, sphereName: String) :
             return
         }
 
-        val seed = fetchSeed()
+        mSeed = fetchSeed()
+        sphereViewModel.setSeed(mSeed)
 
-        if (seed != null) {
-            binding.glSurfaceView.mutateSphere(seed)
-        }
+        binding.glSurfaceView.mutateSphere(mSeed)
+
+        updateUI()
+    }
+
+    private fun mutateCallback() {
+
     }
 
     private fun fetchSeed(): Long? {
@@ -218,18 +231,14 @@ class SphereFragment(action: String, sphereName: String) :
 
         var seed: Long? = null
 
-        if (gpsEnabled && !hasCoarseLocationAccess()) {
-            requestLocationPermission()
+        if (gpsEnabled && !hasCoarseLocationAccess(requireContext())) {
+            requestLocationPermission(requireActivity())
         } else {
             seed = 0
 
-            if (gpsEnabled &&
-                ContextCompat.checkSelfPermission(
-                    requireActivity(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED)
+            if (gpsEnabled && hasCoarseLocationAccess(requireContext()))
             {
-
+                Toast.makeText(requireContext(), "Trying to use location data", Toast.LENGTH_SHORT).show()
             }
 
             if (ambientTempEnabled) {
@@ -242,50 +251,7 @@ class SphereFragment(action: String, sphereName: String) :
 
         }
 
-        mSeed = seed
-        sphereViewModel.setSeed(seed)
-
         return seed
-    }
-
-    // ========================================================================
-    // Location Permissions
-
-    private fun hasCoarseLocationAccess(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            requireActivity(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-            0
-        )
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            MY_PERMISSIONS_REQUEST_LOCATION -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mutateSphere()
-                }
-                else {
-                    Log.i(TAG, "Location permissions denied")
-                    // TODO: handle permission denied case
-                }
-            }
-            else -> {
-                Log.i(TAG, "Location permissions denied")
-                // TODO: handle permission denied case
-            }
-        }
     }
 
     // ========================================================================

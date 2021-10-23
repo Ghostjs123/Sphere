@@ -51,8 +51,8 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
         requestRender()
     }
 
-    fun mutateSphere(seed: Long) {
-        Log.i(TAG, "Attempting to mutate Sphere using seed: $seed")
+    fun mutateSphere(seed: Long?) {
+        Log.i(TAG, "Mutating Sphere using seed: $seed")
 
         renderer.icosphere?.mutate(seed)
         requestRender()
