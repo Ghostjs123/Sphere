@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.sphere.databinding.FragmentImportSphereBinding
 import com.sphere.sphere.activity.SphereActivity
+import com.sphere.utility.readSphereFromFirestore
 
 private const val TAG = "ImportSphereFragment"
 
 
-class ImportSphereFragment : Fragment() {
+// NOTE: optional callback is just for usage from the SphereActivity
+class ImportSphereFragment(private val callback: ((seed: Long?) -> Unit)? = null) : Fragment() {
 
     private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
@@ -41,15 +43,23 @@ class ImportSphereFragment : Fragment() {
         binding.importSphereButton.setOnClickListener {
             val sphereName: String = binding.sphereNameInput.text.toString()
 
-            startActivity(Intent(activity, SphereActivity::class.java).apply {
-                putExtra("ACTION", "ImportSphere")
-                putExtra("SPHERE_NAME", sphereName)
-                addFlags(
-               Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP
-                )
-            })
+            if (callback == null) {
+                // MenuActivity -> SphereActivity
+                startActivity(Intent(activity, SphereActivity::class.java).apply {
+                    putExtra("ACTION", "ImportSphere")
+                    putExtra("SPHERE_NAME", sphereName)
+                    addFlags(
+                        Intent.FLAG_ACTIVITY_NEW_TASK or
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    )
+                })
+            }
+            else {
+                // SphereActivity -> SphereActivity
+                readSphereFromFirestore(requireContext(), sphereName, callback)
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
 
         Log.i(TAG, "onViewCreated() Finished")

@@ -73,6 +73,8 @@ class Icosphere(private var sphere_name: String) {
     private lateinit var lineIndicesBuffer: IntBuffer
     private lateinit var colorsBuffer: FloatBuffer
 
+    private var buffersSet = false
+
     private var subdivision = 5
     private var radius = 0.65f
 
@@ -229,6 +231,8 @@ class Icosphere(private var sphere_name: String) {
 
     // buildVerticesFlat
     fun buildVertices() {
+        buffersSet = false
+
         val tmpVertices = computeIcosahedronVertices(radius)
         val normal = floatArrayOf(0f, 0f, 0f)
         var index = 0
@@ -424,10 +428,12 @@ class Icosphere(private var sphere_name: String) {
         return mutableListOf(vertices[i], vertices[i + 1], vertices[i + 2])
     }
 
-    fun mutate(seed: Long) {
+    fun mutate(seed: Long?) {
         Log.i(TAG, "Beginning Sphere Mutation")
 
         buildVertices()
+
+        if (seed == null) return
 
         val noise = OpenSimplex2F(seed)
         val normal = floatArrayOf(0f, 0f, 0f)
@@ -483,12 +489,15 @@ class Icosphere(private var sphere_name: String) {
         colorsBuffer = cbb.asFloatBuffer()
         colorsBuffer.put(colors.toFloatArray())
         colorsBuffer.position(0)
+
+        buffersSet = true
     }
 
     // ====================================================================
     // Draw Function
 
     fun draw(gl: GL10) {
+        if (!buffersSet) return
 
         // =====================================================
         // draw()

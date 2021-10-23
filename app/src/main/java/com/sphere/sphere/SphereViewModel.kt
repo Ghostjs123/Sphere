@@ -24,7 +24,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
 
     // Current Sphere info
     private var sphereName = ""
-    private var seed: Long = 0
+    private var seed: Long? = 0
     private var index: Int = 0
 
     private fun unloadSphere() {
@@ -62,12 +62,12 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     }
 
     // Returns this sphere's seed
-    fun getSeed(): Long {
+    fun getSeed(): Long? {
         return seed
     }
 
     // Sets this sphere's seed
-    fun setSeed(newSeed:Long) {
+    fun setSeed(newSeed: Long?) {
         // TODO : This needs to also update the sphere's seed in our LiveData
         seed = newSeed
         //update(sphereName, seed)

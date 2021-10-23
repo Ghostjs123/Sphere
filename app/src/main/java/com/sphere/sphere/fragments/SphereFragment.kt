@@ -30,10 +30,10 @@ import com.sphere.menu.fragments.MySpheresFragment
 import com.sphere.menu.fragments.NewSphereFragment
 import com.sphere.menu.fragments.SettingsMenuFragment
 import com.sphere.sphere.SphereViewModel
-import kotlin.random.Random
 import android.content.DialogInterface
 import android.widget.Toast
 import com.sphere.utility.addSphereToFirestore
+import com.sphere.utility.readSphereFromFirestore
 
 
 private const val TAG = "SphereFragment"
@@ -55,6 +55,7 @@ class SphereFragment(action: String, sphereName: String) :
 
     private var mAction: String = action
     private var mSphereName: String = sphereName
+    private var mSeed: Long? = null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationManager: LocationManager
@@ -76,7 +77,7 @@ class SphereFragment(action: String, sphereName: String) :
         Log.i(TAG, "onCreateView() Started")
 
         _binding = FragmentSphereBinding.inflate(inflater, container, false)
-        sphereViewModel = ViewModelProvider(requireActivity()).get(SphereViewModel::class.java)
+        sphereViewModel = ViewModelProvider(requireActivity())[SphereViewModel::class.java]
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -96,6 +97,8 @@ class SphereFragment(action: String, sphereName: String) :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.i(TAG, "onViewCreated() Started")
+
         // mutate button
         binding.mutateButton.setOnClickListener {
             mutateSphere()
@@ -108,19 +111,28 @@ class SphereFragment(action: String, sphereName: String) :
 
         when (mAction) {
             "NewSphere" -> {
+                Log.i(TAG, "Handling ACTION NewSphere")
                 createNewSphere()
             }
             "ImportSphere" -> {
-                createNewSphereUsingSeed()
+                Log.i(TAG, "Handling ACTION ImportSphere")
+                readSphereFromFirestore(
+                    requireContext(),
+                    mSphereName,
+                    ::createNewSphereUsingSeed
+                )
             }
             else -> {
                 Log.w(TAG, "Received un-handled action: $mAction")
             }
         }
+
+        Log.i(TAG, "onViewCreated() Returning")
     }
 
     override fun onResume() {
         super.onResume()
+        Log.i(TAG, "onResume()")
 
         sensorManager.registerListener(this, mAmbientTemp, SensorManager.SENSOR_DELAY_NORMAL)
         sensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL)
@@ -128,6 +140,7 @@ class SphereFragment(action: String, sphereName: String) :
 
     override fun onPause() {
         super.onPause()
+        Log.i(TAG, "onPause()")
 
         sensorManager.unregisterListener(this)
     }
@@ -157,8 +170,8 @@ class SphereFragment(action: String, sphereName: String) :
         sphereViewModel.setName(mSphereName)
     }
 
-    private fun createNewSphereUsingSeed() {
-        binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, fetchSeedFromFirebase(mSphereName))
+    private fun createNewSphereUsingSeed(seed: Long?) {
+        binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, seed)
         binding.sphereName.text = mSphereName
         sphereViewModel.setName(mSphereName)
     }
@@ -194,12 +207,12 @@ class SphereFragment(action: String, sphereName: String) :
         val ambientLightEnabled = prefs.getBoolean("ambient_light_enabled", false)
         val deviceTempEnabled = prefs.getBoolean("device_temp_enabled", false)
 
-        return if (gpsEnabled && !hasCoarseLocationAccess()) {
-            requestLocationPermission()
+        var seed: Long? = null
 
-            null
+        if (gpsEnabled && !hasCoarseLocationAccess()) {
+            requestLocationPermission()
         } else {
-            var seed: Long = 0
+            seed = 0
 
             if (gpsEnabled &&
                 ContextCompat.checkSelfPermission(
@@ -218,15 +231,12 @@ class SphereFragment(action: String, sphereName: String) :
                 seed += illuminance.toLong()
             }
 
-            sphereViewModel.setSeed(seed)
-            seed
         }
-    }
 
-    private fun fetchSeedFromFirebase(sphereName: String): Long {
-        // TODO: actually call Firebase here
-        // TODO: like in fetchSeed() this should also make a call to sphereViewModel.setSeed(...)
-        return 1000
+        mSeed = seed
+        sphereViewModel.setSeed(seed)
+
+        return seed
     }
 
     // ========================================================================
@@ -287,28 +297,28 @@ class SphereFragment(action: String, sphereName: String) :
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_fragment_container, MySpheresFragment())
+                    .replace(R.id.sphere_menu_fragment_container, MySpheresFragment())
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.import_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_fragment_container, ImportSphereFragment())
+                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(::createNewSphereUsingSeed))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.create_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_fragment_container, NewSphereFragment())
+                    .replace(R.id.sphere_menu_fragment_container, NewSphereFragment())
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.settings_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_fragment_container, SettingsMenuFragment())
+                    .replace(R.id.sphere_menu_fragment_container, SettingsMenuFragment())
                     .addToBackStack(null)
                     .commit()
                 return true
@@ -329,8 +339,7 @@ class SphereFragment(action: String, sphereName: String) :
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        // TODO: fetch seed from view model here
-                        addSphereToFirestore(requireContext(), mSphereName, 100)
+                        addSphereToFirestore(requireContext(), mSphereName, mSeed)
                     }
                     DialogInterface.BUTTON_NEGATIVE -> {
 

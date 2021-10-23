@@ -42,7 +42,7 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
         requestRender()
     }
 
-    fun createNewSphereUsingSeed(sphere_name: String, seed: Long) {
+    fun createNewSphereUsingSeed(sphere_name: String, seed: Long?) {
         Log.i(TAG, "Creating Sphere named: $sphere_name from seed: $seed")
 
         renderer.icosphere = Icosphere(sphere_name)
