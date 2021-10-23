@@ -22,17 +22,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
-import com.sphere.menu_fragments.ImportSphereFragment
-import com.sphere.menu_fragments.MySpheresFragment
-import com.sphere.menu_fragments.NewSphereFragment
-import com.sphere.menu_fragments.SettingsMenuFragment
 import com.sphere.SphereViewModel
 import android.content.DialogInterface
 import android.widget.Toast
+import com.sphere.menu_fragments.*
 import com.sphere.utility.addSphereToFirestore
 import com.sphere.utility.hasCoarseLocationAccess
 import com.sphere.utility.requestLocationPermission
-
 
 private const val TAG = "SphereFragment"
 
@@ -100,6 +96,17 @@ class SphereFragment : Fragment(),
         binding.sphereOptionsButton.setOnClickListener {
             showPopup(it)
         }
+
+
+        // TODO: use the view model + shared preferences
+        // TODO: navigate to NoSphereFragment instead of SphereFragment if no spheres in the view model
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.sphere_menu_fragment_container, NoSphereFragment(
+                ::createNewSphereWithName,
+                ::createNewSphereWithSeedAndName
+            ))
+            .addToBackStack(getString(R.string.SphereFragmentName))
+            .commit()
 
         Log.i(TAG, "onViewCreated() Returning")
     }

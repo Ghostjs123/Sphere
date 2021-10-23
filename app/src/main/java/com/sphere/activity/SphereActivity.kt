@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.SphereViewModelFactory
+import com.sphere.menu_fragments.NoSphereFragment
 import com.sphere.sphere_fragments.SphereFragment
 import com.sphere.room_code.SphereApplication
 import com.sphere.room_code.SphereListAdapter
@@ -33,12 +34,8 @@ class SphereActivity : AppCompatActivity() {
             spheres.let { adapter.submitList(it) }
         }
 
-        // TODO: use the view model + shared preferences
-        // TODO: navigate to NoSphereFragment instead of SphereFragment if no spheres in the view model
-
         supportFragmentManager.beginTransaction()
             .replace(R.id.sphere_fragment_container, SphereFragment())
-            .addToBackStack(null)
             .commit()
 
         Log.i(TAG, "onCreate() Finished")

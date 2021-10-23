@@ -17,4 +17,5 @@
     <string name="Export">Export</string>
     <string name="title_activity_launcher">LauncherActivity</string>
     <string name="DeleteOnDeviceData">Delete On Device Data</string>
+    <string name="SphereFragmentName">SphereFragment</string>
 </resources>

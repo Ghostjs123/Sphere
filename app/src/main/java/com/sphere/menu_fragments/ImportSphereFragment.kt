@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import com.sphere.databinding.FragmentImportSphereBinding
 import com.sphere.activity.SphereActivity
 import com.sphere.utility.readSphereFromFirestore
@@ -45,9 +46,8 @@ class ImportSphereFragment(
         binding.importSphereButton.setOnClickListener {
             val sphereName: String = binding.sphereNameInput.text.toString()
 
-            // SphereActivity -> SphereActivity
             readSphereFromFirestore(requireContext(), sphereName, callback)
-            requireActivity().supportFragmentManager.popBackStack()
+            requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
         Log.i(TAG, "onViewCreated() Finished")
