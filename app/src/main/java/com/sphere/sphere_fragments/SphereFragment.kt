@@ -1,5 +1,6 @@
 package com.sphere.sphere_fragments
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.hardware.Sensor
@@ -24,13 +25,20 @@ import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
 import com.sphere.SphereViewModel
 import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import com.sphere.menu_fragments.*
 import com.sphere.utility.addSphereToFirestore
 import com.sphere.utility.hasCoarseLocationAccess
 import com.sphere.utility.requestLocationPermission
 
 private const val TAG = "SphereFragment"
+
+private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
+private const val MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 66
 
 
 class SphereFragment : Fragment(),
@@ -46,8 +54,6 @@ class SphereFragment : Fragment(),
     private var mSphereName: String = ""
     private var mSeed: Long? = null
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationManager: LocationManager
     private lateinit var sensorManager: SensorManager
 
     private lateinit var mAmbientTemp: Sensor
@@ -68,10 +74,7 @@ class SphereFragment : Fragment(),
         _binding = FragmentSphereBinding.inflate(inflater, container, false)
         sphereViewModel = ViewModelProvider(requireActivity())[SphereViewModel::class.java]
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-
         mAmbientTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
 
@@ -97,7 +100,6 @@ class SphereFragment : Fragment(),
             showPopup(it)
         }
 
-
         // TODO: use the view model + shared preferences
         // TODO: navigate to NoSphereFragment instead of SphereFragment if no spheres in the view model
         parentFragmentManager.beginTransaction()
@@ -107,6 +109,7 @@ class SphereFragment : Fragment(),
             ))
             .addToBackStack(getString(R.string.SphereFragmentName))
             .commit()
+//        createNewSphereWithName("asd")  // TODO: delete this line once ^^ is done
 
         Log.i(TAG, "onViewCreated() Returning")
     }
@@ -178,8 +181,13 @@ class SphereFragment : Fragment(),
             Toast.makeText(
                 requireContext(),
                 "Enable at least one sensor in settings before mutating",
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_LONG
             ).show()
+            return
+        }
+
+        if (gpsEnabled && !hasCoarseLocationAccess(requireContext())) {
+            requestLocationPermission(requireActivity())
             return
         }
 
@@ -191,11 +199,7 @@ class SphereFragment : Fragment(),
         updateUI()
     }
 
-    private fun mutateCallback() {
-
-    }
-
-    private fun fetchSeed(): Long? {
+    private fun fetchSeed(): Long {
         // TODO: generate seed from device sensors here
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
         val gpsEnabled = prefs.getBoolean("gps_enabled", false)
@@ -203,26 +207,18 @@ class SphereFragment : Fragment(),
         val ambientLightEnabled = prefs.getBoolean("ambient_light_enabled", false)
         val deviceTempEnabled = prefs.getBoolean("device_temp_enabled", false)
 
-        var seed: Long? = null
+        var seed: Long = 0
 
-        if (gpsEnabled && !hasCoarseLocationAccess(requireContext())) {
-            requestLocationPermission(requireActivity())
-        } else {
-            seed = 0
+        if (gpsEnabled && hasCoarseLocationAccess(requireContext())) {
+            Toast.makeText(requireContext(), "Trying to use location data", Toast.LENGTH_SHORT).show()
+        }
 
-            if (gpsEnabled && hasCoarseLocationAccess(requireContext()))
-            {
-                Toast.makeText(requireContext(), "Trying to use location data", Toast.LENGTH_SHORT).show()
-            }
+        if (ambientTempEnabled) {
+            seed += ambientTemp.toLong()
+        }
 
-            if (ambientTempEnabled) {
-                seed += ambientTemp.toLong()
-            }
-
-            if (ambientLightEnabled) {
-                seed += illuminance.toLong()
-            }
-
+        if (ambientLightEnabled) {
+            seed += illuminance.toLong()
         }
 
         return seed
