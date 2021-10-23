@@ -1,11 +1,11 @@
-package com.sphere.sphere
+package com.sphere
 
 import android.opengl.GLES20
 import android.util.Log
 import java.nio.*
 import javax.microedition.khronos.opengles.GL10
 import kotlin.math.*
-import com.sphere.sphere.misc.OpenSimplex2F
+import com.sphere.utility.OpenSimplex2F
 
 
 private const val TAG = "Icosphere"

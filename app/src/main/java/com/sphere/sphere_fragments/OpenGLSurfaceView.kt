@@ -1,14 +1,11 @@
-package com.sphere.sphere.fragments
+package com.sphere.sphere_fragments
 
 import android.content.Context
 import android.opengl.GLSurfaceView
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
-import android.view.View
-import com.sphere.sphere.Icosphere
-import com.sphere.sphere.fragments.OpenGLRenderer
+import com.sphere.Icosphere
 import kotlin.math.abs
 
 private const val TAG = "OpenGLSurfaceView"

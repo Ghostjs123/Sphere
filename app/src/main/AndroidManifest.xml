@@ -15,7 +15,7 @@
         android:required="true" />
 
     <application
-        android:name="com.sphere.sphere.room_code.SphereApplication"
+        android:name="com.sphere.room_code.SphereApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,30 +24,14 @@
         android:theme="@style/Theme.CSE5236Sphere" >
 
         <activity
-            android:name="com.sphere.LauncherActivity"
+            android:name="com.sphere.activity.SphereActivity"
             android:exported="true"
-            android:label="@string/title_activity_launcher"
+            android:label="@string/app_name"
             android:theme="@style/Theme.CSE5236Sphere.DarkActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.sphere.sphere.activity.SphereActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.CSE5236Sphere.DarkActionBar" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
-        <activity
-            android:name="com.sphere.menu.activity.MenuActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.CSE5236Sphere.DarkActionBar" >
         </activity>
     </application>
 

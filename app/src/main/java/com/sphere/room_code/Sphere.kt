@@ -1,4 +1,4 @@
-package com.sphere.sphere.room_code
+package com.sphere.room_code
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo

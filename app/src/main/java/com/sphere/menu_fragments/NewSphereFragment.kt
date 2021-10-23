@@ -1,4 +1,4 @@
-package com.sphere.menu.fragments
+package com.sphere.menu_fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,16 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sphere.databinding.FragmentNewSphereBinding
-import com.google.android.material.snackbar.Snackbar
-import com.sphere.sphere.activity.SphereActivity
-import com.sphere.utility.readSphereFromFirestore
+import com.sphere.activity.SphereActivity
 
 private const val TAG = "NewSphereFragment"
 
 
 // NOTE: optional callback is just for usage from the SphereActivity
 class NewSphereFragment(
-    private val callback: ((sphereName: String) -> Unit)? = null
+    private val callback: (sphereName: String) -> Unit
 ) : Fragment() {
 
     private var _binding: FragmentNewSphereBinding? = null
@@ -47,23 +45,8 @@ class NewSphereFragment(
         binding.createSphereButton.setOnClickListener {
             val sphereName = binding.sphereNameInput.text.toString()
 
-            if (callback == null) {
-                // MenuActivity -> SphereActivity
-                startActivity(Intent(activity, SphereActivity::class.java).apply {
-                    putExtra("ACTION", "NewSphere")
-                    putExtra("SPHERE_NAME", sphereName)
-                    addFlags(
-                        Intent.FLAG_ACTIVITY_NEW_TASK or
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                                Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    )
-                })
-            }
-            else {
-                // SphereActivity -> SphereActivity
-                callback.invoke(sphereName)
-                requireActivity().supportFragmentManager.popBackStack()
-            }
+            callback(sphereName)
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         Log.i(TAG, "onViewCreated() Finished")

@@ -1,9 +1,7 @@
-package com.sphere.sphere.fragments
+package com.sphere.sphere_fragments
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
-import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -17,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -25,26 +22,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
-import com.sphere.menu.fragments.ImportSphereFragment
-import com.sphere.menu.fragments.MySpheresFragment
-import com.sphere.menu.fragments.NewSphereFragment
-import com.sphere.menu.fragments.SettingsMenuFragment
-import com.sphere.sphere.SphereViewModel
+import com.sphere.menu_fragments.ImportSphereFragment
+import com.sphere.menu_fragments.MySpheresFragment
+import com.sphere.menu_fragments.NewSphereFragment
+import com.sphere.menu_fragments.SettingsMenuFragment
+import com.sphere.SphereViewModel
 import android.content.DialogInterface
 import android.widget.Toast
 import com.sphere.utility.addSphereToFirestore
 import com.sphere.utility.hasCoarseLocationAccess
-import com.sphere.utility.readSphereFromFirestore
 import com.sphere.utility.requestLocationPermission
 
 
 private const val TAG = "SphereFragment"
 
 
-class SphereFragment(
-    action: String,
-    sphereName: String
-) : Fragment(),
+class SphereFragment : Fragment(),
     PopupMenu.OnMenuItemClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
     SensorEventListener {
@@ -54,8 +47,7 @@ class SphereFragment(
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
 
-    private var mAction: String = action
-    private var mSphereName: String = sphereName
+    private var mSphereName: String = ""
     private var mSeed: Long? = null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -109,24 +101,6 @@ class SphereFragment(
             showPopup(it)
         }
 
-        when (mAction) {
-            "NewSphere" -> {
-                Log.i(TAG, "Handling ACTION NewSphere")
-                createNewSphere()
-            }
-            "ImportSphere" -> {
-                Log.i(TAG, "Handling ACTION ImportSphere")
-                readSphereFromFirestore(
-                    requireContext(),
-                    mSphereName,
-                    ::createNewSphereUsingSeedAndName
-                )
-            }
-            else -> {
-                Log.w(TAG, "Received un-handled action: $mAction")
-            }
-        }
-
         Log.i(TAG, "onViewCreated() Returning")
     }
 
@@ -169,13 +143,6 @@ class SphereFragment(
         binding.sphereName.text = mSphereName
     }
 
-    private fun createNewSphere() {
-        binding.glSurfaceView.createNewSphere(mSphereName)
-        sphereViewModel.setName(mSphereName)
-
-        updateUI()
-    }
-
     private fun createNewSphereWithName(sphereName: String) {
         mSphereName = sphereName
         binding.glSurfaceView.createNewSphere(mSphereName)
@@ -184,7 +151,7 @@ class SphereFragment(
         updateUI()
     }
 
-    private fun createNewSphereUsingSeedAndName(seed: Long?, sphereName: String) {
+    private fun createNewSphereWithSeedAndName(seed: Long?, sphereName: String) {
         mSphereName = sphereName
         mSeed = seed
         binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, mSeed)
@@ -279,7 +246,7 @@ class SphereFragment(
             }
             R.id.import_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(::createNewSphereUsingSeedAndName))
+                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(::createNewSphereWithSeedAndName))
                     .addToBackStack(null)
                     .commit()
                 return true

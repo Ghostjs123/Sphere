@@ -1,4 +1,4 @@
-package com.sphere.sphere.misc
+package com.sphere.utility
 
 import kotlin.math.abs
 

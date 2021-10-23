@@ -1,4 +1,4 @@
-package com.sphere.sphere.fragments
+package com.sphere.sphere_fragments
 
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
@@ -6,7 +6,7 @@ import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import android.util.Log
-import com.sphere.sphere.Icosphere
+import com.sphere.Icosphere
 
 private const val TAG = "OpenGLRenderer"
 

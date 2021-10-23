@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sphere.fragments.SphereFragment">
+    tools:context=".sphere.sphere_fragments.SphereFragment">
 
-    <com.sphere.sphere.fragments.OpenGLSurfaceView
+    <com.sphere.sphere_fragments.OpenGLSurfaceView
         android:id="@+id/gl_surface_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

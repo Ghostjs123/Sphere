@@ -1,4 +1,4 @@
-package com.sphere.menu.fragments
+package com.sphere.menu_fragments
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sphere.databinding.FragmentMySpheresBinding
-import com.sphere.sphere.room_code.SphereListAdapter
-import com.sphere.sphere.SphereViewModel
+import com.sphere.room_code.SphereListAdapter
+import com.sphere.SphereViewModel
 
 private const val TAG = "MySpheresFragment"
 

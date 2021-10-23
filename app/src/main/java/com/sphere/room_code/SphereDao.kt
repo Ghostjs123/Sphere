@@ -1,6 +1,5 @@
-package com.sphere.sphere.room_code
+package com.sphere.room_code
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 

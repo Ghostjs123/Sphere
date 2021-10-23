@@ -1,7 +1,8 @@
-package com.sphere.sphere.room_code
+package com.sphere.room_code
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.sphere.room_code.SphereViewHolder
 
 class SphereListAdapter : ListAdapter<Sphere, SphereViewHolder>(SpheresComparator()) {
 

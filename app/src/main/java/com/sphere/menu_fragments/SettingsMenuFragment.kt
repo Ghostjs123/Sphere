@@ -1,4 +1,4 @@
-package com.sphere.menu.fragments
+package com.sphere.menu_fragments
 
 import android.app.ActivityManager
 import android.content.Context
@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
-import androidx.preference.PreferenceFragmentCompat
 import com.sphere.R
 import com.sphere.databinding.FragmentSettingsMenuBinding
 
@@ -57,7 +55,7 @@ class SettingsMenuFragment : Fragment() {
 //        parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 //
 //        parentFragmentManager.beginTransaction()
-//            .replace(R.id.menu_fragment_container, NoSphereFragment())
+//            .replace(R.id.sphere_menu_fragment_container, NoSphereFragment())
 //            .addToBackStack(null)
 //            .commit()
 

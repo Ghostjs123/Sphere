@@ -1,20 +1,25 @@
-package com.sphere.menu.fragments
+package com.sphere.menu_fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.sphere.R
-import com.sphere.databinding.FragmentNoSphereBinding
+import com.sphere.databinding.FragmentImportSphereBinding
+import com.sphere.activity.SphereActivity
+import com.sphere.utility.readSphereFromFirestore
 
-private const val TAG = "NoSphereFragment"
+private const val TAG = "ImportSphereFragment"
 
 
-class NoSphereFragment : Fragment() {
+// NOTE: optional callback is just for usage from the SphereActivity
+class ImportSphereFragment(
+    private val callback: (seed: Long?, sphereName: String) -> Unit
+) : Fragment() {
 
-    private var _binding: FragmentNoSphereBinding? = null
+    private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -25,7 +30,7 @@ class NoSphereFragment : Fragment() {
 
         Log.i(TAG, "onCreateView() Started")
 
-        _binding = FragmentNoSphereBinding.inflate(inflater, container, false)
+        _binding = FragmentImportSphereBinding.inflate(inflater, container, false)
 
         Log.i(TAG, "onCreateView() Returning")
 
@@ -37,17 +42,12 @@ class NoSphereFragment : Fragment() {
 
         Log.i(TAG, "onViewCreated() Started")
 
-        binding.createNewSphereText.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-            .replace(R.id.menu_fragment_container, NewSphereFragment())
-            .addToBackStack(null)
-            .commit()
-        }
-        binding.importSphereText.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-            .replace(R.id.menu_fragment_container, ImportSphereFragment())
-            .addToBackStack(null)
-            .commit()
+        binding.importSphereButton.setOnClickListener {
+            val sphereName: String = binding.sphereNameInput.text.toString()
+
+            // SphereActivity -> SphereActivity
+            readSphereFromFirestore(requireContext(), sphereName, callback)
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         Log.i(TAG, "onViewCreated() Finished")

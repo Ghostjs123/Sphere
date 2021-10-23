@@ -1,4 +1,4 @@
-package com.sphere.menu.fragments
+package com.sphere.menu_fragments
 
 import android.content.Context
 import android.hardware.Sensor
