@@ -119,7 +119,7 @@ class SphereFragment(action: String, sphereName: String) :
                 readSphereFromFirestore(
                     requireContext(),
                     mSphereName,
-                    ::createNewSphereUsingSeed
+                    ::createNewSphereUsingSeedAndName
                 )
             }
             else -> {
@@ -170,8 +170,17 @@ class SphereFragment(action: String, sphereName: String) :
         sphereViewModel.setName(mSphereName)
     }
 
-    private fun createNewSphereUsingSeed(seed: Long?) {
-        binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, seed)
+    private fun createNewSphereWithName(sphereName: String) {
+        mSphereName = sphereName
+        binding.glSurfaceView.createNewSphere(mSphereName)
+        binding.sphereName.text = mSphereName
+        sphereViewModel.setName(mSphereName)
+    }
+
+    private fun createNewSphereUsingSeedAndName(seed: Long?, sphereName: String) {
+        mSphereName = sphereName
+        mSeed = seed
+        binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, mSeed)
         binding.sphereName.text = mSphereName
         sphereViewModel.setName(mSphereName)
     }
@@ -304,14 +313,14 @@ class SphereFragment(action: String, sphereName: String) :
             }
             R.id.import_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(::createNewSphereUsingSeed))
+                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(::createNewSphereUsingSeedAndName))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.create_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, NewSphereFragment())
+                    .replace(R.id.sphere_menu_fragment_container, NewSphereFragment(::createNewSphereWithName))
                     .addToBackStack(null)
                     .commit()
                 return true

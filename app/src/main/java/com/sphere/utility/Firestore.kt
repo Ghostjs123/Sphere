@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.reflect.KFunction1
 
 private const val TAG = "Firestore"
 
@@ -23,7 +22,7 @@ fun addSphereToFirestore(context: Context, sphereName: String, seed: Long?) {
         .addOnFailureListener { e ->
             Toast.makeText(
                 context,
-                "Exporting $sphereName failed, check your network connection and try again.",
+                "Exporting $sphereName failed, check your network connection and try again",
                 Toast.LENGTH_LONG
             ).show()
             Log.w(TAG, "Error during Firestore.set()", e)
@@ -31,21 +30,28 @@ fun addSphereToFirestore(context: Context, sphereName: String, seed: Long?) {
 }
 
 // read
-fun readSphereFromFirestore(context: Context, sphereName: String, callback: (seed: Long?) -> Unit) {
+fun readSphereFromFirestore(
+    context: Context,
+    sphereName: String,
+    callback: (seed: Long?, sphereName: String) -> Unit
+) {
     FirebaseApp.initializeApp(context)
     val db = FirebaseFirestore.getInstance()
 
-    db.collection("Spheres").document(sphereName)
-        .get()
+    db.collection("Spheres").document(sphereName).get()
         .addOnSuccessListener { doc ->
-            if (doc != null) {
-                val seed = doc.get("seed") as? Long
-                Log.i(TAG, "Found seed: $seed, for sphere $sphereName")
-                callback(seed)
+            if (doc.exists()) {
+                callback(doc.get("seed") as? Long, sphereName)
+
+                Toast.makeText(
+                    context,
+                    "Imported $sphereName",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 Toast.makeText(
                     context,
-                    "Could not find sphere $sphereName to import.",
+                    "Could not find sphere $sphereName to import",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -53,13 +59,12 @@ fun readSphereFromFirestore(context: Context, sphereName: String, callback: (see
         .addOnFailureListener { e ->
             Toast.makeText(
                 context,
-                "Reading $sphereName failed, check your network connection and try again.",
+                "Reading $sphereName failed, check your network connection and try again",
                 Toast.LENGTH_LONG
             ).show()
             Log.w(TAG, "Error during Firestore.get()", e)
         }
 }
-
 
 // delete
 fun removeSphereFromFirestore(context: Context, sphereName: String) {
@@ -71,7 +76,7 @@ fun removeSphereFromFirestore(context: Context, sphereName: String) {
         .addOnFailureListener { e ->
             Toast.makeText(
                 context,
-                "Deleting $sphereName failed, check your network connection and try again.",
+                "Deleting $sphereName failed, check your network connection and try again",
                 Toast.LENGTH_LONG
             ).show()
             Log.w(TAG, "Error during Firestore.delete()", e)

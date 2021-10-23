@@ -10,11 +10,15 @@ import android.view.ViewGroup
 import com.sphere.databinding.FragmentNewSphereBinding
 import com.google.android.material.snackbar.Snackbar
 import com.sphere.sphere.activity.SphereActivity
+import com.sphere.utility.readSphereFromFirestore
 
 private const val TAG = "NewSphereFragment"
 
 
-class NewSphereFragment : Fragment() {
+// NOTE: optional callback is just for usage from the SphereActivity
+class NewSphereFragment(
+    private val callback: ((sphereName: String) -> Unit)? = null
+) : Fragment() {
 
     private var _binding: FragmentNewSphereBinding? = null
     private val binding get() = _binding!!
@@ -43,15 +47,23 @@ class NewSphereFragment : Fragment() {
         binding.createSphereButton.setOnClickListener {
             val sphereName = binding.sphereNameInput.text.toString()
 
-            startActivity(Intent(activity, SphereActivity::class.java).apply {
-                putExtra("ACTION", "NewSphere")
-                putExtra("SPHERE_NAME", sphereName)
-                addFlags(
-               Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP
-                )
-            })
+            if (callback == null) {
+                // MenuActivity -> SphereActivity
+                startActivity(Intent(activity, SphereActivity::class.java).apply {
+                    putExtra("ACTION", "NewSphere")
+                    putExtra("SPHERE_NAME", sphereName)
+                    addFlags(
+                        Intent.FLAG_ACTIVITY_NEW_TASK or
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    )
+                })
+            }
+            else {
+                // SphereActivity -> SphereActivity
+                callback.invoke(sphereName)
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
 
         Log.i(TAG, "onViewCreated() Finished")
