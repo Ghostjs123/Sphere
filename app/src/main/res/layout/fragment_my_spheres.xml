@@ -8,8 +8,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/spheres_recycler_view"
-        android:layout_width="111dp"
-        android:layout_height="113dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         tools:listitem="@layout/recyclerview_item" />
 
 

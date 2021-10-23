@@ -57,6 +57,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     fun setName(newName:String) {
         // TODO : This needs to also update the sphere's name in our LiveData
         sphereName = newName
+        insert(Sphere(sphereName, seed))
         //update(sphereName, seed)
     }
 
