@@ -1,5 +1,6 @@
 package com.sphere.menu_fragments
 
+import android.app.Activity
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
@@ -9,6 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.sphere.R
+import kotlinx.android.synthetic.main.fragment_settings_menu.*
 
 //<SwitchPreference
 //app:key="gps_enabled"
@@ -32,14 +34,6 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         val sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        // GPS
-//        findPreference<SwitchPreference>("gps_enabled")!!.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-//            (it as SwitchPreference).isChecked = false
-//
-//            return@OnPreferenceClickListener true
-//        }
-
-        // Ambient Temp
         findPreference<SwitchPreference>("ambient_temp_enabled")!!
             .onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 val mTemperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)

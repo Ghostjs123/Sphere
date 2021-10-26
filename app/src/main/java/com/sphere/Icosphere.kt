@@ -360,14 +360,17 @@ class Icosphere(private val sphereName: String) {
     // Mutate Functions
 
     private fun transformNoiseToRadius(noiseValue: Double): Float{
-        // https://en.wikipedia.org/wiki/Linear_interpolation
-        // linear interpolation: [-1, 1] -> [MIN_RADIUS, MAX_RADIUS]
-        return (noiseValue.toFloat() + 1) / 2 * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS
+        // linear interpolation
+        val oldMin = -1.0f; val oldMax = 1.0f
+        val newMin = MIN_RADIUS; val newMax = MAX_RADIUS
+        return (noiseValue.toFloat() - oldMin) * (newMax - newMin) / (oldMax - oldMin) + newMin
     }
 
     private fun transformRadiusToColor(radius: Float): Float {
-        // linear interpolation: [MIN_RADIUS, MAX_RADIUS] -> [0, 1]
-        return (radius - MIN_RADIUS) / (MAX_RADIUS - MIN_RADIUS)
+        // linear interpolation
+        val oldMin = MIN_RADIUS; val oldMax = MAX_RADIUS
+        val newMin = 0.2f; val newMax = 0.7f
+        return (radius - oldMin) * (newMax - newMin) / (oldMax - oldMin) + newMin
     }
 
     private fun mutateVertex(i: Int, noise: OpenSimplex2F): MutableList<Float> {
@@ -381,13 +384,13 @@ class Icosphere(private val sphereName: String) {
         val theta = atan2(y, x)
         val rho = atan2(sqrt(x * x + y * y), z)
 
-        val newR = transformNoiseToRadius(
-            noise.noise3_Classic(
-                x.toDouble(),
-                y.toDouble(),
-                z.toDouble()
-            )
-        )
+//        val newR = transformNoiseToRadius(
+//            noise.noise3_Classic(
+//                x.toDouble(),
+//                y.toDouble(),
+//                z.toDouble()
+//            )
+//        )
 //        val newR = transformNoiseToRadius(
 //            noise.noise3_Classic(
 //                r.toDouble(),
@@ -408,20 +411,20 @@ class Icosphere(private val sphereName: String) {
 //                (r * rho * theta).toDouble()
 //            )
 //        )
-//        val newR = transformNoiseToRadius(
-//            noise.noise2(
-//                theta.toDouble(),
-//                rho.toDouble()
-//            )
-//        )
+        val newR = transformNoiseToRadius(
+            noise.noise2(
+                theta.toDouble(),
+                rho.toDouble()
+            )
+        )
 
         vertices[i] = newR * sin(rho) * cos(theta)
         vertices[i + 1] = newR * sin(rho) * sin(theta)
         vertices[i + 2] = newR * cos(rho)
 
-        val scl = transformRadiusToColor(newR)
+//        val scl = transformRadiusToColor(newR)
         colors.add(0.1f)
-        colors.add(scl)
+        colors.add(0.5f)
         colors.add(0.1f)
         colors.add(1.0f)
 
@@ -527,17 +530,17 @@ class Icosphere(private val sphereName: String) {
         gl.glDisable(GL10.GL_LIGHTING)
         gl.glDisable(GL10.GL_TEXTURE_2D)
 
-        val color = floatArrayOf(0.3f, 0.3f, 0.3f, 1f)
-
-        gl.glColor4f(color[0], color[1], color[2], color[3])
-        gl.glMaterialfv(GL10.GL_FRONT, GL10.GL_DIFFUSE, color, 0)
-
-        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY)
-
-        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer)
-        gl.glDrawElements(GL10.GL_LINES, lineIndices.size, GLES20.GL_UNSIGNED_INT, lineIndicesBuffer)
-
-        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY)
+//        val color = floatArrayOf(0.3f, 0.3f, 0.3f, 1f)
+//
+//        gl.glColor4f(color[0], color[1], color[2], color[3])
+//        gl.glMaterialfv(GL10.GL_FRONT, GL10.GL_DIFFUSE, color, 0)
+//
+//        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY)
+//
+//        gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer)
+//        gl.glDrawElements(GL10.GL_LINES, lineIndices.size, GLES20.GL_UNSIGNED_INT, lineIndicesBuffer)
+//
+//        gl.glDisableClientState(GL10.GL_VERTEX_ARRAY)
 
         gl.glEnable(GL10.GL_LIGHTING)
         gl.glEnable(GL10.GL_TEXTURE_2D)

@@ -15,38 +15,28 @@ private const val TAG = "LocationPermissions"
 private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
 private const val MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 66
 
-
-fun hasCoarseLocationAccess(context: Context): Boolean {
-    return ContextCompat.checkSelfPermission(
-        context, Manifest.permission.ACCESS_COARSE_LOCATION
-    ) == PackageManager.PERMISSION_GRANTED
-}
-
-fun requestLocationPermission(activity: Activity) {
-    ActivityCompat.requestPermissions(
-        activity, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-        0
-    )
-}
-
-fun onRequestPermissionsResult(
-    requestCode: Int,
-    permissions: Array<String>,
-    grantResults: IntArray
-) {
-    when (requestCode) {
-        MY_PERMISSIONS_REQUEST_LOCATION -> {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                mutateSphere()
-            }
-            else {
-                Log.i(TAG, "Location permissions denied")
-                // TODO: handle permission denied case
-            }
-        }
-        else -> {
-            Log.i(TAG, "Location permissions denied")
-            // TODO: handle permission denied case
-        }
-    }
-}
+//    val locationRequest: LocationRequest = LocationRequest.create().apply {
+//        interval = 30
+//        fastestInterval = 10
+//        priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+//        maxWaitTime = 60
+//    }
+//    val locationCallback: LocationCallback = object : LocationCallback() {
+//        override fun onLocationResult(locationResult: LocationResult) {
+//            fusedLocationClient?.removeLocationUpdates(this)
+//
+//            val locationList = locationResult.locations
+//            if (locationList.isNotEmpty()) {
+//                val location = locationList.last()
+//
+//                latitude = location.latitude
+//                longitude = location.longitude
+//                updateUI()
+//            }
+//        }
+//    }
+//    fusedLocationClient?.requestLocationUpdates(
+//        locationRequest,
+//        locationCallback,
+//        Looper.getMainLooper()
+//    )

@@ -50,7 +50,7 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, floatArrayOf(0.3f, 0.3f, 0.3f, 1.0f), 0)
         gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, floatArrayOf(0.7f, 0.7f, 0.7f, 1.0f), 0)
         gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, floatArrayOf(1.0f, 1.0f, 1.0f, 1.0f), 0)
-        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, floatArrayOf(0.0f, 0.0f, 1.0f, 0.0f), 0)
+        gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, floatArrayOf(1.0f, 1.0f, 1.0f, 0.0f), 0)
         gl.glEnable(GL10.GL_LIGHT0)
 
         Log.i(TAG, "onSurfaceCreated() Finished")
