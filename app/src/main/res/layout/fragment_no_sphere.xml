@@ -7,7 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".menu_fragments.NoSphereFragment">
+    android:clickable="true"
+    android:focusable="true"
+    tools:context="com.sphere.menu_fragments.NoSphereFragment">
 
     <TextView
         android:id="@+id/no_sphere_found_text"

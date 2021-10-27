@@ -1,7 +1,6 @@
 package com.sphere.sphere_fragments
 
-import android.opengl.GLSurfaceView
-import android.opengl.GLU
+import android.opengl.*
 import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -24,6 +23,8 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
 
     @Volatile
     var icosphere: Icosphere? = null
+
+    private lateinit var mGL: GL10
 
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
         Log.i(TAG, "onSurfaceCreated() Started")
@@ -52,6 +53,8 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_SPECULAR, floatArrayOf(1.0f, 1.0f, 1.0f, 1.0f), 0)
         gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, floatArrayOf(1.0f, 1.0f, 1.0f, 0.0f), 0)
         gl.glEnable(GL10.GL_LIGHT0)
+
+        mGL = gl
 
         Log.i(TAG, "onSurfaceCreated() Finished")
     }
@@ -89,5 +92,9 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
 
         gl.glMatrixMode(GL10.GL_MODELVIEW)
         gl.glLoadIdentity()
+    }
+
+    fun performClick(x: Float, y: Float) {
+
     }
 }

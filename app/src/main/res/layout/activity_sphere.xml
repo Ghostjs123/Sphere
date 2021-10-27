@@ -12,10 +12,4 @@
         android:layout_height="match_parent"
         android:layout_weight="0.1" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/sphere_menu_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.1" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

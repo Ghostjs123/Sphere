@@ -26,15 +26,12 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.edit
 import com.google.android.gms.location.*
 import com.sphere.menu_fragments.*
 import com.sphere.utility.addSphereToFirestore
 
 private const val TAG = "SphereFragment"
 
-//private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
-//private const val MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 66
 
 fun checkLocationPermission(activity: Activity): Boolean {
     if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -45,12 +42,6 @@ fun checkLocationPermission(activity: Activity): Boolean {
     }
     return false
 }
-
-//fun <R> CoroutineScope.executeAsyncTask(doInBackground: () -> R) = launch {
-//    withContext(Dispatchers.IO) {
-//        doInBackground()
-//    }
-//}
 
 
 class SphereFragment :
@@ -73,8 +64,8 @@ class SphereFragment :
     private var ambientTemp: Float = 0f
     private lateinit var mLight: Sensor
     private var illuminance: Float = 0f
-    var latitude: Double = 0.0
-    var longitude: Double = 0.0
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
     // ========================================================================
     // Lifecycle Management
@@ -200,7 +191,7 @@ class SphereFragment :
             } else -> {
                 Toast.makeText(
                     activity,
-                    "Give Location Permissions to use GPS data or disable GPS in settings",
+                    "Give Location Permissions to use GPS data or disable 'Use GPS data' in settings",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -232,9 +223,14 @@ class SphereFragment :
             else {
                 Log.i(TAG, "Requesting lastLocation")
                 fusedLocationClient?.lastLocation?.addOnCompleteListener {
-                    latitude = it.result.latitude
-                    longitude = it.result.longitude
-                    Log.i(TAG, "Received lastLocation of $latitude $longitude")
+                    if (it.result != null) {
+                        latitude = it.result.latitude
+                        longitude = it.result.longitude
+                        Log.i(TAG, "Received lastLocation of $latitude $longitude")
+                    }
+                    else {
+                        Log.w(TAG, "Received null lastLocation")
+                    }
 
                     finishMutate()
                 }
@@ -296,28 +292,28 @@ class SphereFragment :
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, MySpheresFragment())
+                    .add(R.id.sphere_fragment_container, MySpheresFragment())
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.import_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(::createNewSphereWithSeedAndName))
+                    .add(R.id.sphere_fragment_container, ImportSphereFragment(::createNewSphereWithSeedAndName))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.create_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, NewSphereFragment(::createNewSphereWithName))
+                    .add(R.id.sphere_fragment_container, NewSphereFragment(::createNewSphereWithName))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.settings_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, SettingsMenuFragment())
+                    .add(R.id.sphere_fragment_container, SettingsMenuFragment())
                     .addToBackStack(null)
                     .commit()
                 return true

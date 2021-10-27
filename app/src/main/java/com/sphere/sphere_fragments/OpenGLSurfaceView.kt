@@ -16,8 +16,11 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
 
     private val renderer: OpenGLRenderer
 
+    private var currX: Float = 0f
+    private var currY: Float = 0f
     private var prevX: Float = 0f
     private var prevY: Float = 0f
+    private var hasDragged: Boolean = false
 
     init {
         Log.i(TAG, "init Started")
@@ -60,6 +63,9 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
         val y: Float = e.y
 
         when (e.action) {
+            MotionEvent.ACTION_DOWN -> {
+                hasDragged = false
+            }
             MotionEvent.ACTION_MOVE -> {
                 renderer.cameraAngleX += (y - prevY) * TOUCH_SCALE_FACTOR
 
@@ -70,12 +76,26 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
                 else
                     renderer.cameraAngleY += (x - prevX) * TOUCH_SCALE_FACTOR
 
+                hasDragged = true
                 requestRender()
+            }
+            MotionEvent.ACTION_UP -> {
+                prevX = x
+                prevY = y
+                if (!hasDragged) performClick()
             }
         }
 
         prevX = x
         prevY = y
+
+        return true
+    }
+
+    override fun performClick(): Boolean {
+        super.performClick()
+
+        renderer.performClick(prevX, prevY)
 
         return true
     }

@@ -42,13 +42,13 @@ class NoSphereFragment(
 
         binding.createNewSphereText.setOnClickListener {
             parentFragmentManager.beginTransaction()
-            .replace(R.id.sphere_menu_fragment_container, NewSphereFragment(newSphereCallback))
+            .replace(R.id.sphere_fragment_container, NewSphereFragment(newSphereCallback))
             .addToBackStack(null)
             .commit()
         }
         binding.importSphereText.setOnClickListener {
             parentFragmentManager.beginTransaction()
-            .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(importSphereCallback))
+            .replace(R.id.sphere_fragment_container, ImportSphereFragment(importSphereCallback))
             .addToBackStack(null)
             .commit()
         }
