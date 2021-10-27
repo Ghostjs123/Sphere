@@ -60,9 +60,9 @@ class SphereFragment :
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private lateinit var sensorManager: SensorManager
-    private lateinit var mAmbientTemp: Sensor
+    private var mAmbientTemp: Sensor? = null
     private var ambientTemp: Float = 0f
-    private lateinit var mLight: Sensor
+    private var mLight: Sensor? = null
     private var illuminance: Float = 0f
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
