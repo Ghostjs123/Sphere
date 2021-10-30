@@ -57,6 +57,7 @@ class SphereFragment :
 
     private var mSphereName: String = ""
     private var mSeed: Long? = null
+    private var mSubs: Int? = null
 
     private lateinit var sensorManager: SensorManager
 
@@ -174,7 +175,8 @@ class SphereFragment :
 
     private fun updateUI() {
         // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$temperature\n$latitude\n$longitude\nseed: $mSeed"
+        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$temperature\n$latitude\n$longitude\nseed: $mSeed\n" +
+                "subdivisions: $mSubs"
 
         binding.sphereName.text = mSphereName
     }

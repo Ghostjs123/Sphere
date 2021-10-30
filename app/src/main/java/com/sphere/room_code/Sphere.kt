@@ -12,5 +12,7 @@ data class Sphere(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "seed")
-    var seed: Long?
+    var seed: Long?,
+    @ColumnInfo(name = "subdivisions")
+    var subs: Int?
 )

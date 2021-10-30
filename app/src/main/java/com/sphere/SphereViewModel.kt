@@ -24,11 +24,13 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     // Current Sphere info
     private var sphereName = ""
     private var seed: Long? = 0
+    private var subdivisions: Int? = 0
     private var index: Int = 0
 
     private fun unloadSphere() {
         sphereName = ""
         seed = 0
+        subdivisions = 0
         index = 0
     }
 
@@ -37,6 +39,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     fun newSphere(name: String) {
         sphereName = name
         seed = 0
+        subdivisions = 0
         index = 0
     }
 
@@ -45,6 +48,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
         val currSphereList = allSpheres.value
         sphereName = currSphereList!![sphereIndex].name
         seed = currSphereList!![sphereIndex].seed
+        subdivisions = currSphereList!![sphereIndex].subs
         index = sphereIndex
     }
 
@@ -57,7 +61,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     fun setName(newName:String) {
         // TODO : This needs to also update the sphere's name in our LiveData
         sphereName = newName
-        insert(Sphere(sphereName, seed))
+        insert(Sphere(sphereName, seed, subdivisions))
         //update(sphereName, seed)
     }
 
@@ -71,6 +75,11 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
         // TODO : This needs to also update the sphere's seed in our LiveData
         seed = newSeed
         //update(sphereName, seed)
+    }
+
+    // Returns this sphere's subdivisions
+    fun getSubdisions(): Int? {
+        return subdivisions
     }
 
     init {
