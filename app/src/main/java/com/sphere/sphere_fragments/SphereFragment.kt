@@ -57,7 +57,7 @@ class SphereFragment :
 
     private var mSphereName: String = ""
     private var mSeed: Long? = null
-    private var mSubs: Int? = null
+    private var mSubdivision: Int = 0
 
     private lateinit var sensorManager: SensorManager
 
@@ -123,7 +123,7 @@ class SphereFragment :
 //            ))
 //            .addToBackStack(getString(R.string.SphereFragmentName))
 //            .commit()
-        createNewSphereWithName("asd")  // TODO: delete this line once ^^ is done
+        createNewSphereWithName("asd", 5)  // TODO: delete this line once ^^ is done
 
         Log.i(TAG, "onViewCreated() Returning")
     }
@@ -175,24 +175,25 @@ class SphereFragment :
 
     private fun updateUI() {
         // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$temperature\n$latitude\n$longitude\nseed: $mSeed\n" +
-                "subdivisions: $mSubs"
+        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$temperature\n$latitude\n$longitude\nseed: $mSeed\n$mSubdivision"
 
         binding.sphereName.text = mSphereName
     }
 
-    private fun createNewSphereWithName(sphereName: String) {
+    private fun createNewSphereWithName(sphereName: String, subdivision: Int) {
         mSphereName = sphereName
-        binding.glSurfaceView.createNewSphere(mSphereName)
+        mSubdivision = subdivision
+        binding.glSurfaceView.createNewSphere(mSphereName, subdivision)
         sphereViewModel.setName(mSphereName)
 
         updateUI()
     }
 
-    private fun createNewSphereWithSeedAndName(seed: Long?, sphereName: String) {
+    private fun createNewSphereWithNameAndSeed(sphereName: String, seed: Long?, subdivision: Int) {
         mSphereName = sphereName
         mSeed = seed
-        binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, mSeed)
+        mSubdivision = subdivision
+        binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, mSeed, subdivision)
         sphereViewModel.setName(mSphereName)
 
         updateUI()
@@ -323,7 +324,7 @@ class SphereFragment :
             }
             R.id.import_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, ImportSphereFragment(::createNewSphereWithSeedAndName))
+                    .add(R.id.sphere_fragment_container, ImportSphereFragment(::createNewSphereWithNameAndSeed))
                     .addToBackStack(null)
                     .commit()
                 return true
@@ -358,11 +359,9 @@ class SphereFragment :
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        addSphereToFirestore(requireContext(), mSphereName, mSeed)
+                        addSphereToFirestore(requireContext(), mSphereName, mSeed, mSubdivision)
                     }
-                    DialogInterface.BUTTON_NEGATIVE -> {
-
-                    }
+                    DialogInterface.BUTTON_NEGATIVE -> { }
                 }
             }
 

@@ -59,7 +59,7 @@ private fun computeIcosahedronVertices(radius: Float) : MutableList<Float> {
 }
 
 
-class Icosphere(private val sphereName: String) {
+class Icosphere(private val subdivision: Int) {
 
     private var vertices: MutableList<Float> = mutableListOf()
     private var normals: MutableList<Float> = mutableListOf()
@@ -75,7 +75,6 @@ class Icosphere(private val sphereName: String) {
 
     private var buffersSet = false
 
-    private var subdivision = 5
     private var radius = 0.65f
 
     private var defaultColor = mutableListOf(0.3f, 0.3f, 0.3f, 1.0f)

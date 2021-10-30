@@ -5,6 +5,7 @@
     <string name="CreateNewSphere"><u>Create New Sphere</u></string>
     <string name="ImportSphere"><u>Import Sphere</u></string>
     <string name="EnterSphereName">Enter Sphere Name</string>
+    <string name="EnterSphereNameAndSubdivisions">Enter Sphere Name and Subdivisions</string>
     <string name="Create">Create</string>
     <string name="Import">Import</string>
     <string name="next">Next</string>
@@ -20,4 +21,9 @@
     <string name="SphereFragmentName">SphereFragment</string>
     <string name="RecyclerItemDelete">Delete</string>
     <string name="RecyclerItemLoad">Load</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
 </resources>
