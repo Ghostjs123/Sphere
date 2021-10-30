@@ -10,13 +10,14 @@ private const val TAG = "Firestore"
 
 
 // create/update
-fun addSphereToFirestore(context: Context, sphereName: String, seed: Long?) {
+fun addSphereToFirestore(context: Context, sphereName: String, seed: Long?, subdivision: Int) {
     FirebaseApp.initializeApp(context)
     val db = FirebaseFirestore.getInstance()
 
     db.collection("Spheres").document(sphereName)
         .set(hashMapOf(
-            "seed" to seed
+            "seed" to seed,
+            "subdivision" to subdivision
         ))
         .addOnSuccessListener { Toast.makeText(context, "Exported $sphereName", Toast.LENGTH_SHORT).show() }
         .addOnFailureListener { e ->
@@ -33,7 +34,7 @@ fun addSphereToFirestore(context: Context, sphereName: String, seed: Long?) {
 fun readSphereFromFirestore(
     context: Context,
     sphereName: String,
-    callback: (seed: Long?, sphereName: String) -> Unit
+    callback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
 ) {
     FirebaseApp.initializeApp(context)
     val db = FirebaseFirestore.getInstance()
@@ -41,7 +42,7 @@ fun readSphereFromFirestore(
     db.collection("Spheres").document(sphereName).get()
         .addOnSuccessListener { doc ->
             if (doc.exists()) {
-                callback(doc.get("seed") as? Long, sphereName)
+                callback(sphereName, doc.get("seed") as? Long, (doc.get("subdivision") as Long).toInt())
 
                 Toast.makeText(
                     context,

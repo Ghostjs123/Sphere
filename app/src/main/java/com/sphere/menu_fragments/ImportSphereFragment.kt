@@ -17,7 +17,7 @@ private const val TAG = "ImportSphereFragment"
 
 // NOTE: optional callback is just for usage from the SphereActivity
 class ImportSphereFragment(
-    private val callback: (seed: Long?, sphereName: String) -> Unit
+    private val callback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
 ) : Fragment() {
 
     private var _binding: FragmentImportSphereBinding? = null

@@ -13,8 +13,8 @@ private const val TAG = "NoSphereFragment"
 
 
 class NoSphereFragment(
-    private val newSphereCallback: (sphereName: String) -> Unit,
-    private val importSphereCallback: (seed: Long?, sphereName: String) -> Unit
+    private val newSphereCallback: (sphereName: String, subdivision: Int) -> Unit,
+    private val importSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
 ) : Fragment() {
 
     private var _binding: FragmentNoSphereBinding? = null
