@@ -5,12 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sphere.SphereViewModel
 import com.sphere.databinding.FragmentMySpheresBinding
 import com.sphere.room_code.SphereListAdapter
+import kotlinx.android.synthetic.main.recyclerview_item.view.*
 
 private const val TAG = "MySpheresFragment"
 
@@ -48,6 +50,40 @@ class MySpheresFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Log.i(TAG, "onViewCreated() Started")
+
+        // TODO - If delete button is pressed we delete that sphere from the local repository.
+        //  HUGE NOTE: We may not want to let users do this if this is the sphere they currently
+        //  have open, if we do allow it then it should boot them back to the createNewSphere page afterwards.
+//        binding.spheresRecyclerView.delete_button.setOnClickListener {
+//            Log.i(TAG, "delete_button was pressed.")
+//        }
+//        binding.createSphereButton.setOnClickListener {
+//            sphereName = binding.sphereNameInput.text.toString()
+//
+//            when {
+//                sphereName == "" -> {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Please enter a sphere name",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//                subdivision == 0 -> {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Please choose a subdivision",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//                else -> {
+//                    callback(sphereName, subdivision)
+//                    requireActivity().supportFragmentManager.popBackStack()
+//                }
+//            }
+//        }
+
+        // TODO - If Load is pressed, we should load that sphere from the local repository into the ViewModel
+        //  and then jump back the the sphereFragment and re-render.
 
         Log.i(TAG, "onViewCreated() Returning")
     }
