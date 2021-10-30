@@ -175,7 +175,7 @@ class SphereFragment :
 
     private fun updateUI() {
         // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$temperature\n$latitude\n$longitude\nseed: $mSeed"
+        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$temperature\n$latitude\n$longitude\nseed: $mSeed\n$mSubdivision"
 
         binding.sphereName.text = mSphereName
     }
