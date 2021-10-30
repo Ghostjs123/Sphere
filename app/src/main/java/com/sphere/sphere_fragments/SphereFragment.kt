@@ -3,7 +3,7 @@ package com.sphere.sphere_fragments
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
+import android.content.*
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -22,8 +22,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
 import com.sphere.SphereViewModel
-import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.os.BatteryManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.location.*
@@ -58,14 +58,19 @@ class SphereFragment :
     private var mSphereName: String = ""
     private var mSeed: Long? = null
 
-    private var fusedLocationClient: FusedLocationProviderClient? = null
     private lateinit var sensorManager: SensorManager
+
     private var mAmbientTemp: Sensor? = null
     private var ambientTemp: Float = 0f
+
     private var mLight: Sensor? = null
     private var illuminance: Float = 0f
+
+    private var fusedLocationClient: FusedLocationProviderClient? = null
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+
+    private var temperature: Float = 0f
 
     // ========================================================================
     // Lifecycle Management
@@ -126,6 +131,7 @@ class SphereFragment :
         super.onResume()
         Log.i(TAG, "onResume()")
 
+        activity?.registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         sensorManager.registerListener(this, mAmbientTemp, SensorManager.SENSOR_DELAY_NORMAL)
         sensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL)
     }
@@ -134,6 +140,7 @@ class SphereFragment :
         super.onPause()
         Log.i(TAG, "onPause()")
 
+        activity?.unregisterReceiver(receiver)
         sensorManager.unregisterListener(this)
     }
 
@@ -151,12 +158,23 @@ class SphereFragment :
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
 
+    private val receiver: BroadcastReceiver = object: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.apply {
+                temperature = getIntExtra(
+                    BatteryManager.EXTRA_TEMPERATURE, 0
+                ) / 10f
+            }
+            updateUI()
+        }
+    }
+
     // ========================================================================
     // Sphere Management
 
     private fun updateUI() {
         // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$latitude\n$longitude\nseed: $mSeed"
+        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$temperature\n$latitude\n$longitude\nseed: $mSeed"
 
         binding.sphereName.text = mSphereName
     }
@@ -268,6 +286,10 @@ class SphereFragment :
 
         if (ambientLightEnabled) {
             seed += illuminance.toLong()
+        }
+
+        if (deviceTempEnabled) {
+            seed += temperature.toLong()
         }
 
         Log.i(TAG, "fetchSeed() returning $seed")

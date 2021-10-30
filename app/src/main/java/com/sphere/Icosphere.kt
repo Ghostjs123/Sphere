@@ -373,7 +373,7 @@ class Icosphere(private val sphereName: String) {
         return (radius - oldMin) * (newMax - newMin) / (oldMax - oldMin) + newMin
     }
 
-    private fun mutateVertex(i: Int, noise: OpenSimplex2F): MutableList<Float> {
+    private fun mutateVertex(i: Int, noise: OpenSimplex2F, seed: Long?): MutableList<Float> {
         val vertex = fetchVertex(vertices, i)
 
         val x = vertex[0]
@@ -384,39 +384,48 @@ class Icosphere(private val sphereName: String) {
         val theta = atan2(y, x)
         val rho = atan2(sqrt(x * x + y * y), z)
 
-//        val newR = transformNoiseToRadius(
-//            noise.noise3_Classic(
-//                x.toDouble(),
-//                y.toDouble(),
-//                z.toDouble()
-//            )
-//        )
-//        val newR = transformNoiseToRadius(
-//            noise.noise3_Classic(
-//                r.toDouble(),
-//                theta.toDouble(),
-//                rho.toDouble()
-//            )
-//        )
-//        val newR = transformNoiseToRadius(
-//            noise.noise3_XZBeforeY(
-//                x.toDouble(),
-//                y.toDouble(),
-//                z.toDouble()
-//            )
-//        )
-//        val newR = transformNoiseToRadius(
-//            noise.noise2(
-//                (x * y * z).toDouble(),
-//                (r * rho * theta).toDouble()
-//            )
-//        )
-        val newR = transformNoiseToRadius(
-            noise.noise2(
-                theta.toDouble(),
-                rho.toDouble()
+        val noiseMode = seed?.rem(10)?.toInt()?.let { abs(it) }
+        var newR = 0f
+
+        if (noiseMode == 0 || noiseMode == 1 || noiseMode == 2 || noiseMode == 9) {
+            newR = transformNoiseToRadius(
+                noise.noise3_Classic(
+                    x.toDouble(),
+                    y.toDouble(),
+                    z.toDouble()
+                )
             )
-        )
+        } else if (noiseMode == 3) {
+            newR = transformNoiseToRadius(
+                noise.noise3_Classic(
+                    r.toDouble(),
+                    theta.toDouble(),
+                    rho.toDouble()
+                )
+            )
+        } else if (noiseMode == 4) {
+            newR = transformNoiseToRadius(
+                noise.noise3_XZBeforeY(
+                    x.toDouble(),
+                    y.toDouble(),
+                    z.toDouble()
+                )
+            )
+        } else if (noiseMode == 5) {
+            newR = transformNoiseToRadius(
+                noise.noise2(
+                    (x * y * z).toDouble(),
+                    (r * rho * theta).toDouble()
+                )
+            )
+        } else if (noiseMode == 6 || noiseMode == 7 || noiseMode == 8) {
+            newR = transformNoiseToRadius(
+                noise.noise2(
+                    theta.toDouble(),
+                    rho.toDouble()
+                )
+            )
+        }
 
         vertices[i] = newR * sin(rho) * cos(theta)
         vertices[i + 1] = newR * sin(rho) * sin(theta)
@@ -446,9 +455,9 @@ class Icosphere(private val sphereName: String) {
         colors.clear()
 
         for (i in 0 until count step 3) {
-            val v1 = mutateVertex(indices[i] * 3, noise)
-            val v2 = mutateVertex(indices[i + 1] * 3, noise)
-            val v3 = mutateVertex(indices[i + 2] * 3, noise)
+            val v1 = mutateVertex(indices[i] * 3, noise, seed)
+            val v2 = mutateVertex(indices[i + 1] * 3, noise, seed)
+            val v3 = mutateVertex(indices[i + 2] * 3, noise, seed)
 
             computeFaceNormal(v1, v2, v3, normal)
             addNormal(normal)

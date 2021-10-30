@@ -6,6 +6,8 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import android.util.Log
 import com.sphere.Icosphere
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 private const val TAG = "OpenGLRenderer"
 
