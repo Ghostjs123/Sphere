@@ -26,4 +26,9 @@
     <string name="_3">3</string>
     <string name="_4">4</string>
     <string name="_5">5</string>
+    <string name="selected_sphere">SELECTED_SPHERE</string>
+    <string name="sphere_snapshot">Sphere Snapshot</string>
+    <string name="not_set">not set</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
 </resources>

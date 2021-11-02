@@ -7,27 +7,24 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sphere.R
-import kotlinx.android.synthetic.main.recyclerview_item.view.*
 
-val TAG = "SphereViewHolder"
+
+private const val TAG = "SphereViewHolder"
 
 class SphereViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val sphereItemView: TextView = itemView.findViewById(R.id.textView)
+    private val sphereItemView: TextView = itemView.findViewById(R.id.MySpheresItemText)
 
     fun bind(text: String?) {
         sphereItemView.text = text
+
+        sphereItemView.setOnClickListener { Log.i(TAG, "Clicked: " + sphereItemView.text as String) }
     }
 
     companion object {
         fun create(parent: ViewGroup): SphereViewHolder {
             val view: View = LayoutInflater.from(parent.context)
-                .inflate(R.layout.recyclerview_item, parent, false)
-            view.delete_button.setOnClickListener {
-                Log.i(TAG, "delete_button was pressed.")
-            }
-            view.load_button.setOnClickListener {
-                Log.i(TAG, "load_button was pressed.")
-            }
+                .inflate(R.layout.my_spheres_item, parent, false)
+
             return SphereViewHolder(view)
         }
     }

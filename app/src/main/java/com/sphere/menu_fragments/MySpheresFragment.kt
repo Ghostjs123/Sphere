@@ -1,18 +1,22 @@
 package com.sphere.menu_fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.databinding.FragmentMySpheresBinding
+import com.sphere.room_code.Sphere
 import com.sphere.room_code.SphereListAdapter
-import kotlinx.android.synthetic.main.recyclerview_item.view.*
+
 
 private const val TAG = "MySpheresFragment"
 
@@ -34,6 +38,7 @@ class MySpheresFragment : Fragment() {
 
         val recyclerView = binding.spheresRecyclerView
         val adapter = SphereListAdapter()
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -87,5 +92,4 @@ class MySpheresFragment : Fragment() {
 
         Log.i(TAG, "onViewCreated() Returning")
     }
-
 }
