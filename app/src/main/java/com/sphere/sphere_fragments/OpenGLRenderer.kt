@@ -65,7 +65,6 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT or GL10.GL_DEPTH_BUFFER_BIT or GL10.GL_STENCIL_BUFFER_BIT)
 
         gl.glLoadIdentity()
-
         gl.glTranslatef(0f, 0f, -cameraDistance)
         gl.glRotatef(cameraAngleX, 1f, 0f, 0f)   // pitch
         gl.glRotatef(cameraAngleY, 0f, 1f, 0f)   // heading

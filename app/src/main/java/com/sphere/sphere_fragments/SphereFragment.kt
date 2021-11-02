@@ -29,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.location.*
 import com.sphere.menu_fragments.*
 import com.sphere.utility.addSphereToFirestore
+import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "SphereFragment"
 
@@ -124,6 +125,7 @@ class SphereFragment :
 //            .addToBackStack(getString(R.string.SphereFragmentName))
 //            .commit()
         createNewSphereWithName("asd", 5)  // TODO: delete this line once ^^ is done
+        setSelectedSpherePref(requireActivity(), "asd")
 
         Log.i(TAG, "onViewCreated() Returning")
     }
@@ -175,7 +177,7 @@ class SphereFragment :
 
     private fun updateUI() {
         // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "$ambientTemp\n$illuminance\n$temperature\n$latitude\n$longitude\nseed: $mSeed\n$mSubdivision"
+        binding.sensorValues.text = "seed: $mSeed"
 
         binding.sphereName.text = mSphereName
     }
@@ -183,8 +185,9 @@ class SphereFragment :
     private fun createNewSphereWithName(sphereName: String, subdivision: Int) {
         mSphereName = sphereName
         mSubdivision = subdivision
-        binding.glSurfaceView.createNewSphere(mSphereName, subdivision)
+        binding.glSurfaceView.createNewSphere(subdivision)
         sphereViewModel.setName(mSphereName)
+        setSelectedSpherePref(requireActivity(), sphereName)
 
         updateUI()
     }
@@ -193,8 +196,9 @@ class SphereFragment :
         mSphereName = sphereName
         mSeed = seed
         mSubdivision = subdivision
-        binding.glSurfaceView.createNewSphereUsingSeed(mSphereName, mSeed, subdivision)
+        binding.glSurfaceView.createNewSphereUsingSeed(mSeed, subdivision)
         sphereViewModel.setName(mSphereName)
+        setSelectedSpherePref(requireActivity(), sphereName)
 
         updateUI()
     }
