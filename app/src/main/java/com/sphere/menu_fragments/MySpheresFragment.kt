@@ -56,31 +56,40 @@ class MySpheresFragment : Fragment() {
 
         Log.i(TAG, "onViewCreated() Started")
 
+        // TODO - If delete button is pressed we delete that sphere from the local repository.
+        //  HUGE NOTE: We may not want to let users do this if this is the sphere they currently
+        //  have open, if we do allow it then it should boot them back to the createNewSphere page afterwards.
+//        binding.spheresRecyclerView.delete_button.setOnClickListener {
+//            Log.i(TAG, "delete_button was pressed.")
+//        }
+//        binding.createSphereButton.setOnClickListener {
+//            sphereName = binding.sphereNameInput.text.toString()
+//
+//            when {
+//                sphereName == "" -> {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Please enter a sphere name",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//                subdivision == 0 -> {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Please choose a subdivision",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//                else -> {
+//                    callback(sphereName, subdivision)
+//                    requireActivity().supportFragmentManager.popBackStack()
+//                }
+//            }
+//        }
+
+        // TODO - If Load is pressed, we should load that sphere from the local repository into the ViewModel
+        //  and then jump back the the sphereFragment and re-render.
+
         Log.i(TAG, "onViewCreated() Returning")
-    }
-}
-
-class SphereAdapter(
-    private val context: Context,
-    private val list: List<Sphere>
-) : RecyclerView.Adapter<SphereAdapter.ViewHolder>() {
-
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val sphereName: TextView = view.findViewById(R.id.MySpheresItemText)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.my_spheres_item,parent, false)
-
-        return ViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        return list.count()
-    }
-
-    override fun onBindViewHolder(holder: SphereAdapter.ViewHolder, position: Int) {
-        val data = list[position]
-        holder.sphereName.text = data.name
     }
 }

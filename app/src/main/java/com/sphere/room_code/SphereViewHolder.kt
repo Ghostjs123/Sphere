@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sphere.R
 
+
 private const val TAG = "SphereViewHolder"
 
 class SphereViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

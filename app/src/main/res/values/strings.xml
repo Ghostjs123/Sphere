@@ -19,6 +19,8 @@
     <string name="title_activity_launcher">LauncherActivity</string>
     <string name="DeleteOnDeviceData">Delete On Device Data</string>
     <string name="SphereFragmentName">SphereFragment</string>
+    <string name="RecyclerItemDelete">Delete</string>
+    <string name="RecyclerItemLoad">Load</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
     <string name="_3">3</string>
