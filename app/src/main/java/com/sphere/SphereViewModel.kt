@@ -13,12 +13,14 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
-    fun insert(sphere: Sphere) = viewModelScope.launch {
+    private fun insert(sphere: Sphere) = viewModelScope.launch {
         repository.insert(sphere)
     }
-
     fun update(name: String, seed: Long) = viewModelScope.launch {
         repository.update(name, seed)
+    }
+    fun delete(sphereName: String) = viewModelScope.launch {
+        repository.delete(sphereName)
     }
 
     // Current Sphere info
@@ -78,7 +80,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     }
 
     // Returns this sphere's subdivisions
-    fun getSubdisions(): Int? {
+    fun getSubdivisions(): Int? {
         return subdivisions
     }
 
