@@ -49,7 +49,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
                 return true
             }
         }
-
+        Log.w(TAG, "ViewModel failed to load sphere with name: $sphereName")
         return false
     }
 

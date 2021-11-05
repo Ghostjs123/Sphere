@@ -13,8 +13,7 @@ private const val TAG = "NoSphereFragment"
 
 
 class NoSphereFragment(
-    private val newSphereCallback: (sphereName: String, subdivision: Int) -> Unit,
-    private val importSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit,
 ) : Fragment() {
 
     private var _binding: FragmentNoSphereBinding? = null
@@ -42,13 +41,13 @@ class NoSphereFragment(
 
         binding.createNewSphereText.setOnClickListener {
             parentFragmentManager.beginTransaction()
-            .replace(R.id.sphere_fragment_container, NewSphereFragment(newSphereCallback))
+            .replace(R.id.sphere_fragment_container, NewSphereFragment(updateSphereCallback))
             .addToBackStack(null)
             .commit()
         }
         binding.importSphereText.setOnClickListener {
             parentFragmentManager.beginTransaction()
-            .replace(R.id.sphere_fragment_container, ImportSphereFragment(importSphereCallback))
+            .replace(R.id.sphere_fragment_container, ImportSphereFragment(updateSphereCallback))
             .addToBackStack(null)
             .commit()
         }

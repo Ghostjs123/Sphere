@@ -16,9 +16,8 @@ import com.sphere.utility.setSelectedSpherePref
 private const val TAG = "NewSphereFragment"
 
 
-// NOTE: callback is for usage from the SphereFragment
 class NewSphereFragment(
-    private val callback: (sphereName: String, subdivision: Int) -> Unit
+    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
 ) : Fragment() {
 
     private var _binding: FragmentNewSphereBinding? = null
@@ -69,7 +68,7 @@ class NewSphereFragment(
                     ).show()
                 }
                 else -> {
-                    callback(sphereName, subdivision)
+                    updateSphereCallback(sphereName, null, subdivision)
 
                     (requireActivity() as SphereActivity).addNewSphereToViewModel(sphereName, null, subdivision)
 

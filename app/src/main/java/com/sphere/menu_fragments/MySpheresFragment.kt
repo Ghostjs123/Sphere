@@ -27,7 +27,7 @@ private const val TAG = "MySpheresFragment"
 
 
 class MySpheresFragment(
-    private val callback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
 ) : Fragment() {
 
     private var _binding: FragmentMySpheresBinding? = null
@@ -113,10 +113,7 @@ class MySpheresFragment(
         updateSelectedBorder()
 
         if (sphereViewModel.loadSphere(sphereName)) {
-            callback(sphereName, sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
-        }
-        else {
-            Log.w(TAG, "ViewModel failed to load sphere with name: $sphereName")
+            updateSphereCallback(sphereName, sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
         }
     }
 

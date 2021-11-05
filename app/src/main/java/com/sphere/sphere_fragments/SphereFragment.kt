@@ -25,8 +25,12 @@ import android.content.pm.PackageManager
 import android.os.BatteryManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import com.google.android.gms.location.*
+import com.sphere.SphereViewModel
+import com.sphere.SphereViewModelFactory
 import com.sphere.menu_fragments.*
+import com.sphere.room_code.SphereApplication
 import com.sphere.utility.addSphereToFirestore
 import com.sphere.utility.setSelectedSpherePref
 
@@ -44,7 +48,9 @@ fun checkLocationPermission(activity: Activity): Boolean {
 }
 
 
-class SphereFragment :
+class SphereFragment(
+    private val initialSphereName: String
+) :
     Fragment(),
     PopupMenu.OnMenuItemClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
@@ -52,6 +58,10 @@ class SphereFragment :
 {
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
+
+    private val sphereViewModel: SphereViewModel by viewModels {
+        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
+    }
 
     private var mSphereName: String = ""
     private var mSeed: Long? = null
@@ -111,6 +121,8 @@ class SphereFragment :
             showPopup(it)
         }
 
+        updateSphere(initialSphereName, sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
+
         Log.i(TAG, "onViewCreated() Returning")
     }
 
@@ -166,21 +178,17 @@ class SphereFragment :
         binding.sphereName.text = mSphereName
     }
 
-    private fun createNewSphereWithName(sphereName: String, subdivision: Int) {
-        mSphereName = sphereName
-        mSubdivision = subdivision
-        binding.glSurfaceView.createNewSphere(subdivision)
-
-        updateUI()
-    }
-
-    private fun createNewSphereWithNameAndSeed(sphereName: String, seed: Long?, subdivision: Int) {
+    private fun updateSphere(sphereName: String, seed: Long?, subdivision: Int) {
         mSphereName = sphereName
         mSeed = seed
         mSubdivision = subdivision
         binding.glSurfaceView.createNewSphereUsingSeed(mSeed, subdivision)
 
         updateUI()
+    }
+
+    fun getUpdateSphereCallback(): (String, Long?, Int) -> Unit {
+        return ::updateSphere
     }
 
     // NOTE: this has to be declared at the top level or onCreate()
@@ -300,21 +308,21 @@ class SphereFragment :
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, MySpheresFragment(::createNewSphereWithNameAndSeed))
+                    .add(R.id.sphere_fragment_container, MySpheresFragment(::updateSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.import_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, ImportSphereFragment(::createNewSphereWithNameAndSeed))
+                    .add(R.id.sphere_fragment_container, ImportSphereFragment(::updateSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.create_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, NewSphereFragment(::createNewSphereWithName))
+                    .add(R.id.sphere_fragment_container, NewSphereFragment(::updateSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
@@ -353,13 +361,5 @@ class SphereFragment :
             .setPositiveButton("Yes", dialogClickListener)
             .setNegativeButton("No", dialogClickListener)
             .show()
-    }
-
-    fun getCreateNewSphereWithNameCallback(): (String, Int) -> Unit {
-        return ::createNewSphereWithName
-    }
-
-    fun getCreateNewSphereWithNameAndSeedCallback(): (String, Long?, Int) -> Unit {
-        return ::createNewSphereWithNameAndSeed
     }
 }

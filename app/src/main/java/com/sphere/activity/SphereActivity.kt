@@ -13,6 +13,7 @@ import com.sphere.menu_fragments.NoSphereFragment
 import com.sphere.sphere_fragments.SphereFragment
 import com.sphere.room_code.SphereApplication
 import com.sphere.room_code.SphereListAdapter
+import com.sphere.utility.getSelectedSpherePref
 import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "SphereActivity"
@@ -33,32 +34,27 @@ class SphereActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_sphere)
 
-//        // val adapter = SphereListAdapter()
-//        sphereViewModel.allSpheres.observe(this) { spheres ->
-//            // Update the cached copy of the words in the adapter.
-//            spheres.let {
-//                // adapter.submitList(it)
-//            }
-//        }
+        Log.i(TAG, "onCreate() Finished")
+    }
 
-        sphereFragment = SphereFragment()
+    override fun onStart() {
+        super.onStart()
+
+        val selected = getSelectedSpherePref(this)
+        sphereViewModel.loadSphere(selected!!)
+
+        sphereFragment = SphereFragment(selected!!)
         supportFragmentManager.beginTransaction()
             .replace(R.id.sphere_fragment_container, sphereFragment)
             .commit()
 
-        // TODO: use the view model + shared preferences
-        // TODO: navigate to NoSphereFragment instead of SphereFragment if no spheres in the view model
-//        if (sphereViewModel.isEmpty()) {
-//            supportFragmentManager.beginTransaction()
-//            .add(R.id.sphere_fragment_container, NoSphereFragment(
-//                sphereFragment.getCreateNewSphereWithNameCallback(),
-//                sphereFragment.getCreateNewSphereWithNameAndSeedCallback(),
-//            ))
-//            .addToBackStack(null)
-//            .commit()
-//        }
-
-        Log.i(TAG, "onCreate() Finished")
+        if (selected == "") {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.sphere_fragment_container, NoSphereFragment(
+                    sphereFragment.getUpdateSphereCallback()
+                ))
+                .commit()
+        }
     }
 
     fun onRadioButtonClicked(view: View) {
