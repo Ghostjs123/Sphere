@@ -8,9 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
-import com.sphere.R
-import com.sphere.activity.SphereActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
+import com.sphere.SphereViewModel
+import com.sphere.SphereViewModelFactory
 import com.sphere.databinding.FragmentNewSphereBinding
+import com.sphere.room_code.SphereApplication
 import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "NewSphereFragment"
@@ -23,9 +26,12 @@ class NewSphereFragment(
     private var _binding: FragmentNewSphereBinding? = null
     private val binding get() = _binding!!
 
-    private var sphereName = ""
-    private var subdivision = 0
+    private val sphereViewModel: SphereViewModel by viewModels {
+        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
+    }
 
+    private var sphereName = ""
+    private var subdivisions = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +66,7 @@ class NewSphereFragment(
                         Toast.LENGTH_LONG
                     ).show()
                 }
-                subdivision == 0 -> {
+                subdivisions == 0 -> {
                     Toast.makeText(
                         requireContext(),
                         "Please choose a subdivision",
@@ -68,11 +74,11 @@ class NewSphereFragment(
                     ).show()
                 }
                 else -> {
-                    updateSphereCallback(sphereName, null, subdivision)
+                    updateSphereCallback(sphereName, null, subdivisions)
+                    setSelectedSpherePref(requireActivity(), sphereName)
+                    sphereViewModel.addSphere(sphereName, null, subdivisions)
 
-                    (requireActivity() as SphereActivity).addNewSphereToViewModel(sphereName, null, subdivision)
-
-                    requireActivity().supportFragmentManager.popBackStack()
+                    requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             }
         }
@@ -94,23 +100,23 @@ class NewSphereFragment(
         if (view is RadioButton && view.isChecked) {
             when (view) {
                 binding.radioNew1 -> {
-                    subdivision = 1
+                    subdivisions = 1
                     updateChecks(view)
                 }
                 binding.radioNew2 -> {
-                    subdivision = 2
+                    subdivisions = 2
                     updateChecks(view)
                 }
                 binding.radioNew3 -> {
-                    subdivision = 3
+                    subdivisions = 3
                     updateChecks(view)
                 }
                 binding.radioNew4 -> {
-                    subdivision = 4
+                    subdivisions = 4
                     updateChecks(view)
                 }
                 binding.radioNew5 -> {
-                    subdivision = 5
+                    subdivisions = 5
                     updateChecks(view)
                 }
             }

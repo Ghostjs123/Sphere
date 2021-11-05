@@ -6,10 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
+import com.sphere.SphereViewModel
+import com.sphere.SphereViewModelFactory
 import com.sphere.databinding.FragmentImportSphereBinding
 import com.sphere.activity.SphereActivity
+import com.sphere.room_code.SphereApplication
 import com.sphere.utility.readSphereFromFirestore
+import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "ImportSphereFragment"
 
@@ -20,6 +26,10 @@ class ImportSphereFragment(
 
     private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
+
+    private val sphereViewModel: SphereViewModel by viewModels {
+        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,8 +55,6 @@ class ImportSphereFragment(
             val sphereName: String = binding.sphereNameInput.text.toString()
 
             readSphereFromFirestore(requireContext(), sphereName, ::firebaseCallback)
-
-            requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
         Log.i(TAG, "onViewCreated() Finished")
@@ -54,6 +62,9 @@ class ImportSphereFragment(
 
     private fun firebaseCallback(sphereName: String, seed: Long?, subdivisions: Int) {
         updateSphereCallback(sphereName, seed, subdivisions)
-        (requireActivity() as SphereActivity).addNewSphereToViewModel(sphereName, seed, subdivisions)
+        setSelectedSpherePref(requireActivity(), sphereName)
+        sphereViewModel.addSphere(sphereName, seed, subdivisions)
+
+        requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }

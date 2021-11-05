@@ -54,11 +54,7 @@ class SphereActivity : AppCompatActivity() {
 
         if (selected == "") {
             // Only way this is "" is if there are no spheres, can skip checking viewmodel
-            supportFragmentManager.beginTransaction()
-                .add(R.id.sphere_fragment_container, NoSphereFragment(
-                    mSphereFragment.getUpdateSphereCallback()
-                ))
-                .commit()
+            addNoSphereFragment()
         }
         else {
             sphereViewModel.allSpheres.observeOnce(this, {
@@ -69,20 +65,27 @@ class SphereActivity : AppCompatActivity() {
                         sphereViewModel.getSubdivisions()
                     )
                 }
+                else {
+                    addNoSphereFragment()
+                }
             })
         }
     }
 
+    private fun addNoSphereFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.sphere_menu_fragment_container, NoSphereFragment(
+                mSphereFragment.getUpdateSphereCallback()
+            ))
+            .addToBackStack(null)
+            .commit()
+    }
+
     fun onRadioButtonClicked(view: View) {
-        val f = supportFragmentManager.findFragmentById(R.id.sphere_fragment_container)
+        val f = supportFragmentManager.findFragmentById(R.id.sphere_menu_fragment_container)
 
         if (f is NewSphereFragment) f.onRadioButtonClicked(view)
         else Log.w(TAG, "onRadioButtonClicked() occurred on a fragment that was not a NewSphereFragment")
-    }
-
-    fun addNewSphereToViewModel(sphereName: String, seed: Long?, subdivisions: Int) {
-        setSelectedSpherePref(this, sphereName)
-        sphereViewModel.addSphere(sphereName, seed, subdivisions)
     }
 }
 

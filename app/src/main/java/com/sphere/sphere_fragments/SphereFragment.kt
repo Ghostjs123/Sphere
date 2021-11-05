@@ -129,6 +129,8 @@ class SphereFragment() :
         activity?.registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         sensorManager.registerListener(this, mAmbientTemp, SensorManager.SENSOR_DELAY_NORMAL)
         sensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL)
+
+        binding.glSurfaceView.requestRender()
     }
 
     override fun onPause() {
@@ -304,28 +306,28 @@ class SphereFragment() :
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, MySpheresFragment(::updateSphere))
+                    .replace(R.id.sphere_menu_fragment_container, MySpheresFragment(::updateSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.import_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, ImportSphereFragment(::updateSphere))
+                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(::updateSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.create_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, NewSphereFragment(::updateSphere))
+                    .replace(R.id.sphere_menu_fragment_container, NewSphereFragment(::updateSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.settings_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, SettingsMenuFragment())
+                    .replace(R.id.sphere_menu_fragment_container, SettingsMenuFragment())
                     .addToBackStack(null)
                     .commit()
                 return true
