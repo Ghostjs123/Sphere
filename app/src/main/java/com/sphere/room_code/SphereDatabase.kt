@@ -46,8 +46,8 @@ abstract class SphereDatabase : RoomDatabase() {
         suspend fun populateDatabase(sphereDao: SphereDao) {
             sphereDao.deleteAll()
 
-            sphereDao.insert(Sphere("test1", 0, 2))
-            sphereDao.insert(Sphere("test2", 0, 2))
+//            sphereDao.insert(Sphere("test1", 0, 2))
+//            sphereDao.insert(Sphere("test2", 0, 2))
         }
     }
 }

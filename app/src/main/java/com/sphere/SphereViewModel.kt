@@ -6,13 +6,13 @@ import com.sphere.room_code.Sphere
 import com.sphere.room_code.SphereRepository
 import kotlinx.coroutines.launch
 
+private const val TAG = "SphereViewModel"
+
+
 class SphereViewModel(private val repository: SphereRepository): ViewModel() {
 
     val allSpheres: LiveData<List<Sphere>> = repository.allSpheres.asLiveData()
 
-    /**
-     * Launching a new coroutine to insert the data in a non-blocking way
-     */
     private fun insert(sphere: Sphere) = viewModelScope.launch {
         repository.insert(sphere)
     }
@@ -26,16 +26,10 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     // Current Sphere info
     private var sphereName = ""
     private var seed: Long? = 0
-    private var subdivisions: Int? = 0
+    private var subdivisions: Int = 0
     private var index: Int = 0
 
-    private fun unloadSphere() {
-        sphereName = ""
-        seed = 0
-        subdivisions = 0
-        index = 0
-    }
-
+    // ================================================================================
     // --- Functions for retrieving and changing ViewModel data ---
 
     fun newSphere(name: String) {
@@ -45,13 +39,22 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
         index = 0
     }
 
-    // Loads the sphere at sphereIndex from the LiveData
-    fun loadSphere(sphereIndex:Int) {
-        val currSphereList = allSpheres.value
-        sphereName = currSphereList!![sphereIndex].name
-        seed = currSphereList!![sphereIndex].seed
-        subdivisions = currSphereList!![sphereIndex].subs
-        index = sphereIndex
+    fun loadSphere(sphereName: String): Boolean {
+        allSpheres.value?.forEach {
+            if (it.name == sphereName) {
+                this.sphereName = it.name
+                this.seed = it.seed
+                this.subdivisions = it.subs
+
+                return true
+            }
+        }
+
+        return false
+    }
+
+    fun addSphere(sphereName: String, seed: Long?, subdivisions: Int) {
+        insert(Sphere(sphereName, seed, subdivisions))
     }
 
     // Returns this sphere's name
@@ -60,7 +63,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     }
 
     // Sets this sphere's name
-    fun setName(newName:String) {
+    fun setName(newName: String) {
         // TODO : This needs to also update the sphere's name in our LiveData
         sphereName = newName
         insert(Sphere(sphereName, seed, subdivisions))
@@ -80,12 +83,22 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     }
 
     // Returns this sphere's subdivisions
-    fun getSubdivisions(): Int? {
+    fun getSubdivisions(): Int {
         return subdivisions
     }
 
+    fun isEmpty(): Boolean {
+        return if (allSpheres.value == null) {
+            true
+        } else {
+            allSpheres.value!!.isEmpty()
+        }
+    }
+
+    // ================================================================================
+
     init {
-        Log.i("SphereViewModel", "SphereViewModel created")
+        Log.i(TAG, "SphereViewModel created")
     }
 }
 

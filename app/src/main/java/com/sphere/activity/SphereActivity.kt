@@ -9,9 +9,11 @@ import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.SphereViewModelFactory
 import com.sphere.menu_fragments.NewSphereFragment
+import com.sphere.menu_fragments.NoSphereFragment
 import com.sphere.sphere_fragments.SphereFragment
 import com.sphere.room_code.SphereApplication
 import com.sphere.room_code.SphereListAdapter
+import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "SphereActivity"
 
@@ -31,16 +33,30 @@ class SphereActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_sphere)
 
-        val adapter = SphereListAdapter()
-        sphereViewModel.allSpheres.observe(this) { spheres ->
-            // Update the cached copy of the words in the adapter.
-            spheres.let { adapter.submitList(it) }
-        }
+//        // val adapter = SphereListAdapter()
+//        sphereViewModel.allSpheres.observe(this) { spheres ->
+//            // Update the cached copy of the words in the adapter.
+//            spheres.let {
+//                // adapter.submitList(it)
+//            }
+//        }
 
         sphereFragment = SphereFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.sphere_fragment_container, sphereFragment)
             .commit()
+
+        // TODO: use the view model + shared preferences
+        // TODO: navigate to NoSphereFragment instead of SphereFragment if no spheres in the view model
+//        if (sphereViewModel.isEmpty()) {
+//            supportFragmentManager.beginTransaction()
+//            .add(R.id.sphere_fragment_container, NoSphereFragment(
+//                sphereFragment.getCreateNewSphereWithNameCallback(),
+//                sphereFragment.getCreateNewSphereWithNameAndSeedCallback(),
+//            ))
+//            .addToBackStack(null)
+//            .commit()
+//        }
 
         Log.i(TAG, "onCreate() Finished")
     }
@@ -50,5 +66,10 @@ class SphereActivity : AppCompatActivity() {
 
         if (f is NewSphereFragment) f.onRadioButtonClicked(view)
         else Log.w(TAG, "onRadioButtonClicked() occurred on a fragment that was not a NewSphereFragment")
+    }
+
+    fun addNewSphereToViewModel(sphereName: String, seed: Long?, subdivisions: Int) {
+        setSelectedSpherePref(this, sphereName)
+        sphereViewModel.addSphere(sphereName, seed, subdivisions)
     }
 }

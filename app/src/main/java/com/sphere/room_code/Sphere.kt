@@ -14,5 +14,5 @@ data class Sphere(
     @ColumnInfo(name = "seed")
     var seed: Long?,
     @ColumnInfo(name = "subdivisions")
-    var subs: Int?
+    var subs: Int
 )

@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
 import com.sphere.R
+import com.sphere.activity.SphereActivity
 import com.sphere.databinding.FragmentNewSphereBinding
+import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "NewSphereFragment"
 
@@ -68,6 +70,9 @@ class NewSphereFragment(
                 }
                 else -> {
                     callback(sphereName, subdivision)
+
+                    (requireActivity() as SphereActivity).addNewSphereToViewModel(sphereName, null, subdivision)
+
                     requireActivity().supportFragmentManager.popBackStack()
                 }
             }

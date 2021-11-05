@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.sphere.databinding.FragmentImportSphereBinding
 import com.sphere.activity.SphereActivity
+import com.sphere.room_code.Sphere
 import com.sphere.utility.readSphereFromFirestore
+import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "ImportSphereFragment"
 
@@ -46,20 +48,16 @@ class ImportSphereFragment(
         binding.importSphereButton.setOnClickListener {
             val sphereName: String = binding.sphereNameInput.text.toString()
 
-            readSphereFromFirestore(requireContext(), sphereName, callback)
+            readSphereFromFirestore(requireContext(), sphereName, ::firebaseCallback)
+
             requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
         Log.i(TAG, "onViewCreated() Finished")
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        Log.i(TAG, "onDestroyView() Started")
-
-        _binding = null
-
-        Log.i(TAG, "onDestroyView() Finished")
+    private fun firebaseCallback(sphereName: String, seed: Long?, subdivisions: Int) {
+        callback(sphereName, seed, subdivisions)
+        (requireActivity() as SphereActivity).addNewSphereToViewModel(sphereName, seed, subdivisions)
     }
 }

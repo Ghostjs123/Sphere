@@ -1,23 +1,34 @@
 package com.sphere.room_code
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sphere.R
-
+import com.sphere.utility.getSelectedSpherePref
 
 private const val TAG = "SphereViewHolder"
 
-class SphereViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val sphereItemView: TextView = itemView.findViewById(R.id.MySpheresItemText)
+
+class SphereViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    val textView: TextView = view.findViewById(R.id.MySpheresItemText)
 
     fun bind(text: String?) {
-        sphereItemView.text = text
+        textView.text = text
 
-        sphereItemView.setOnClickListener { Log.i(TAG, "Clicked: " + sphereItemView.text as String) }
+        val context = view.context
+
+        val tmp = getSelectedSpherePref(context)
+
+        if (text == tmp) {
+            view.background = ResourcesCompat.getDrawable(
+                context.resources,
+                R.drawable.blue_border,
+                context.theme
+            )
+        }
     }
 
     companion object {

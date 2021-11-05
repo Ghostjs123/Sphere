@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
-import com.sphere.SphereViewModel
 import android.content.pm.PackageManager
 import android.os.BatteryManager
 import android.widget.Toast
@@ -51,8 +50,6 @@ class SphereFragment :
     ActivityCompat.OnRequestPermissionsResultCallback,
     SensorEventListener
 {
-    private lateinit var sphereViewModel: SphereViewModel
-
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
 
@@ -85,7 +82,6 @@ class SphereFragment :
         Log.i(TAG, "onCreateView() Started")
 
         _binding = FragmentSphereBinding.inflate(inflater, container, false)
-        sphereViewModel = ViewModelProvider(requireActivity())[SphereViewModel::class.java]
 
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mAmbientTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
@@ -114,18 +110,6 @@ class SphereFragment :
         binding.sphereOptionsButton.setOnClickListener {
             showPopup(it)
         }
-
-        // TODO: use the view model + shared preferences
-        // TODO: navigate to NoSphereFragment instead of SphereFragment if no spheres in the view model
-//        parentFragmentManager.beginTransaction()
-//            .replace(R.id.sphere_menu_fragment_container, NoSphereFragment(
-//                ::createNewSphereWithName,
-//                ::createNewSphereWithSeedAndName
-//            ))
-//            .addToBackStack(getString(R.string.SphereFragmentName))
-//            .commit()
-        createNewSphereWithName("asd", 5)  // TODO: delete this line once ^^ is done
-        setSelectedSpherePref(requireActivity(), "asd")
 
         Log.i(TAG, "onViewCreated() Returning")
     }
@@ -177,7 +161,7 @@ class SphereFragment :
 
     private fun updateUI() {
         // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "seed: $mSeed"
+        binding.sensorValues.text = "seed: $mSeed\nsubdivisions: $mSubdivision"
 
         binding.sphereName.text = mSphereName
     }
@@ -186,8 +170,6 @@ class SphereFragment :
         mSphereName = sphereName
         mSubdivision = subdivision
         binding.glSurfaceView.createNewSphere(subdivision)
-        sphereViewModel.setName(mSphereName)
-        setSelectedSpherePref(requireActivity(), sphereName)
 
         updateUI()
     }
@@ -197,8 +179,6 @@ class SphereFragment :
         mSeed = seed
         mSubdivision = subdivision
         binding.glSurfaceView.createNewSphereUsingSeed(mSeed, subdivision)
-        sphereViewModel.setName(mSphereName)
-        setSelectedSpherePref(requireActivity(), sphereName)
 
         updateUI()
     }
@@ -268,7 +248,6 @@ class SphereFragment :
 
     private fun finishMutate() {
         mSeed = fetchSeed()
-        sphereViewModel.setSeed(mSeed)
         binding.glSurfaceView.mutateSphere(mSeed)
         updateUI()
     }
@@ -321,7 +300,7 @@ class SphereFragment :
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .add(R.id.sphere_fragment_container, MySpheresFragment())
+                    .add(R.id.sphere_fragment_container, MySpheresFragment(::createNewSphereWithNameAndSeed))
                     .addToBackStack(null)
                     .commit()
                 return true
@@ -374,5 +353,13 @@ class SphereFragment :
             .setPositiveButton("Yes", dialogClickListener)
             .setNegativeButton("No", dialogClickListener)
             .show()
+    }
+
+    fun getCreateNewSphereWithNameCallback(): (String, Int) -> Unit {
+        return ::createNewSphereWithName
+    }
+
+    fun getCreateNewSphereWithNameAndSeedCallback(): (String, Long?, Int) -> Unit {
+        return ::createNewSphereWithNameAndSeed
     }
 }
