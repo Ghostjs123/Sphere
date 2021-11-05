@@ -5,11 +5,16 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.SphereViewModelFactory
 import com.sphere.menu_fragments.NewSphereFragment
 import com.sphere.menu_fragments.NoSphereFragment
+import com.sphere.room_code.Sphere
 import com.sphere.sphere_fragments.SphereFragment
 import com.sphere.room_code.SphereApplication
 import com.sphere.room_code.SphereListAdapter
@@ -25,7 +30,7 @@ class SphereActivity : AppCompatActivity() {
         SphereViewModelFactory((application as SphereApplication).repository)
     }
 
-    private lateinit var sphereFragment: SphereFragment
+    private lateinit var mSphereFragment: SphereFragment
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,19 +46,30 @@ class SphereActivity : AppCompatActivity() {
         super.onStart()
 
         val selected = getSelectedSpherePref(this)
-        sphereViewModel.loadSphere(selected!!)
 
-        sphereFragment = SphereFragment(selected!!)
+        mSphereFragment = SphereFragment()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.sphere_fragment_container, sphereFragment)
+            .replace(R.id.sphere_fragment_container, mSphereFragment)
             .commit()
 
         if (selected == "") {
+            // Only way this is "" is if there are no spheres, can skip checking viewmodel
             supportFragmentManager.beginTransaction()
                 .add(R.id.sphere_fragment_container, NoSphereFragment(
-                    sphereFragment.getUpdateSphereCallback()
+                    mSphereFragment.getUpdateSphereCallback()
                 ))
                 .commit()
+        }
+        else {
+            sphereViewModel.allSpheres.observeOnce(this, {
+                if (sphereViewModel.loadSphere(selected!!)) {
+                    mSphereFragment.updateSphere(
+                        sphereViewModel.getName(),
+                        sphereViewModel.getSeed(),
+                        sphereViewModel.getSubdivisions()
+                    )
+                }
+            })
         }
     }
 
@@ -68,4 +84,13 @@ class SphereActivity : AppCompatActivity() {
         setSelectedSpherePref(this, sphereName)
         sphereViewModel.addSphere(sphereName, seed, subdivisions)
     }
+}
+
+fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: (T) -> Unit) {
+    observe(owner, object: Observer<T> {
+        override fun onChanged(value: T) {
+            removeObserver(this)
+            observer(value)
+        }
+    })
 }

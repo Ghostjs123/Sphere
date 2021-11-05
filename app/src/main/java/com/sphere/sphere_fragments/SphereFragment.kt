@@ -48,9 +48,7 @@ fun checkLocationPermission(activity: Activity): Boolean {
 }
 
 
-class SphereFragment(
-    private val initialSphereName: String
-) :
+class SphereFragment() :
     Fragment(),
     PopupMenu.OnMenuItemClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
@@ -121,8 +119,6 @@ class SphereFragment(
             showPopup(it)
         }
 
-        updateSphere(initialSphereName, sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
-
         Log.i(TAG, "onViewCreated() Returning")
     }
 
@@ -178,7 +174,7 @@ class SphereFragment(
         binding.sphereName.text = mSphereName
     }
 
-    private fun updateSphere(sphereName: String, seed: Long?, subdivision: Int) {
+    fun updateSphere(sphereName: String, seed: Long?, subdivision: Int) {
         mSphereName = sphereName
         mSeed = seed
         mSubdivision = subdivision

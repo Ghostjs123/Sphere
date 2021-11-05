@@ -10,7 +10,6 @@ private const val TAG = "SphereViewModel"
 
 
 class SphereViewModel(private val repository: SphereRepository): ViewModel() {
-
     val allSpheres: LiveData<List<Sphere>> = repository.allSpheres.asLiveData()
 
     private fun insert(sphere: Sphere) = viewModelScope.launch {
@@ -93,12 +92,6 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
         } else {
             allSpheres.value!!.isEmpty()
         }
-    }
-
-    // ================================================================================
-
-    init {
-        Log.i(TAG, "SphereViewModel created")
     }
 }
 
