@@ -10,29 +10,26 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.preference.PreferenceManager
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.sphere.R
 import com.sphere.databinding.FragmentSphereBinding
 import android.content.pm.PackageManager
 import android.os.BatteryManager
+import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import com.google.android.gms.location.*
 import com.sphere.SphereViewModel
 import com.sphere.SphereViewModelFactory
+import com.sphere.activity.SphereActivity
 import com.sphere.menu_fragments.*
 import com.sphere.room_code.SphereApplication
 import com.sphere.utility.addSphereToFirestore
-import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "SphereFragment"
 
@@ -91,6 +88,8 @@ class SphereFragment() :
 
         _binding = FragmentSphereBinding.inflate(inflater, container, false)
 
+        (activity as AppCompatActivity).supportActionBar?.hide()
+
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mAmbientTemp = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
         mLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
@@ -129,8 +128,6 @@ class SphereFragment() :
         activity?.registerReceiver(receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         sensorManager.registerListener(this, mAmbientTemp, SensorManager.SENSOR_DELAY_NORMAL)
         sensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL)
-
-        binding.glSurfaceView.requestRender()
     }
 
     override fun onPause() {

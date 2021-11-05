@@ -11,6 +11,15 @@
     android:focusable="true"
     tools:context="com.sphere.menu_fragments.NoSphereFragment">
 
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/toolbar_blue"
+        android:title="@string/toolbar_no_spheres"
+        android:titleTextAppearance="@style/Toolbar.TitleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/no_sphere_found_text"
         android:layout_width="wrap_content"

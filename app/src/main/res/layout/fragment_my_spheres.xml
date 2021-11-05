@@ -9,28 +9,27 @@
     android:focusable="true"
     tools:context="com.sphere.menu_fragments.MySpheresFragment">
 
+    <Toolbar
+        android:id="@+id/my_spheres_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/toolbar_blue"
+        android:title="@string/toolbar_my_spheres"
+        android:titleTextAppearance="@style/Toolbar.TitleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/MySpheresRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         app:layout_constrainedHeight="true"
-        tools:listitem="@layout/my_spheres_item"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/MySpheresTestButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/test"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintTop_toBottomOf="@id/my_spheres_toolbar"
+        app:layout_constraintBottom_toTopOf="@id/MySpheresDeleteButton"
+        app:layout_constraintVertical_bias="0"
+        tools:listitem="@layout/my_spheres_item" />
 
     <Button
         android:id="@+id/MySpheresDeleteButton"

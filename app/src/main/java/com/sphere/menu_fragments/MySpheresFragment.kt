@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -96,10 +97,6 @@ class MySpheresFragment(
 
         // TODO - If Load is pressed, we should load that sphere from the local repository into the ViewModel
         //  and then jump back the the sphereFragment and re-render.
-
-        binding.MySpheresTestButton.setOnClickListener {
-            updateSelectedBorder()
-        }
 
         Log.i(TAG, "onViewCreated() Returning")
     }

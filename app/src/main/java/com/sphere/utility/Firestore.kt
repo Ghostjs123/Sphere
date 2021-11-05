@@ -52,7 +52,7 @@ fun readSphereFromFirestore(
             } else {
                 Toast.makeText(
                     context,
-                    "Could not find sphere $sphereName to import",
+                    "'$sphereName' does not exist",
                     Toast.LENGTH_SHORT
                 ).show()
             }
