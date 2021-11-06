@@ -2,19 +2,16 @@ package com.sphere.menu_fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.sphere.SphereViewModel
-import com.sphere.SphereViewModelFactory
 import com.sphere.databinding.FragmentNewSphereBinding
-import com.sphere.room_code.SphereApplication
 import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "NewSphereFragment"
@@ -27,9 +24,7 @@ class NewSphereFragment(
     private var _binding: FragmentNewSphereBinding? = null
     private val binding get() = _binding!!
 
-    private val sphereViewModel: SphereViewModel by viewModels {
-        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
-    }
+    private val sphereViewModel: SphereViewModel by activityViewModels()
 
     private var sphereName = ""
     private var subdivisions = 0

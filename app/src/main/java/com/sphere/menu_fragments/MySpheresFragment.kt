@@ -6,16 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sphere.R
 import com.sphere.SphereViewModel
-import com.sphere.SphereViewModelFactory
 import com.sphere.databinding.FragmentMySpheresBinding
-import com.sphere.room_code.SphereApplication
 import com.sphere.room_code.SphereListAdapter
 import com.sphere.utility.getSelectedSpherePref
 import com.sphere.utility.setSelectedSpherePref
@@ -30,9 +27,7 @@ class MySpheresFragment(
     private var _binding: FragmentMySpheresBinding? = null
     private val binding get() = _binding!!
 
-    private val sphereViewModel: SphereViewModel by viewModels {
-        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
-    }
+    private val sphereViewModel: SphereViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
