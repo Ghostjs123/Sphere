@@ -4,31 +4,35 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
+import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.BatteryManager
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.core.app.ActivityCompat
-import androidx.preference.PreferenceManager
-import androidx.fragment.app.Fragment
-import com.sphere.R
-import com.sphere.databinding.FragmentSphereBinding
-import android.content.pm.PackageManager
-import android.os.BatteryManager
-import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
-import com.google.android.gms.location.*
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.preference.PreferenceManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.sphere.R
 import com.sphere.SphereViewModel
-import com.sphere.SphereViewModelFactory
-import com.sphere.activity.SphereActivity
-import com.sphere.menu_fragments.*
-import com.sphere.room_code.SphereApplication
+import com.sphere.databinding.FragmentSphereBinding
+import com.sphere.menu_fragments.ImportSphereFragment
+import com.sphere.menu_fragments.MySpheresFragment
+import com.sphere.menu_fragments.NewSphereFragment
+import com.sphere.menu_fragments.SettingsMenuFragment
 import com.sphere.utility.addSphereToFirestore
 
 private const val TAG = "SphereFragment"
@@ -54,9 +58,7 @@ class SphereFragment() :
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
 
-    private val sphereViewModel: SphereViewModel by viewModels {
-        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
-    }
+    private val sphereViewModel: SphereViewModel by activityViewModels()
 
     private var mSphereName: String = ""
     private var mSeed: Long? = null
