@@ -27,7 +27,8 @@ private const val TAG = "MySpheresFragment"
 
 
 class MySpheresFragment(
-    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit,
+    private val renameSphereCallback: (sphereName: String) -> Unit
 ) : Fragment() {
 
     private var _binding: FragmentMySpheresBinding? = null
@@ -68,8 +69,8 @@ class MySpheresFragment(
         Log.i(TAG, "onViewCreated() Started")
 
         // TODO - If delete button is pressed we delete that sphere from the local repository.
-        //  HUGE NOTE: We may not want to let users do this if this is the sphere they currently
-        //  have open, if we do allow it then it should boot them back to the createNewSphere page afterwards.
+        //  Should then switch to/load the first sphere in the background.
+        //  If the last sphere is deleted then jump back to the NoSphereFragment.
         binding.MySpheresDeleteButton.setOnClickListener {
             showDeleteDialogue()
         }
@@ -77,9 +78,6 @@ class MySpheresFragment(
         binding.MySpheresRenameButton.setOnClickListener {
             showRenameDialogue()
         }
-
-        // TODO - If Load is pressed, we should load that sphere from the local repository into the ViewModel
-        //  and then jump back the the sphereFragment and re-render.
 
         Log.i(TAG, "onViewCreated() Returning")
     }
@@ -126,7 +124,10 @@ class MySpheresFragment(
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        // TODO: delete sphere from viewmodel (and update the recycler view if needed)
+                        sphereViewModel.delete(selected)
+                        // TODO: Load first sphere in LiveData
+                        //  Note - Do not let the user delete their last sphere,
+                        //  probably have a little popup dialogue saying you can't.
                     }
                     DialogInterface.BUTTON_NEGATIVE -> { }
                 }
@@ -147,7 +148,9 @@ class MySpheresFragment(
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        // TODO: rename sphere in viewmodel (and update the recycler view if needed)
+                        var newName = editText.text.toString()
+                        sphereViewModel.setName(newName)
+                        renameSphereCallback(newName)
                     }
                     DialogInterface.BUTTON_NEGATIVE -> { }
                 }

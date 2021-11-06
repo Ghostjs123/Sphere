@@ -18,7 +18,10 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     private fun updateSeed(name: String, seed: Long?) = viewModelScope.launch {
         repository.updateSeed(name, seed)
     }
-    fun delete(sphereName: String) = viewModelScope.launch {
+    private fun updateName(oldName: String, newName: String) = viewModelScope.launch {
+        repository.updateName(oldName, newName)
+    }
+    fun delete(sphereName: String?) = viewModelScope.launch {
         repository.delete(sphereName)
     }
 
@@ -58,10 +61,8 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
 
     // Sets this sphere's name
     fun setName(newName: String) {
-        // TODO : This needs to also update the sphere's name in our LiveData
+        updateName(sphereName, newName)
         sphereName = newName
-        insert(Sphere(sphereName, seed, subdivisions))
-        //updateName(sphereName, newName)
     }
 
     // Returns this sphere's seed
@@ -72,7 +73,6 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     // Sets this sphere's seed
     fun setSeed(newSeed: Long?) {
         seed = newSeed
-        // TODO - ViewModel private vars are being cleared before we reach here, fix that.
         updateSeed(sphereName, newSeed)
     }
 

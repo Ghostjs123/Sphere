@@ -188,6 +188,11 @@ class SphereFragment() :
         updateUI()
     }
 
+    fun renameSphere(newSphereName: String) {
+        mSphereName = newSphereName
+        updateUI()
+    }
+
     fun getUpdateSphereCallback(): (String, Long?, Int) -> Unit {
         return ::updateSphere
     }
@@ -310,7 +315,7 @@ class SphereFragment() :
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, MySpheresFragment(::updateSphere))
+                    .replace(R.id.sphere_menu_fragment_container, MySpheresFragment(::updateSphere, ::renameSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
