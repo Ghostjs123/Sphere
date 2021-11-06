@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.sphere.SphereViewModel
+import com.sphere.SphereViewModelFactory
 import com.sphere.databinding.FragmentImportSphereBinding
+import com.sphere.room_code.SphereApplication
 import com.sphere.utility.readSphereFromFirestore
 import com.sphere.utility.setSelectedSpherePref
 
@@ -23,7 +25,9 @@ class ImportSphereFragment(
     private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
 
-    private val sphereViewModel: SphereViewModel by activityViewModels()
+    private val sphereViewModel: SphereViewModel by activityViewModels {
+        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

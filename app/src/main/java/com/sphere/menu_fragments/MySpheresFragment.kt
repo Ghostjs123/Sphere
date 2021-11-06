@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -14,9 +15,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sphere.R
 import com.sphere.SphereViewModel
+import com.sphere.SphereViewModelFactory
+import com.sphere.activity.SphereActivity
 import com.sphere.databinding.FragmentMySpheresBinding
+import com.sphere.room_code.SphereApplication
 import com.sphere.room_code.SphereListAdapter
-import com.sphere.utility.addSphereToFirestore
 import com.sphere.utility.getSelectedSpherePref
 import com.sphere.utility.setSelectedSpherePref
 
@@ -30,7 +33,9 @@ class MySpheresFragment(
     private var _binding: FragmentMySpheresBinding? = null
     private val binding get() = _binding!!
 
-    private val sphereViewModel: SphereViewModel by activityViewModels()
+    private val sphereViewModel: SphereViewModel by activityViewModels {
+        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +72,10 @@ class MySpheresFragment(
         //  have open, if we do allow it then it should boot them back to the createNewSphere page afterwards.
         binding.MySpheresDeleteButton.setOnClickListener {
             showDeleteDialogue()
+        }
+
+        binding.MySpheresRenameButton.setOnClickListener {
+            showRenameDialogue()
         }
 
         // TODO - If Load is pressed, we should load that sphere from the local repository into the ViewModel
@@ -131,6 +140,24 @@ class MySpheresFragment(
     }
 
     private fun showRenameDialogue() {
+        val selected = getSelectedSpherePref(requireActivity())
+        val editText = EditText(requireActivity())
 
+        val dialogClickListener =
+            DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        // TODO: rename sphere in viewmodel (and update the recycler view if needed)
+                    }
+                    DialogInterface.BUTTON_NEGATIVE -> { }
+                }
+            }
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Rename Sphere $selected?")
+            .setView(editText)
+            .setPositiveButton("Rename", dialogClickListener)
+            .setNegativeButton("Back", dialogClickListener)
+            .show()
     }
 }

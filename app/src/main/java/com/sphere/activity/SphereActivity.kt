@@ -22,7 +22,7 @@ private const val TAG = "SphereActivity"
 
 class SphereActivity : AppCompatActivity() {
 
-    private val sphereViewModel: SphereViewModel by viewModels {
+    val sphereViewModel: SphereViewModel by viewModels {
         SphereViewModelFactory((application as SphereApplication).repository)
     }
 
