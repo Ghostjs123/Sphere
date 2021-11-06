@@ -251,6 +251,7 @@ class SphereFragment() :
 
     private fun finishMutate() {
         mSeed = fetchSeed()
+        sphereViewModel.setSeed(mSeed)
         binding.glSurfaceView.mutateSphere(mSeed)
         updateUI()
     }

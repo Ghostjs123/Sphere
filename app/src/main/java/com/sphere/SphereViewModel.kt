@@ -15,8 +15,8 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     private fun insert(sphere: Sphere) = viewModelScope.launch {
         repository.insert(sphere)
     }
-    fun update(name: String, seed: Long) = viewModelScope.launch {
-        repository.update(name, seed)
+    private fun updateSeed(name: String, seed: Long?) = viewModelScope.launch {
+        repository.updateSeed(name, seed)
     }
     fun delete(sphereName: String) = viewModelScope.launch {
         repository.delete(sphereName)
@@ -26,16 +26,15 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     private var sphereName = ""
     private var seed: Long? = 0
     private var subdivisions: Int = 0
-    private var index: Int = 0
 
     // ================================================================================
     // --- Functions for retrieving and changing ViewModel data ---
 
+    // TODO - Currently unused, do we need this?
     fun newSphere(name: String) {
         sphereName = name
         seed = 0
         subdivisions = 0
-        index = 0
     }
 
     fun loadSphere(sphereName: String): Boolean {
@@ -66,7 +65,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
         // TODO : This needs to also update the sphere's name in our LiveData
         sphereName = newName
         insert(Sphere(sphereName, seed, subdivisions))
-        //update(sphereName, seed)
+        //updateName(sphereName, newName)
     }
 
     // Returns this sphere's seed
@@ -76,9 +75,9 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
 
     // Sets this sphere's seed
     fun setSeed(newSeed: Long?) {
-        // TODO : This needs to also update the sphere's seed in our LiveData
         seed = newSeed
-        //update(sphereName, seed)
+        // TODO - ViewModel private vars are being cleared before we reach here, fix that.
+        updateSeed(sphereName, newSeed)
     }
 
     // Returns this sphere's subdivisions

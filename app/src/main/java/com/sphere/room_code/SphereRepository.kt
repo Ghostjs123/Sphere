@@ -20,8 +20,8 @@ class SphereRepository(private val sphereDao: SphereDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun update(name: String, seed: Long) {
-        sphereDao.update(name, seed)
+    suspend fun updateSeed(name: String, seed: Long?) {
+        sphereDao.updateSeed(name, seed)
     }
 
     @Suppress("RedundantSuspendModifier")

@@ -8,18 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.SphereViewModelFactory
 import com.sphere.menu_fragments.NewSphereFragment
 import com.sphere.menu_fragments.NoSphereFragment
-import com.sphere.room_code.Sphere
-import com.sphere.sphere_fragments.SphereFragment
 import com.sphere.room_code.SphereApplication
-import com.sphere.room_code.SphereListAdapter
+import com.sphere.sphere_fragments.SphereFragment
 import com.sphere.utility.getSelectedSpherePref
-import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "SphereActivity"
 

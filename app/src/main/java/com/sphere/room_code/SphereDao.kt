@@ -13,7 +13,7 @@ interface SphereDao {
     suspend fun insert(sphere: Sphere)
 
     @Query("UPDATE sphere_table SET seed=:seed WHERE name=:name")
-    fun update(name: String?, seed: Long)
+    suspend fun updateSeed(name: String?, seed: Long?)
 
     @Query("DELETE FROM sphere_table WHERE name=:name")
     suspend fun delete(name: String?)

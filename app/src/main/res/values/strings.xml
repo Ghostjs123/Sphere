@@ -32,7 +32,6 @@
     <string name="delete">Delete</string>
     <string name="rename">Rename</string>
     <string name="test">test</string>
-    <string name="load">Load</string>
     <string name="toolbar_import_sphere">Import Sphere</string>
     <string name="toolbar_my_spheres">My Spheres</string>
     <string name="toolbar_new_sphere">New Sphere</string>
