@@ -34,13 +34,7 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
         Log.i(TAG, "init Ended")
     }
 
-    fun createNewSphere(subdivision: Int) {
-        renderer.icosphere = Icosphere(subdivision)
-        renderer.icosphere!!.buildVertices()
-        requestRender()
-    }
-
-    fun createNewSphereUsingSeed(seed: Long?, subdivision: Int) {
+    fun createNewSphere(seed: Long?, subdivision: Int) {
         renderer.icosphere = Icosphere(subdivision)
         renderer.icosphere!!.buildVertices()
         renderer.icosphere!!.mutate(seed)

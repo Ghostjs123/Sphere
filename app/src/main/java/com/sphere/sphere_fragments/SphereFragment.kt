@@ -179,7 +179,7 @@ class SphereFragment() :
         mSphereName = sphereName
         mSeed = seed
         mSubdivision = subdivision
-        binding.glSurfaceView.createNewSphereUsingSeed(mSeed, subdivision)
+        binding.glSurfaceView.createNewSphere(mSeed, subdivision)
 
         updateUI()
     }

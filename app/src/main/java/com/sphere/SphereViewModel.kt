@@ -30,13 +30,6 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     // ================================================================================
     // --- Functions for retrieving and changing ViewModel data ---
 
-    // TODO - Currently unused, do we need this?
-    fun newSphere(name: String) {
-        sphereName = name
-        seed = 0
-        subdivisions = 0
-    }
-
     fun loadSphere(sphereName: String): Boolean {
         allSpheres.value?.forEach {
             if (it.name == sphereName) {
@@ -53,6 +46,9 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
 
     fun addSphere(sphereName: String, seed: Long?, subdivisions: Int) {
         insert(Sphere(sphereName, seed, subdivisions))
+        this.sphereName = sphereName
+        this.seed = seed
+        this.subdivisions = subdivisions
     }
 
     // Returns this sphere's name
