@@ -21,33 +21,12 @@ abstract class SphereDatabase : RoomDatabase() {
                     context.applicationContext,
                     SphereDatabase::class.java,
                     "sphere_database"
-                ).addCallback(SphereDatabaseCallback(scope))
-                 .build()
+                ).build()
 
                 // return instance
                 INSTANCE = instance
                 instance
             }
-        }
-    }
-
-    private class SphereDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
-
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-
-            INSTANCE?.let { database ->
-                scope.launch {
-                    populateDatabase(database.sphereDao())
-                }
-            }
-        }
-
-        suspend fun populateDatabase(sphereDao: SphereDao) {
-            sphereDao.deleteAll()
-
-//            sphereDao.insert(Sphere("test1", 0, 2))
-//            sphereDao.insert(Sphere("test2", 0, 2))
         }
     }
 }
