@@ -1,6 +1,5 @@
 package com.sphere.menu_fragments
 
-import android.app.Activity
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
@@ -12,21 +11,6 @@ import androidx.preference.SwitchPreference
 import com.sphere.R
 import kotlinx.android.synthetic.main.fragment_settings_menu.*
 
-//<SwitchPreference
-//app:key="gps_enabled"
-//app:title="Use GPS Data" />
-//
-//<SwitchPreference
-//app:key="ambient_temp_enabled"
-//app:title="Use Ambient Temperature" />
-//
-//<SwitchPreference
-//app:key="ambient_light_enabled"
-//app:title="Use Ambient Light" />
-//
-//<SwitchPreference
-//app:key="device_temp_enabled"
-//app:title="Use Device Temperature" />
 
 class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -36,6 +20,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
         findPreference<SwitchPreference>("ambient_temp_enabled")!!
             .onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                // NOTE: this will turn off ambient temp if the device does not support it
                 val mTemperature = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
 
                 if (mTemperature == null) {

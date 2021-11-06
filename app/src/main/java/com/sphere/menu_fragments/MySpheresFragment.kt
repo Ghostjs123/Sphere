@@ -1,5 +1,7 @@
 package com.sphere.menu_fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.databinding.FragmentMySpheresBinding
 import com.sphere.room_code.SphereListAdapter
+import com.sphere.utility.addSphereToFirestore
 import com.sphere.utility.getSelectedSpherePref
 import com.sphere.utility.setSelectedSpherePref
 
@@ -62,33 +65,9 @@ class MySpheresFragment(
         // TODO - If delete button is pressed we delete that sphere from the local repository.
         //  HUGE NOTE: We may not want to let users do this if this is the sphere they currently
         //  have open, if we do allow it then it should boot them back to the createNewSphere page afterwards.
-//        binding.spheresRecyclerView.delete_button.setOnClickListener {
-//            Log.i(TAG, "delete_button was pressed.")
-//        }
-//        binding.createSphereButton.setOnClickListener {
-//            sphereName = binding.sphereNameInput.text.toString()
-//
-//            when {
-//                sphereName == "" -> {
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "Please enter a sphere name",
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//                subdivision == 0 -> {
-//                    Toast.makeText(
-//                        requireContext(),
-//                        "Please choose a subdivision",
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//                else -> {
-//                    callback(sphereName, subdivision)
-//                    requireActivity().supportFragmentManager.popBackStack()
-//                }
-//            }
-//        }
+        binding.MySpheresDeleteButton.setOnClickListener {
+            showDeleteDialogue()
+        }
 
         // TODO - If Load is pressed, we should load that sphere from the local repository into the ViewModel
         //  and then jump back the the sphereFragment and re-render.
@@ -126,5 +105,32 @@ class MySpheresFragment(
                 )
             }
         }
+    }
+
+    // ================================================================================
+    // Delete / Rename dialogues
+
+    private fun showDeleteDialogue() {
+        val selected = getSelectedSpherePref(requireActivity())
+
+        val dialogClickListener =
+            DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        // TODO: delete sphere from viewmodel (and update the recycler view if needed)
+                    }
+                    DialogInterface.BUTTON_NEGATIVE -> { }
+                }
+            }
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Delete Sphere $selected?")
+            .setPositiveButton("Yes", dialogClickListener)
+            .setNegativeButton("No", dialogClickListener)
+            .show()
+    }
+
+    private fun showRenameDialogue() {
+
     }
 }

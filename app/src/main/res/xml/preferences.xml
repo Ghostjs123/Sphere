@@ -5,7 +5,8 @@
 
     <SwitchPreference
         app:key="gps_enabled"
-        app:title="Use GPS Data" />
+        app:title="Use GPS Data"
+        android:summary="@string/gps_summary" />
 
     <SwitchPreference
         app:key="ambient_temp_enabled"
