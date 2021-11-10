@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.SphereViewModelFactory
@@ -22,9 +23,7 @@ private const val TAG = "SphereActivity"
 
 class SphereActivity : AppCompatActivity() {
 
-    val sphereViewModel: SphereViewModel by viewModels {
-        SphereViewModelFactory((application as SphereApplication).repository)
-    }
+    private val sphereViewModel: SphereViewModel by viewModels()
 
     private lateinit var mSphereFragment: SphereFragment
 
@@ -82,6 +81,10 @@ class SphereActivity : AppCompatActivity() {
 
         if (f is NewSphereFragment) f.onRadioButtonClicked(view)
         else Log.w(TAG, "onRadioButtonClicked() occurred on a fragment that was not a NewSphereFragment")
+    }
+
+    override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory {
+        return SphereViewModelFactory((application as SphereApplication).repository)
     }
 }
 

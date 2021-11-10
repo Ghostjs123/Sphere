@@ -60,9 +60,7 @@ class SphereFragment() :
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
 
-    private val sphereViewModel: SphereViewModel by activityViewModels {
-        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
-    }
+    private val sphereViewModel: SphereViewModel by activityViewModels()
 
     private var mSphereName: String = ""
     private var mSeed: Long? = null
@@ -202,7 +200,8 @@ class SphereFragment() :
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                 mutateSphere()
-            } else -> {
+            }
+            else -> {
                 Toast.makeText(
                     activity,
                     "Give Location Permissions to use GPS data or disable 'Use GPS data' in settings",
