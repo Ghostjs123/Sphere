@@ -26,7 +26,13 @@ class SphereRepository(private val sphereDao: SphereDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun delete(name: String) {
+    suspend fun updateName(oldName: String, newName: String) {
+        sphereDao.updateSeed(oldName, newName)
+    }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun delete(name: String?) {
         sphereDao.delete(name)
     }
 }
