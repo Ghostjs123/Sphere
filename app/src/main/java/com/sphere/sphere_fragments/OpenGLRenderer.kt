@@ -1,13 +1,16 @@
 package com.sphere.sphere_fragments
 
+import android.graphics.Bitmap
 import android.opengl.*
 import java.nio.FloatBuffer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import android.util.Log
 import com.sphere.Icosphere
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import android.opengl.GLException
+import com.sphere.utility.createBitmapFromGLSurfaceView
+import java.nio.IntBuffer
+
 
 private const val TAG = "OpenGLRenderer"
 
@@ -26,7 +29,11 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
     @Volatile
     var icosphere: Icosphere? = null
 
-    private lateinit var mGL: GL10
+    var needScreenshot: Boolean = false
+    var screenshotCallback: ((bitmap: Bitmap?) -> Unit)? = null
+
+    private var mWidth = 0
+    private var mHeight = 0
 
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
         Log.i(TAG, "onSurfaceCreated() Started")
@@ -56,8 +63,6 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, floatArrayOf(1.0f, 1.0f, 1.0f, 0.0f), 0)
         gl.glEnable(GL10.GL_LIGHT0)
 
-        mGL = gl
-
         Log.i(TAG, "onSurfaceCreated() Finished")
     }
 
@@ -81,9 +86,17 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glMaterialf(GL10.GL_FRONT, GL10.GL_SHININESS, shininess)
 
         icosphere?.draw(gl)
+
+        if (needScreenshot) {
+            screenshotCallback!!(createBitmapFromGLSurfaceView(0, 0, mWidth, mHeight, gl))
+            needScreenshot = false
+        }
     }
 
     override fun onSurfaceChanged(gl: GL10, width: Int, height: Int) {
+        mWidth = width
+        mHeight = height
+
         gl.glViewport(0, 0, width, height)
 
         gl.glMatrixMode(GL10.GL_PROJECTION)

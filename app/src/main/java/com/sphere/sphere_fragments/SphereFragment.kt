@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -36,6 +37,7 @@ import com.sphere.menu_fragments.NewSphereFragment
 import com.sphere.menu_fragments.SettingsMenuFragment
 import com.sphere.room_code.SphereApplication
 import com.sphere.utility.addSphereToFirestore
+import com.sphere.utility.saveSphereBitmap
 
 private const val TAG = "SphereFragment"
 
@@ -51,7 +53,7 @@ fun checkLocationPermission(activity: Activity): Boolean {
 }
 
 
-class SphereFragment() :
+class SphereFragment :
     Fragment(),
     PopupMenu.OnMenuItemClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
@@ -263,7 +265,19 @@ class SphereFragment() :
         mSeed = fetchSeed()
         sphereViewModel.setSeed(mSeed)
         binding.glSurfaceView.mutateSphere(mSeed)
+
+        binding.glSurfaceView.takeScreenshot(::screenshotCallback)
+
         updateUI()
+    }
+
+    private fun screenshotCallback(bitmap: Bitmap?) {
+        if (bitmap == null) {
+            Log.w(TAG, "Received null bitmap in screenshotCallback")
+            return
+        }
+
+        saveSphereBitmap(requireContext(), mSphereName, bitmap)
     }
 
     private fun fetchSeed(): Long {
