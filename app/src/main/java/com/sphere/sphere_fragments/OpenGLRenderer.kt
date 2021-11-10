@@ -7,9 +7,8 @@ import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 import android.util.Log
 import com.sphere.Icosphere
-import android.opengl.GLException
 import com.sphere.utility.createBitmapFromGLSurfaceView
-import java.nio.IntBuffer
+import com.sphere.utility.interpolate
 
 
 private const val TAG = "OpenGLRenderer"
@@ -32,8 +31,9 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
     var needScreenshot: Boolean = false
     var screenshotCallback: ((bitmap: Bitmap?) -> Unit)? = null
 
-    private var mWidth = 0
-    private var mHeight = 0
+    private var mWidth: Int = 0
+    private var mHeight: Int = 0
+    private var mAspect: Float = 0f
 
     override fun onSurfaceCreated(gl: GL10, config: EGLConfig) {
         Log.i(TAG, "onSurfaceCreated() Started")
@@ -88,8 +88,23 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         icosphere?.draw(gl)
 
         if (needScreenshot) {
-            screenshotCallback!!(createBitmapFromGLSurfaceView(0, 0, mWidth, mHeight, gl))
             needScreenshot = false
+
+            if (mWidth < mHeight) {
+                val x = (mWidth / 2) - interpolate(0f, 1f, 0f, mWidth / 2f, Icosphere.MAX_RADIUS)
+                val y = (mHeight / 2) - interpolate(0f, 1f, 0f, mWidth / 2f, Icosphere.MAX_RADIUS)
+                val w = mWidth - x * 2
+
+                screenshotCallback!!(createBitmapFromGLSurfaceView(x.toInt(), y.toInt(), w.toInt(), w.toInt(), gl))
+            }
+            else {
+                throw NotImplementedError("Do this once rotation is supported in SphereFragment")
+//                val x = (mWidth / 2) - interpolate(0f, 1f, 0f, mHeight / 2f, Icosphere.MAX_RADIUS)
+//                val y = (mHeight / 2) - interpolate(0f, 1f, 0f, mHeight / 2f, Icosphere.MAX_RADIUS)
+//                val w = mHeight - x * 2
+
+//                screenshotCallback!!(createBitmapFromGLSurfaceView(x, y, w, w, gl))
+            }
         }
     }
 
@@ -102,13 +117,14 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
         gl.glMatrixMode(GL10.GL_PROJECTION)
         gl.glLoadIdentity()
 
-        GLU.gluPerspective(gl, 45.0f, width.toFloat() / height.toFloat(),0.1f, 100.0f)
+        mAspect = width.toFloat() / height.toFloat()
+        GLU.gluPerspective(gl, 45.0f, mAspect,0.1f, 100.0f)
 
         gl.glMatrixMode(GL10.GL_MODELVIEW)
         gl.glLoadIdentity()
     }
 
     fun performClick(x: Float, y: Float) {
-
+        Log.i(TAG, "Click at $x, $y")
     }
 }

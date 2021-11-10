@@ -94,3 +94,10 @@ fun saveSphereBitmap(context: Context, sphereName: String, bitmap: Bitmap){
     }
     Log.i(TAG, "Saved a bitmap to ${fPath + File.separator + sphereName}")
 }
+
+// =========================================================================
+// Math stuff
+
+fun interpolate(a1: Float, a2: Float, b1: Float, b2: Float, x: Float): Float {
+    return b1 + ((x - a1) * (b2 - b1) / (a2 - a1))
+}
