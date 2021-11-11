@@ -25,9 +25,7 @@ class ImportSphereFragment(
     private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
 
-    private val sphereViewModel: SphereViewModel by activityViewModels {
-        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
-    }
+    private val sphereViewModel: SphereViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -36,6 +37,7 @@ import com.sphere.menu_fragments.NewSphereFragment
 import com.sphere.menu_fragments.SettingsMenuFragment
 import com.sphere.room_code.SphereApplication
 import com.sphere.utility.addSphereToFirestore
+import com.sphere.utility.saveSphereBitmap
 
 private const val TAG = "SphereFragment"
 
@@ -51,7 +53,7 @@ fun checkLocationPermission(activity: Activity): Boolean {
 }
 
 
-class SphereFragment() :
+class SphereFragment :
     Fragment(),
     PopupMenu.OnMenuItemClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
@@ -60,9 +62,7 @@ class SphereFragment() :
     private var _binding: FragmentSphereBinding? = null
     private val binding get() = _binding!!
 
-    private val sphereViewModel: SphereViewModel by activityViewModels {
-        SphereViewModelFactory((requireActivity().application as SphereApplication).repository)
-    }
+    private val sphereViewModel: SphereViewModel by activityViewModels()
 
     private var mSphereName: String = ""
     private var mSeed: Long? = null
@@ -207,7 +207,8 @@ class SphereFragment() :
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                 mutateSphere()
-            } else -> {
+            }
+            else -> {
                 Toast.makeText(
                     activity,
                     "Give Location Permissions to use GPS data or disable 'Use GPS data' in settings",
@@ -264,7 +265,19 @@ class SphereFragment() :
         mSeed = fetchSeed()
         sphereViewModel.setSeed(mSeed)
         binding.glSurfaceView.mutateSphere(mSeed)
+
+        binding.glSurfaceView.takeScreenshot(::screenshotCallback)
+
         updateUI()
+    }
+
+    private fun screenshotCallback(bitmap: Bitmap?) {
+        if (bitmap == null) {
+            Log.w(TAG, "Received null bitmap in screenshotCallback")
+            return
+        }
+
+        saveSphereBitmap(requireContext(), mSphereName, bitmap)
     }
 
     private fun fetchSeed(): Long {

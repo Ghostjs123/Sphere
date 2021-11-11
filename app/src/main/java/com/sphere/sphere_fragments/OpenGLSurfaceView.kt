@@ -1,6 +1,7 @@
 package com.sphere.sphere_fragments
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.opengl.GLSurfaceView
 import android.util.AttributeSet
 import android.util.Log
@@ -45,6 +46,12 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
         Log.i(TAG, "Mutating Sphere using seed: $seed")
 
         renderer.icosphere?.mutate(seed)
+        requestRender()
+    }
+
+    fun takeScreenshot(screenshotCallback: ((bitmap: Bitmap?) -> Unit)?) {
+        renderer.screenshotCallback = screenshotCallback
+        renderer.needScreenshot = true
         requestRender()
     }
 

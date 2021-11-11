@@ -15,9 +15,6 @@ private const val EPSILON = 0.000001f
 
 private const val CORDS_PER_VERTEX = 3
 
-private const val MIN_RADIUS = 0.3f
-private const val MAX_RADIUS = 0.8f
-
 private fun computeIcosahedronVertices(radius: Float) : MutableList<Float> {
     val hANGLE = (PI / 180 * 72).toFloat()
     val vANGLE = (atan(1.0 / 2)).toFloat()
@@ -60,6 +57,11 @@ private fun computeIcosahedronVertices(radius: Float) : MutableList<Float> {
 
 
 class Icosphere(private val subdivision: Int) {
+
+    companion object {
+        const val MIN_RADIUS = 0.3f
+        const val MAX_RADIUS = 0.8f
+    }
 
     private var vertices: MutableList<Float> = mutableListOf()
     private var normals: MutableList<Float> = mutableListOf()

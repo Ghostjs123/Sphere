@@ -1,7 +1,9 @@
 package com.sphere.menu_fragments
 
 import android.app.ActivityManager
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -49,18 +51,21 @@ class SettingsMenuFragment : Fragment() {
     }
 
     private fun deleteOnDeviceData() {
-        Log.w(TAG, "Deleting all on device data")
-        // TODO: clear the ViewModel and Sqlite database (Room)
+        val dialogClickListener =
+            DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        Log.w(TAG, "Deleting all on device data - this will close the app")
+                        (requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
+                    }
+                    DialogInterface.BUTTON_NEGATIVE -> { }
+                }
+            }
 
-        // clears backstack
-//        parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-//
-//        parentFragmentManager.beginTransaction()
-//            .replace(R.id.sphere_menu_fragment_container, NoSphereFragment())
-//            .addToBackStack(null)
-//            .commit()
-
-        val manager = requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        manager.clearApplicationUserData()
+        AlertDialog.Builder(requireContext())
+            .setMessage("Delete all on device data? - This will close the app")
+            .setPositiveButton("Yes", dialogClickListener)
+            .setNegativeButton("No", dialogClickListener)
+            .show()
     }
 }

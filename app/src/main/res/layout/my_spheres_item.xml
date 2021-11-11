@@ -14,9 +14,12 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:contentDescription="@string/sphere_snapshot"
+        android:layout_margin="7dp"
+        android:scaleType="fitXY"
         android:src="@mipmap/default_sphere_foreground"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/MySpheresItemText"
