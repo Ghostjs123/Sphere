@@ -124,10 +124,15 @@ class MySpheresFragment(
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        sphereViewModel.delete(selected)
                         // TODO: Load first sphere in LiveData
                         //  Note - Do not let the user delete their last sphere,
                         //  probably have a little popup dialogue saying you can't.
+                        //val sphereCount = sphereViewModel.getSphereCount() <-- replace isEmpty with this
+                        //if (sphereCount == 1)
+                        //  Show dialogue saying no, don't do that
+                        //else
+                        //  sphereViewModel.loadNeighbor() <-- (Should grab neighbor, be careful if sphere is last or first in list)
+                        sphereViewModel.delete(selected)
                     }
                     DialogInterface.BUTTON_NEGATIVE -> { }
                 }
