@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -119,15 +120,25 @@ class MySpheresFragment(
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        // TODO: Load first sphere in LiveData
-                        //  Note - Do not let the user delete their last sphere,
-                        //  probably have a little popup dialogue saying you can't.
-                        //val sphereCount = sphereViewModel.getSphereCount() <-- replace isEmpty with this
-                        //if (sphereCount == 1)
-                        //  Show dialogue saying no, don't do that
-                        //else
-                        //  sphereViewModel.loadNeighbor() <-- (Should grab neighbor, be careful if sphere is last or first in list)
-                        sphereViewModel.delete(selected)
+                        val sphereCount = sphereViewModel.getSphereCount()
+                        if (sphereCount == 1) {
+                            Toast.makeText(
+                                requireContext(),
+                                "You may not delete your only sphere",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            // TODO - Need to update stored preference so we don't hit new sphere on startup.
+                            // TODO - Making spheres that have had previous previews shows the old preview.
+                            // e.g. Make sphere "test1" mutate it, then delete it.
+                            //      Create a new sphere "test1" and view MySpheres, test1 (not mutated yet) shows
+                            //      the preview of the initial deleted "test1".
+                            if (selected == sphereViewModel.getName()) {
+                                sphereViewModel.loadNeighbor()
+                                updateSphereCallback(sphereViewModel.getName(), sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
+                            }
+                            sphereViewModel.delete(selected)
+                        }
                     }
                     DialogInterface.BUTTON_NEGATIVE -> { }
                 }

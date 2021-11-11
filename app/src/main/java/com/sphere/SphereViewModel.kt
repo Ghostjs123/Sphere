@@ -81,12 +81,35 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
         return subdivisions
     }
 
-    fun isEmpty(): Boolean {
-        return if (allSpheres.value == null) {
-            true
-        } else {
-            allSpheres.value!!.isEmpty()
+    // Returns the total number of locally stored spheres
+    fun getSphereCount(): Int {
+        return allSpheres.value!!.size
+    }
+
+    // Loads the neighbor of the current sphere
+    // Requires that we have > 1 spheres
+    fun loadNeighbor() {
+        val currSphereIndex = getSphereIndex()
+        // If this is not the first sphere, load the previous sphere
+        if (currSphereIndex != 0) {
+            loadSphere(allSpheres.value!![currSphereIndex-1].name)
+        } else { // Else load the next sphere
+            loadSphere(allSpheres.value!![currSphereIndex+1].name)
         }
+    }
+
+    // Returns the index of the current sphere in our LiveData
+    // Returns -1 if the sphere was not found
+    private fun getSphereIndex(): Int {
+        var index = 0;
+        allSpheres.value?.forEach {
+            if (it.name == sphereName) {
+                return index
+            } else {
+                index++
+            }
+        }
+        return -1
     }
 }
 
