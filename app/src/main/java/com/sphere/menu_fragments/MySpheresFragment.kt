@@ -131,14 +131,14 @@ class MySpheresFragment(
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
-                            // TODO - Need to update stored preference so we don't hit new sphere on startup.
                             // TODO - Making spheres that have had previous previews shows the old preview.
                             // e.g. Make sphere "test1" mutate it, then delete it.
                             //      Create a new sphere "test1" and view MySpheres, test1 (not mutated yet) shows
                             //      the preview of the initial deleted "test1".
-                            if (selected == sphereViewModel.getName()) {
+                            if (selected == sphereViewModel.getName()) { // TODO - Drop this for Checkpoint 6
                                 sphereViewModel.loadNeighbor()
                                 updateSphereCallback(sphereViewModel.getName(), sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
+                                setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
                             }
                             sphereViewModel.delete(selected)
                             deleteSphereBitmap(requireContext(), selected!!)
