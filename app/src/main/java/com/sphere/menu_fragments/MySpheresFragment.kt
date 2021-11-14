@@ -18,6 +18,7 @@ import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.databinding.FragmentMySpheresBinding
 import com.sphere.room_code.SphereListAdapter
+import com.sphere.utility.deleteSphereBitmap
 import com.sphere.utility.getSelectedSpherePref
 import com.sphere.utility.setSelectedSpherePref
 
@@ -138,6 +139,7 @@ class MySpheresFragment(
                                 setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
                             }
                             sphereViewModel.delete(selected)
+                            deleteSphereBitmap(requireContext(), selected!!)
                         }
                     }
                     DialogInterface.BUTTON_NEGATIVE -> { }
