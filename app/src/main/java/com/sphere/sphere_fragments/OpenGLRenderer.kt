@@ -98,12 +98,11 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
                 screenshotCallback!!(createBitmapFromGLSurfaceView(x.toInt(), y.toInt(), w.toInt(), w.toInt(), gl))
             }
             else {
-                throw NotImplementedError("Do this once rotation is supported in SphereFragment")
-//                val x = (mWidth / 2) - interpolate(0f, 1f, 0f, mHeight / 2f, Icosphere.MAX_RADIUS)
-//                val y = (mHeight / 2) - interpolate(0f, 1f, 0f, mHeight / 2f, Icosphere.MAX_RADIUS)
-//                val w = mHeight - x * 2
+                val x = (mWidth / 2) - interpolate(0f, 1f, 0f, mHeight / 2f, Icosphere.MAX_RADIUS)
+                val y = (mHeight / 2) - interpolate(0f, 1f, 0f, mHeight / 2f, Icosphere.MAX_RADIUS)
+                val w = mHeight - x * 2
 
-//                screenshotCallback!!(createBitmapFromGLSurfaceView(x, y, w, w, gl))
+                screenshotCallback!!(createBitmapFromGLSurfaceView(x.toInt(), y.toInt(), w.toInt(), w.toInt(), gl))
             }
         }
     }

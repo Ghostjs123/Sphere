@@ -34,12 +34,6 @@ class SphereActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_sphere)
 
-        Log.i(TAG, "onCreate() Finished")
-    }
-
-    override fun onStart() {
-        super.onStart()
-
         val selected = getSelectedSpherePref(this)
 
         mSphereFragment = SphereFragment()
@@ -65,6 +59,8 @@ class SphereActivity : AppCompatActivity() {
                 }
             })
         }
+
+        Log.i(TAG, "onCreate() Finished")
     }
 
     private fun addNoSphereFragment() {
