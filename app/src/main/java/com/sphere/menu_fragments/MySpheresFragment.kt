@@ -129,10 +129,6 @@ class MySpheresFragment(
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
-                            // TODO - Making spheres that have had previous previews shows the old preview.
-                            // e.g. Make sphere "test1" mutate it, then delete it.
-                            //      Create a new sphere "test1" and view MySpheres, test1 (not mutated yet) shows
-                            //      the preview of the initial deleted "test1".
                             if (selected == sphereViewModel.getName()) { // TODO - Drop this for Checkpoint 6
                                 sphereViewModel.loadNeighbor()
                                 updateSphereCallback(sphereViewModel.getName(), sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
