@@ -75,7 +75,7 @@ fun createBitmapFromGLSurfaceView(x: Int, y: Int, w: Int, h: Int, gl: GL10): Bit
 }
 
 // https://handyopinion.com/convert-bitmap-to-file-in-android-java-kotlin/
-fun saveSphereBitmap(context: Context, sphereName: String, bitmap: Bitmap){
+fun saveSphereBitmap(context: Context, sphereName: String, bitmap: Bitmap) {
     val fPath = context.getExternalFilesDir(null)?.absolutePath
 
     val file = File(fPath + File.separator + sphereName)
@@ -90,6 +90,18 @@ fun saveSphereBitmap(context: Context, sphereName: String, bitmap: Bitmap){
         close()
     }
     Log.i(TAG, "Saved a bitmap to ${fPath + File.separator + sphereName}")
+}
+
+fun deleteSphereBitmap(context: Context, sphereName: String): Boolean {
+    val fPath = context.getExternalFilesDir(null)?.absolutePath
+
+    val file = File(fPath + File.separator + sphereName)
+
+    if (file.exists()) {
+        return file.delete()
+    }
+
+    return false
 }
 
 // =========================================================================
