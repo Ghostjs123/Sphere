@@ -44,6 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Mutate"
+        android:textColor="@color/menu_button_color"
+        android:backgroundTint="@color/menu_clickable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.99"
