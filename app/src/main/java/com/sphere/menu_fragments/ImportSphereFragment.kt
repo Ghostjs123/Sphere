@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import com.sphere.R
 import com.sphere.SphereViewModel
+import com.sphere.activity.SphereActivity
 import com.sphere.databinding.FragmentImportSphereBinding
 import com.sphere.utility.readSphereFromFirestore
 import com.sphere.utility.setSelectedSpherePref
@@ -49,6 +52,11 @@ class ImportSphereFragment(
             val sphereName: String = binding.sphereNameInput.text.toString()
 
             readSphereFromFirestore(requireContext(), sphereName, ::firebaseCallback)
+        }
+
+        binding.importSphereToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+        binding.importSphereToolbar.setNavigationOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         Log.i(TAG, "onViewCreated() Finished")

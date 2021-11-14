@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.databinding.FragmentNewSphereBinding
 import com.sphere.utility.setSelectedSpherePref
@@ -40,8 +41,6 @@ class NewSphereFragment(
         _binding = FragmentNewSphereBinding.inflate(inflater, container, false)
 
         Log.i(TAG, "onCreateView() Returning")
-
-//        binding.createSphereButton.visibility = View.VISIBLE
 
         return binding.root
     }
@@ -77,6 +76,11 @@ class NewSphereFragment(
                     requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             }
+        }
+
+        binding.newSphereToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+        binding.newSphereToolbar.setNavigationOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         Log.i(TAG, "onViewCreated() Finished")
