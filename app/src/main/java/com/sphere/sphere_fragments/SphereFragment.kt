@@ -183,11 +183,14 @@ class SphereFragment :
         mSubdivision = subdivision
         binding.glSurfaceView.createNewSphere(mSeed, subdivision)
 
+        binding.glSurfaceView.takeScreenshot(::screenshotCallback)
+
         updateUI()
     }
 
-    fun renameSphere(newSphereName: String) {
+    private fun renameSphere(newSphereName: String) {
         mSphereName = newSphereName
+
         updateUI()
     }
 

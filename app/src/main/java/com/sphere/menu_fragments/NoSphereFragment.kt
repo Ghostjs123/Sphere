@@ -52,6 +52,11 @@ class NoSphereFragment(
             .commit()
         }
 
+        binding.noSphereToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+        binding.noSphereToolbar.setNavigationOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         Log.i(TAG, "onViewCreated() Finished")
     }
 

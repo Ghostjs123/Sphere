@@ -65,15 +65,17 @@ class MySpheresFragment(
 
         Log.i(TAG, "onViewCreated() Started")
 
-        // TODO - If delete button is pressed we delete that sphere from the local repository.
-        //  Should then switch to/load the first sphere in the background.
-        //  If the last sphere is deleted then jump back to the NoSphereFragment.
         binding.MySpheresDeleteButton.setOnClickListener {
             showDeleteDialogue()
         }
 
         binding.MySpheresRenameButton.setOnClickListener {
             showRenameDialogue()
+        }
+
+        binding.mySpheresToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+        binding.mySpheresToolbar.setNavigationOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         Log.i(TAG, "onViewCreated() Returning")

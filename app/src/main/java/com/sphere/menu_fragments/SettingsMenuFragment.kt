@@ -46,6 +46,11 @@ class SettingsMenuFragment : Fragment() {
             .replace(R.id.settings_menu_preferences, PreferencesFragment())
             .commit()
 
+        binding.settingsToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+        binding.settingsToolbar.setNavigationOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
         Log.i(TAG, "onViewCreated() Returning")
     }
 

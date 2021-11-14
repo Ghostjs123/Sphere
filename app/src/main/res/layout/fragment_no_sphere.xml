@@ -12,6 +12,7 @@
     tools:context="com.sphere.menu_fragments.NoSphereFragment">
 
     <Toolbar
+        android:id="@+id/no_sphere_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/toolbar_blue"
