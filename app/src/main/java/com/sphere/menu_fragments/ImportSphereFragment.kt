@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.sphere.SphereViewModel
-import com.sphere.SphereViewModelFactory
 import com.sphere.databinding.FragmentImportSphereBinding
-import com.sphere.room_code.SphereApplication
 import com.sphere.utility.readSphereFromFirestore
 import com.sphere.utility.setSelectedSpherePref
 

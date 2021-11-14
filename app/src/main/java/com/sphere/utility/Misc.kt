@@ -3,11 +3,8 @@ package com.sphere.utility
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.opengl.GLException
-import android.os.Environment
 import android.util.Log
-import android.view.View
 import com.sphere.R
 import java.io.ByteArrayOutputStream
 import java.io.File

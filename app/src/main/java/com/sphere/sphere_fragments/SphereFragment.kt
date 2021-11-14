@@ -29,13 +29,11 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.sphere.R
 import com.sphere.SphereViewModel
-import com.sphere.SphereViewModelFactory
 import com.sphere.databinding.FragmentSphereBinding
 import com.sphere.menu_fragments.ImportSphereFragment
 import com.sphere.menu_fragments.MySpheresFragment
 import com.sphere.menu_fragments.NewSphereFragment
 import com.sphere.menu_fragments.SettingsMenuFragment
-import com.sphere.room_code.SphereApplication
 import com.sphere.utility.addSphereToFirestore
 import com.sphere.utility.saveSphereBitmap
 

@@ -1,10 +1,10 @@
 package com.sphere.room_code
 
 import android.content.Context
-import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Database(entities = [Sphere::class], version = 1, exportSchema = false)
 abstract class SphereDatabase : RoomDatabase() {

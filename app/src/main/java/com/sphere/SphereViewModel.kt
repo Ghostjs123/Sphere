@@ -101,7 +101,7 @@ class SphereViewModel(private val repository: SphereRepository): ViewModel() {
     // Returns the index of the current sphere in our LiveData
     // Returns -1 if the sphere was not found
     private fun getSphereIndex(): Int {
-        var index = 0;
+        var index = 0
         allSpheres.value?.forEach {
             if (it.name == sphereName) {
                 return index
