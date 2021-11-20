@@ -19,11 +19,11 @@ private const val TAG = "NewSphereFragment"
 
 
 class NewSphereFragment(
-    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+    private val updateSphereCallback: ((sphereName: String, seed: Long?, subdivision: Int) -> Unit)? = null
 ) : Fragment() {
 
     private var _binding: FragmentNewSphereBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private val sphereViewModel: SphereViewModel by activityViewModels()
 
@@ -69,7 +69,7 @@ class NewSphereFragment(
                     ).show()
                 }
                 else -> {
-                    updateSphereCallback(sphereName, null, subdivisions)
+                    updateSphereCallback?.invoke(sphereName, null, subdivisions)
                     setSelectedSpherePref(requireActivity(), sphereName)
                     sphereViewModel.addSphere(sphereName, null, subdivisions)
 
