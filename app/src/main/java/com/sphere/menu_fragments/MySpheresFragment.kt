@@ -3,6 +3,7 @@ package com.sphere.menu_fragments
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -154,6 +155,7 @@ class MySpheresFragment(
     private fun showRenameDialogue() {
         val selected = getSelectedSpherePref(requireActivity())
         val editText = EditText(requireActivity())
+        editText.inputType = InputType.TYPE_CLASS_TEXT
 
         val dialogClickListener =
             DialogInterface.OnClickListener { _, which ->
