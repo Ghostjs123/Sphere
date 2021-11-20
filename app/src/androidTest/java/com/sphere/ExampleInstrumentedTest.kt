@@ -34,7 +34,7 @@ class ExampleInstrumentedTest {
 
         scenario = launchFragmentInContainer(
             fragmentArgs = args,
-            initialState = Lifecycle.State.CREATED,
+            initialState = Lifecycle.State.RESUMED,
             factory = null
         )
     }
@@ -44,15 +44,21 @@ class ExampleInstrumentedTest {
 //        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
         scenario.onFragment { fragment ->
-            fragment.binding.radioNew1.isChecked = false
-            fragment.binding.radioNew2.isChecked = true
+            // setup state
+            fragment.binding.radioNew2.isChecked = false
             fragment.binding.radioNew3.isChecked = true
+            fragment.binding.radioNew4.isChecked = false
+            fragment.binding.radioNew5.isChecked = true
 
+            // simulate press
+            fragment.binding.radioNew1.isChecked = true
             fragment.onRadioButtonClicked(fragment.binding.radioNew1)
 
             assert(fragment.binding.radioNew1.isChecked)
-            assert(!fragment.binding.radioNew1.isChecked)
-            assert(!fragment.binding.radioNew1.isChecked)
+            assert(!fragment.binding.radioNew2.isChecked)
+            assert(!fragment.binding.radioNew3.isChecked)
+            assert(!fragment.binding.radioNew4.isChecked)
+            assert(!fragment.binding.radioNew5.isChecked)
         }
     }
 }
