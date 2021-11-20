@@ -104,6 +104,19 @@ fun deleteSphereBitmap(context: Context, sphereName: String): Boolean {
     return false
 }
 
+fun renameSphereBitmap(context: Context, oldSphereName: String, newSphereName: String): Boolean {
+    val fPath = context.getExternalFilesDir(null)?.absolutePath
+
+    val oldFile = File(fPath + File.separator + oldSphereName)
+    val newFile = File(fPath + File.separator + newSphereName)
+
+    if (oldFile.exists()) {
+        return oldFile.renameTo(newFile)
+    }
+
+    return false
+}
+
 // =========================================================================
 // Math stuff
 
