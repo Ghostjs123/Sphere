@@ -132,7 +132,7 @@ class MySpheresFragment(
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
-                            if (selected == sphereViewModel.getName()) { // TODO - Drop this for Checkpoint 6
+                            if (selected == sphereViewModel.getName()) { // TODO - Drop this for Checkpoint 6, maybe don't after we optimize this?
                                 sphereViewModel.loadNeighbor()
                                 updateSphereCallback(sphereViewModel.getName(), sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
                                 setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
@@ -164,6 +164,7 @@ class MySpheresFragment(
                         var newName = editText.text.toString()
                         sphereViewModel.setName(newName)
                         renameSphereCallback(newName)
+                        setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
                     }
                     DialogInterface.BUTTON_NEGATIVE -> { }
                 }
