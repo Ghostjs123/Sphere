@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.FirebaseApp
 import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.SphereViewModelFactory
@@ -30,6 +31,7 @@ class SphereActivity : AppCompatActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
 
         Log.i(TAG, "onCreate() Started")
 

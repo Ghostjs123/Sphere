@@ -27,6 +27,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.preference.PreferenceManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.firestore.FirebaseFirestore
 import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.databinding.FragmentSphereBinding
@@ -371,7 +372,13 @@ class SphereFragment :
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        addSphereToFirestore(requireContext(), mSphereName, mSeed, mSubdivision)
+                        addSphereToFirestore(
+                            FirebaseFirestore.getInstance(),
+                            requireContext(),
+                            mSphereName,
+                            mSeed,
+                            mSubdivision
+                        )
                     }
                     DialogInterface.BUTTON_NEGATIVE -> { }
                 }

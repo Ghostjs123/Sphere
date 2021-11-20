@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.firestore.FirebaseFirestore
 import com.sphere.R
 import com.sphere.SphereViewModel
 import com.sphere.activity.SphereActivity
@@ -51,7 +52,12 @@ class ImportSphereFragment(
         binding.importSphereButton.setOnClickListener {
             val sphereName: String = binding.sphereNameInput.text.toString()
 
-            readSphereFromFirestore(requireContext(), sphereName, ::firebaseCallback)
+            readSphereFromFirestore(
+                FirebaseFirestore.getInstance(),
+                requireContext(),
+                sphereName,
+                ::firebaseCallback
+            )
         }
 
         binding.importSphereToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)

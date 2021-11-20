@@ -3,17 +3,19 @@ package com.sphere.utility
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 
 private const val TAG = "Firestore"
 
 
 // create/update
-fun addSphereToFirestore(context: Context, sphereName: String, seed: Long?, subdivision: Int) {
-    FirebaseApp.initializeApp(context)
-    val db = FirebaseFirestore.getInstance()
-
+fun addSphereToFirestore(
+    db: FirebaseFirestore,
+    context: Context,
+    sphereName: String,
+    seed: Long?,
+    subdivision: Int
+) {
     db.collection("Spheres").document(sphereName)
         .set(hashMapOf(
             "seed" to seed,
@@ -32,13 +34,11 @@ fun addSphereToFirestore(context: Context, sphereName: String, seed: Long?, subd
 
 // read
 fun readSphereFromFirestore(
+    db: FirebaseFirestore,
     context: Context,
     sphereName: String,
     callback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
 ) {
-    FirebaseApp.initializeApp(context)
-    val db = FirebaseFirestore.getInstance()
-
     db.collection("Spheres").document(sphereName).get()
         .addOnSuccessListener { doc ->
             if (doc.exists()) {
@@ -68,10 +68,11 @@ fun readSphereFromFirestore(
 }
 
 // delete
-fun removeSphereFromFirestore(context: Context, sphereName: String) {
-    FirebaseApp.initializeApp(context)
-    val db = FirebaseFirestore.getInstance()
-
+fun removeSphereFromFirestore(
+    db: FirebaseFirestore,
+    context: Context,
+    sphereName: String
+) {
     db.collection("Spheres").document(sphereName).delete()
         .addOnSuccessListener { Toast.makeText(context, "Deleted $sphereName", Toast.LENGTH_SHORT).show() }
         .addOnFailureListener { e ->
@@ -83,6 +84,3 @@ fun removeSphereFromFirestore(context: Context, sphereName: String) {
             Log.w(TAG, "Error during Firestore.delete()", e)
         }
 }
-
-
-
