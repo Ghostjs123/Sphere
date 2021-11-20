@@ -21,6 +21,7 @@ import com.sphere.databinding.FragmentMySpheresBinding
 import com.sphere.room_code.SphereListAdapter
 import com.sphere.utility.deleteSphereBitmap
 import com.sphere.utility.getSelectedSpherePref
+import com.sphere.utility.renameSphereBitmap
 import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "MySpheresFragment"
@@ -35,6 +36,8 @@ class MySpheresFragment(
     private val binding get() = _binding!!
 
     private val sphereViewModel: SphereViewModel by activityViewModels()
+
+    private lateinit var initialSphere: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +58,8 @@ class MySpheresFragment(
         sphereViewModel.allSpheres.observe(viewLifecycleOwner, { spheres ->
             spheres?.let { adapter.submitList(it) }
         })
+
+        initialSphere = getSelectedSpherePref(requireActivity())!!
 
         Log.i(TAG, "onCreateView() Returning")
 
@@ -82,13 +87,30 @@ class MySpheresFragment(
         Log.i(TAG, "onViewCreated() Returning")
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        Log.i(TAG, "onDestroyView() Started")
+
+        val selectedSphere = getSelectedSpherePref(requireActivity())
+
+        // Refresh the ViewModel before exit
+        sphereViewModel.loadSphere(selectedSphere!!)
+
+        // If user selected a new sphere, load that different sphere on exit
+        if (initialSphere != selectedSphere!!) {
+                updateSphereCallback(selectedSphere, sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
+                Log.i(TAG, "onDestroyView() Updated the sphere before returning")
+        }
+
+        Log.i(TAG, "onDestroyView() Returning")
+    }
+
     private fun sphereSelected(sphereName: String) {
         setSelectedSpherePref(requireActivity(), sphereName)
         updateSelectedBorder()
 
-        if (sphereViewModel.loadSphere(sphereName)) {
-            updateSphereCallback(sphereName, sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
-        }
+        sphereViewModel.loadSphere(sphereName)
     }
 
     private fun updateSelectedBorder() {
@@ -132,11 +154,8 @@ class MySpheresFragment(
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
-                            if (selected == sphereViewModel.getName()) { // TODO - Drop this for Checkpoint 6, maybe don't after we optimize this?
-                                sphereViewModel.loadNeighbor()
-                                updateSphereCallback(sphereViewModel.getName(), sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
-                                setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
-                            }
+                            sphereViewModel.loadNeighbor()
+                            setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
                             sphereViewModel.delete(selected)
                             deleteSphereBitmap(requireContext(), selected!!)
                         }
@@ -161,10 +180,11 @@ class MySpheresFragment(
             DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        var newName = editText.text.toString()
+                        val newName = editText.text.toString()
                         sphereViewModel.setName(newName)
                         renameSphereCallback(newName)
                         setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
+                        renameSphereBitmap(requireContext(), selected!!, newName)
                     }
                     DialogInterface.BUTTON_NEGATIVE -> { }
                 }
