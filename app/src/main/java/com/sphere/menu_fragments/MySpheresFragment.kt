@@ -154,10 +154,8 @@ class MySpheresFragment(
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
-                            if (selected == sphereViewModel.getName()) { // TODO - Drop this for Checkpoint 6, maybe don't after we optimize this?
-                                sphereViewModel.loadNeighbor()
-                                setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
-                            }
+                            sphereViewModel.loadNeighbor()
+                            setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
                             sphereViewModel.delete(selected)
                             deleteSphereBitmap(requireContext(), selected!!)
                         }

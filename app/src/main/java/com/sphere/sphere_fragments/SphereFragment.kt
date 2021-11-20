@@ -218,6 +218,9 @@ class SphereFragment :
             }
         }
     }
+
+    // TODO - We seem to have a slow memory leak that gets cleared after mutating, investigate if we can
+    //          prevent it outright.
     private fun mutateSphere() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val gpsEnabled = prefs.getBoolean("gps_enabled", false)
