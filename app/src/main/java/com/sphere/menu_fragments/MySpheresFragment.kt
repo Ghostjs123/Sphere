@@ -59,10 +59,7 @@ class MySpheresFragment(
             spheres?.let { adapter.submitList(it) }
         })
 
-        val tmpInitialSphere = getSelectedSpherePref(requireActivity())
-        if (tmpInitialSphere != null) {
-            initialSphere = tmpInitialSphere
-        }
+        initialSphere = getSelectedSpherePref(requireActivity())!!
 
         Log.i(TAG, "onCreateView() Returning")
 
