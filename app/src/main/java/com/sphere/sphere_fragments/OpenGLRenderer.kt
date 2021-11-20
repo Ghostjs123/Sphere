@@ -100,7 +100,7 @@ class OpenGLRenderer : GLSurfaceView.Renderer {
             else {
                 val x = (mWidth / 2) - interpolate(0f, 1f, 0f, mHeight / 2f, Icosphere.MAX_RADIUS)
                 val y = (mHeight / 2) - interpolate(0f, 1f, 0f, mHeight / 2f, Icosphere.MAX_RADIUS)
-                val w = mHeight - x * 2
+                val w = mHeight - y * 2
 
                 screenshotCallback!!(createBitmapFromGLSurfaceView(x.toInt(), y.toInt(), w.toInt(), w.toInt(), gl))
             }

@@ -74,6 +74,9 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
                     renderer.cameraAngleY += (x - prevX) * TOUCH_SCALE_FACTOR
 
                 hasDragged = true
+                prevX = x
+                prevY = y
+
                 requestRender()
             }
             MotionEvent.ACTION_UP -> {
@@ -82,9 +85,6 @@ class OpenGLSurfaceView(context: Context, attrs: AttributeSet) : GLSurfaceView(c
                 if (!hasDragged) performClick()
             }
         }
-
-        prevX = x
-        prevY = y
 
         return true
     }
