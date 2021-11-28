@@ -67,9 +67,9 @@ class SettingsMenuFragment : Fragment() {
             }
 
         AlertDialog.Builder(requireContext())
-            .setMessage("Delete all on device data? - This will close the app")
-            .setPositiveButton("Yes", dialogClickListener)
-            .setNegativeButton("No", dialogClickListener)
+            .setMessage(R.string.ask_delete_device_data)
+            .setPositiveButton(R.string.button_yes, dialogClickListener)
+            .setNegativeButton(R.string.button_no, dialogClickListener)
             .show()
     }
 }

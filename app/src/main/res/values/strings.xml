@@ -47,4 +47,5 @@
     <string name="enter_name">Please enter a sphere name</string>
     <string name="enter_subs">Please choose a subdivision</string>
     <string name="ambient_temp_unsupported">Device does not support Ambient Temperature</string>
+    <string name="ask_delete_device_data">Delete all on device data? - This will close the app</string>
 </resources>

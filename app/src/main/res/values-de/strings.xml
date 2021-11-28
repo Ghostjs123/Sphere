@@ -47,4 +47,5 @@
     <string name="enter_name">Bitte geben Sie einen Kugelnamen ein</string>
     <string name="enter_subs">Bitte wählen Sie eine Unterteilung</string>
     <string name="ambient_temp_unsupported">Das Gerät unterstützt keine Umgebungstemperatur</string>
+    <string name="ask_delete_device_data">Alle Gerätedaten löschen? - Dadurch wird die App geschlossen</string>
 </resources>
