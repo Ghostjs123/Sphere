@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
+import com.sphere.R
 
 private const val TAG = "Firestore"
 
@@ -21,11 +22,11 @@ fun addSphereToFirestore(
             "seed" to seed,
             "subdivision" to subdivision
         ))
-        .addOnSuccessListener { Toast.makeText(context, "Exported $sphereName", Toast.LENGTH_SHORT).show() }
+        .addOnSuccessListener { Toast.makeText(context, context.getString(R.string.exported) + " $sphereName", Toast.LENGTH_SHORT).show() }
         .addOnFailureListener { e ->
             Toast.makeText(
                 context,
-                "Exporting $sphereName failed, check your network connection and try again",
+                "$sphereName "+ context.getString(R.string.export_failure),
                 Toast.LENGTH_LONG
             ).show()
             Log.w(TAG, "Error during Firestore.set()", e)
@@ -46,13 +47,13 @@ fun readSphereFromFirestore(
 
                 Toast.makeText(
                     context,
-                    "Imported $sphereName",
+                    context.getString(R.string.imported)+" $sphereName",
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
                     context,
-                    "'$sphereName' does not exist",
+                    "'$sphereName' "+ context.getString(R.string.does_not_exist),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -60,7 +61,7 @@ fun readSphereFromFirestore(
         .addOnFailureListener { e ->
             Toast.makeText(
                 context,
-                "Reading $sphereName failed, check your network connection and try again",
+                "$sphereName "+context.getString(R.string.read_failure),
                 Toast.LENGTH_LONG
             ).show()
             Log.w(TAG, "Error during Firestore.get()", e)
@@ -74,11 +75,11 @@ fun removeSphereFromFirestore(
     sphereName: String
 ) {
     db.collection("Spheres").document(sphereName).delete()
-        .addOnSuccessListener { Toast.makeText(context, "Deleted $sphereName", Toast.LENGTH_SHORT).show() }
+        .addOnSuccessListener { Toast.makeText(context, context.getString(R.string.deleted)+" $sphereName", Toast.LENGTH_SHORT).show() }
         .addOnFailureListener { e ->
             Toast.makeText(
                 context,
-                "Deleting $sphereName failed, check your network connection and try again",
+                "$sphereName "+context.getString(R.string.delete_failure),
                 Toast.LENGTH_LONG
             ).show()
             Log.w(TAG, "Error during Firestore.delete()", e)

@@ -47,4 +47,17 @@
     <string name="enter_name">Bitte geben Sie einen Kugelnamen ein</string>
     <string name="enter_subs">Bitte wählen Sie eine Unterteilung</string>
     <string name="ambient_temp_unsupported">Das Gerät unterstützt keine Umgebungstemperatur</string>
+    <string name="ask_delete_device_data">Alle Gerätedaten löschen? - Dadurch wird die App geschlossen</string>
+    <string name="seed">samen</string>
+    <string name="subdivisions">unterteilungen</string>
+    <string name="gps_warning">Vergeben Sie Standortberechtigungen zur Verwendung von GPS-Daten oder deaktivieren Sie "GPS-Daten verwenden" in den Einstellungen</string>
+    <string name="no_sensors_warning">Aktivieren Sie mindestens einen Sensor in den Einstellungen, bevor Sie mutieren</string>
+    <string name="export_sphere">Kugel exportieren</string>
+    <string name="exported">Exportierte</string>
+    <string name="export_failure">fehler beim Exportieren, Überprüfen der Netzwerkverbindung und erneuter Versuch</string>
+    <string name="imported">Eingeführt</string>
+    <string name="does_not_exist">existiert nicht.</string>
+    <string name="read_failure">konnte nicht gelesen werden, überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut</string>
+    <string name="deleted">Gelöscht</string>
+    <string name="delete_failure">konnte nicht gelöscht werden, überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut</string>
 </resources>
