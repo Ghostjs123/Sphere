@@ -1,20 +1,13 @@
 package com.sphere.utility
 
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import org.junit.Test
 import com.google.firebase.firestore.FirebaseFirestore
-import com.sphere.room_code.Sphere
-import com.sphere.sphere_fragments.SphereFragment
 import org.junit.Before
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.Mockito.*
 

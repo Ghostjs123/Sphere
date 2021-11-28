@@ -4,18 +4,15 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sphere.R
 import com.sphere.TestFragmentActivity
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import android.app.Activity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
-import java.util.concurrent.atomic.AtomicReference
 
 
 @RunWith(AndroidJUnit4::class)
@@ -26,12 +23,6 @@ class TestNewSphereFragment {
     @Before
     fun setup() {
         mActivity = ActivityScenario.launch(TestFragmentActivity::class.java)
-    }
-
-    private fun <T : Activity?> getActivity(activityScenarioRule: ActivityScenarioRule<T>): T {
-        val activityRef: AtomicReference<T> = AtomicReference()
-        activityScenarioRule.scenario.onActivity(activityRef::set)
-        return activityRef.get()
     }
 
     @Test

@@ -107,7 +107,9 @@ class NewSphereFragment: Fragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        updateSphereCallback = (activity as SphereActivity).getUpdateSphereCallback()
+        if (savedInstanceState != null) {
+            updateSphereCallback = (activity as SphereActivity).getUpdateSphereCallback()
+        }
     }
 
     private fun updateChecks(rb: RadioButton) {

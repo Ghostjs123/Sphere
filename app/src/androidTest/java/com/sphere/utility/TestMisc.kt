@@ -5,8 +5,6 @@ import androidx.test.core.app.ApplicationProvider
 import org.junit.Test
 
 class TestMisc {
-    val context = ApplicationProvider.getApplicationContext<Context>()
-
     @Test
     fun interpolate_1() {
         val result = interpolate(0f, 1f, 0f, 10f, 0f)
