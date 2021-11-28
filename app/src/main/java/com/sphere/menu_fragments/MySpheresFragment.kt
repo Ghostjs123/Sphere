@@ -13,12 +13,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sphere.R
 import com.sphere.SphereViewModel
+import com.sphere.activity.SphereActivity
 import com.sphere.databinding.FragmentMySpheresBinding
 import com.sphere.room_code.SphereListAdapter
+import com.sphere.sphere_fragments.SphereFragment
 import com.sphere.utility.deleteSphereBitmap
 import com.sphere.utility.getSelectedSpherePref
 import com.sphere.utility.renameSphereBitmap
@@ -27,10 +30,7 @@ import com.sphere.utility.setSelectedSpherePref
 private const val TAG = "MySpheresFragment"
 
 
-class MySpheresFragment(
-    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit,
-    private val renameSphereCallback: (sphereName: String) -> Unit
-) : Fragment() {
+class MySpheresFragment: Fragment() {
 
     private var _binding: FragmentMySpheresBinding? = null
     private val binding get() = _binding!!
@@ -38,6 +38,22 @@ class MySpheresFragment(
     private val sphereViewModel: SphereViewModel by activityViewModels()
 
     private lateinit var initialSphere: String
+
+    companion object {
+        private lateinit var updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+        private lateinit var renameSphereCallback: (sphereName: String) -> Unit
+
+        fun newInstance(
+            updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit,
+            renameSphereCallback: (sphereName: String) -> Unit
+        ): MySpheresFragment {
+            val fragment = MySpheresFragment()
+            this.updateSphereCallback = updateSphereCallback
+            this.renameSphereCallback = renameSphereCallback
+
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,6 +103,13 @@ class MySpheresFragment(
         Log.i(TAG, "onViewCreated() Returning")
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        updateSphereCallback = (activity as SphereActivity).getUpdateSphereCallback()
+        renameSphereCallback = (activity as SphereActivity).getRenameSphereCallback()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
@@ -98,9 +121,12 @@ class MySpheresFragment(
         sphereViewModel.loadSphere(selectedSphere!!)
 
         // If user selected a new sphere, load that different sphere on exit
-        if (initialSphere != selectedSphere!!) {
-                updateSphereCallback(selectedSphere, sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
-                Log.i(TAG, "onDestroyView() Updated the sphere before returning")
+        if (initialSphere != selectedSphere) {
+
+            updateSphereCallback.invoke(selectedSphere, sphereViewModel.getSeed(), sphereViewModel.getSubdivisions())
+
+
+            Log.i(TAG, "onDestroyView() Updated the sphere before returning")
         }
 
         Log.i(TAG, "onDestroyView() Returning")
@@ -182,7 +208,7 @@ class MySpheresFragment(
                     DialogInterface.BUTTON_POSITIVE -> {
                         val newName = editText.text.toString()
                         sphereViewModel.setName(newName)
-                        renameSphereCallback(newName)
+                        renameSphereCallback?.invoke(newName)
                         setSelectedSpherePref(requireActivity(), sphereViewModel.getName())
                         renameSphereBitmap(requireContext(), selected!!, newName)
                     }

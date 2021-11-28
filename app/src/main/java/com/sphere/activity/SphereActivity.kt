@@ -70,7 +70,7 @@ class SphereActivity : AppCompatActivity() {
 
     private fun addNoSphereFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.sphere_menu_fragment_container, NoSphereFragment(
+            .replace(R.id.sphere_menu_fragment_container, NoSphereFragment.newInstance(
                 mSphereFragment.getUpdateSphereCallback()
             ))
             .addToBackStack(null)
@@ -79,6 +79,14 @@ class SphereActivity : AppCompatActivity() {
 
     override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory {
         return SphereViewModelFactory((application as SphereApplication).repository)
+    }
+
+    fun getUpdateSphereCallback(): (sphereName: String, seed: Long?, subdivision: Int) -> Unit {
+        return mSphereFragment.getUpdateSphereCallback()
+    }
+
+    fun getRenameSphereCallback(): (sphereName: String) -> Unit {
+        return mSphereFragment.getRenameSphereCallback()
     }
 }
 

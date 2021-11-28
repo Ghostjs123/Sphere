@@ -20,14 +20,25 @@ import com.sphere.utility.setSelectedSpherePref
 private const val TAG = "ImportSphereFragment"
 
 
-class ImportSphereFragment(
-    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
-) : Fragment() {
+class ImportSphereFragment: Fragment() {
 
     private var _binding: FragmentImportSphereBinding? = null
     private val binding get() = _binding!!
 
     private val sphereViewModel: SphereViewModel by activityViewModels()
+
+    companion object {
+        private lateinit var updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+
+        fun newInstance(
+            updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+        ): ImportSphereFragment {
+            val fragment = ImportSphereFragment()
+            this.updateSphereCallback = updateSphereCallback
+
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +77,12 @@ class ImportSphereFragment(
         }
 
         Log.i(TAG, "onViewCreated() Finished")
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        updateSphereCallback = (activity as SphereActivity).getUpdateSphereCallback()
     }
 
     private fun firebaseCallback(sphereName: String, seed: Long?, subdivisions: Int) {

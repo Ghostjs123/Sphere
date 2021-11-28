@@ -189,14 +189,18 @@ class SphereFragment :
         updateUI()
     }
 
+    fun getUpdateSphereCallback(): (String, Long?, Int) -> Unit {
+        return ::updateSphere
+    }
+
     private fun renameSphere(newSphereName: String) {
         mSphereName = newSphereName
 
         updateUI()
     }
 
-    fun getUpdateSphereCallback(): (String, Long?, Int) -> Unit {
-        return ::updateSphere
+    fun getRenameSphereCallback(): (String) -> Unit {
+        return ::renameSphere
     }
 
     // NOTE: this has to be declared at the top level or onCreate()
@@ -333,21 +337,21 @@ class SphereFragment :
         when (item.itemId) {
             R.id.my_spheres_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, MySpheresFragment(::updateSphere, ::renameSphere))
+                    .replace(R.id.sphere_menu_fragment_container, MySpheresFragment.newInstance(::updateSphere, ::renameSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.import_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment(::updateSphere))
+                    .replace(R.id.sphere_menu_fragment_container, ImportSphereFragment.newInstance(::updateSphere))
                     .addToBackStack(null)
                     .commit()
                 return true
             }
             R.id.create_sphere_menu_item -> {
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.sphere_menu_fragment_container, NewSphereFragment(::updateSphere))
+                    .replace(R.id.sphere_menu_fragment_container, NewSphereFragment.newInstance(::updateSphere))
                     .addToBackStack(null)
                     .commit()
                 return true

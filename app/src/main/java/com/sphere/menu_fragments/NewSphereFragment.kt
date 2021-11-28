@@ -12,23 +12,35 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.sphere.R
 import com.sphere.SphereViewModel
+import com.sphere.activity.SphereActivity
 import com.sphere.databinding.FragmentNewSphereBinding
 import com.sphere.utility.setSelectedSpherePref
 
 private const val TAG = "NewSphereFragment"
 
 
-class NewSphereFragment(
-    private val updateSphereCallback: ((sphereName: String, seed: Long?, subdivision: Int) -> Unit)? = null
-) : Fragment() {
+class NewSphereFragment: Fragment() {
 
     private var _binding: FragmentNewSphereBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
 
     private val sphereViewModel: SphereViewModel by activityViewModels()
 
     private var sphereName = ""
     private var subdivisions = 0
+
+    companion object {
+        private lateinit var updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+
+        fun newInstance(
+            updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+        ): NewSphereFragment {
+            val fragment = NewSphereFragment()
+            this.updateSphereCallback = updateSphereCallback
+
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +81,7 @@ class NewSphereFragment(
                     ).show()
                 }
                 else -> {
-                    updateSphereCallback?.invoke(sphereName, null, subdivisions)
+                    updateSphereCallback(sphereName, null, subdivisions)
                     setSelectedSpherePref(requireActivity(), sphereName)
                     sphereViewModel.addSphere(sphereName, null, subdivisions)
 
@@ -92,6 +104,12 @@ class NewSphereFragment(
         Log.i(TAG, "onViewCreated() Finished")
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        updateSphereCallback = (activity as SphereActivity).getUpdateSphereCallback()
+    }
+
     private fun updateChecks(rb: RadioButton) {
         binding.radioNew1.isChecked = false
         binding.radioNew2.isChecked = false
@@ -102,7 +120,7 @@ class NewSphereFragment(
         rb.isChecked = true
     }
 
-    fun onRadioButtonClicked(view: View) {
+    private fun onRadioButtonClicked(view: View) {
         if (view is RadioButton && view.isChecked) {
             when (view) {
                 binding.radioNew1 -> {

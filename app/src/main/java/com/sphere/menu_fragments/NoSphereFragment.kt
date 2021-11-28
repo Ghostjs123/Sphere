@@ -7,17 +7,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sphere.R
+import com.sphere.activity.SphereActivity
 import com.sphere.databinding.FragmentNoSphereBinding
 
 private const val TAG = "NoSphereFragment"
 
 
-class NoSphereFragment(
-    private val updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit,
-) : Fragment() {
+class NoSphereFragment: Fragment() {
 
     private var _binding: FragmentNoSphereBinding? = null
     private val binding get() = _binding!!
+
+    companion object {
+        private lateinit var updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+
+        fun newInstance(
+            updateSphereCallback: (sphereName: String, seed: Long?, subdivision: Int) -> Unit
+        ): NoSphereFragment {
+            val fragment = NoSphereFragment()
+            this.updateSphereCallback = updateSphereCallback
+
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,13 +53,13 @@ class NoSphereFragment(
 
         binding.createNewSphereText.setOnClickListener {
             parentFragmentManager.beginTransaction()
-            .add(R.id.sphere_menu_fragment_container, NewSphereFragment(updateSphereCallback))
+            .add(R.id.sphere_menu_fragment_container, NewSphereFragment.newInstance(updateSphereCallback))
             .addToBackStack(null)
             .commit()
         }
         binding.importSphereText.setOnClickListener {
             parentFragmentManager.beginTransaction()
-            .add(R.id.sphere_menu_fragment_container, ImportSphereFragment(updateSphereCallback))
+            .add(R.id.sphere_menu_fragment_container, ImportSphereFragment.newInstance(updateSphereCallback))
             .addToBackStack(null)
             .commit()
         }
@@ -58,6 +70,12 @@ class NoSphereFragment(
         }
 
         Log.i(TAG, "onViewCreated() Finished")
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        updateSphereCallback = (activity as SphereActivity).getUpdateSphereCallback()
     }
 
     override fun onDestroyView() {
