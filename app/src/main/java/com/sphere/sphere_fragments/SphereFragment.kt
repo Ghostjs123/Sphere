@@ -173,7 +173,7 @@ class SphereFragment :
 
     private fun updateUI() {
         // NOTE/TODO: this is only around for debugging
-        binding.sensorValues.text = "seed: $mSeed\nsubdivisions: $mSubdivision"
+        binding.sensorValues.text = getString(R.string.seed)+": $mSeed\n"+getString(R.string.subdivisions)+": $mSubdivision"
 
         binding.sphereName.text = mSphereName
     }
@@ -213,7 +213,7 @@ class SphereFragment :
             else -> {
                 Toast.makeText(
                     activity,
-                    "Give Location Permissions to use GPS data or disable 'Use GPS data' in settings",
+                    R.string.gps_warning,
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -232,7 +232,7 @@ class SphereFragment :
         if (!(gpsEnabled || ambientTempEnabled || ambientLightEnabled || deviceTempEnabled)) {
             Toast.makeText(
                 requireContext(),
-                "Enable at least one sensor in settings before mutating",
+                R.string.no_sensors_warning,
                 Toast.LENGTH_LONG
             ).show()
             return
@@ -388,9 +388,9 @@ class SphereFragment :
             }
 
         val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Export Sphere $mSphereName")
-            .setPositiveButton("Yes", dialogClickListener)
-            .setNegativeButton("No", dialogClickListener)
+        builder.setMessage(getString(R.string.export_sphere)+" $mSphereName")
+            .setPositiveButton(R.string.button_yes, dialogClickListener)
+            .setNegativeButton(R.string.button_no, dialogClickListener)
             .show()
     }
 }

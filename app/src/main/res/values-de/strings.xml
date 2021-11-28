@@ -48,4 +48,9 @@
     <string name="enter_subs">Bitte wählen Sie eine Unterteilung</string>
     <string name="ambient_temp_unsupported">Das Gerät unterstützt keine Umgebungstemperatur</string>
     <string name="ask_delete_device_data">Alle Gerätedaten löschen? - Dadurch wird die App geschlossen</string>
+    <string name="seed">samen</string>
+    <string name="subdivisions">unterteilungen</string>
+    <string name="gps_warning">Vergeben Sie Standortberechtigungen zur Verwendung von GPS-Daten oder deaktivieren Sie "GPS-Daten verwenden" in den Einstellungen</string>
+    <string name="no_sensors_warning">Aktivieren Sie mindestens einen Sensor in den Einstellungen, bevor Sie mutieren</string>
+    <string name="export_sphere">Kugel exportieren</string>
 </resources>
