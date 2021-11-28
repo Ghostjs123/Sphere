@@ -150,7 +150,7 @@ class MySpheresFragment(
                         if (sphereCount == 1) {
                             Toast.makeText(
                                 requireContext(),
-                                "You may not delete your only sphere",
+                                R.string.delete_warning,
                                 Toast.LENGTH_LONG
                             ).show()
                         } else {
@@ -165,9 +165,9 @@ class MySpheresFragment(
             }
 
         val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Delete Sphere $selected?")
-            .setPositiveButton("Yes", dialogClickListener)
-            .setNegativeButton("No", dialogClickListener)
+        builder.setMessage(getString(R.string.delete_sphere) + " $selected?")
+            .setPositiveButton(R.string.button_yes, dialogClickListener)
+            .setNegativeButton(R.string.button_no, dialogClickListener)
             .show()
     }
 
@@ -191,10 +191,10 @@ class MySpheresFragment(
             }
 
         val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Rename Sphere $selected?")
+        builder.setMessage(getString(R.string.rename_sphere) + " $selected?")
             .setView(editText)
-            .setPositiveButton("Rename", dialogClickListener)
-            .setNegativeButton("Back", dialogClickListener)
+            .setPositiveButton(R.string.rename, dialogClickListener)
+            .setNegativeButton(R.string.button_back, dialogClickListener)
             .show()
     }
 }

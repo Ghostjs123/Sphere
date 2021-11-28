@@ -30,6 +30,7 @@
     <string name="sphere_snapshot">Sphere Snapshot</string>
     <string name="not_set">not set</string>
     <string name="delete">Delete</string>
+    <string name="delete_warning">You may not delete your only sphere</string>
     <string name="rename">Rename</string>
     <string name="test">test</string>
     <string name="toolbar_import_sphere">Import Sphere</string>
@@ -38,4 +39,9 @@
     <string name="toolbar_no_spheres">No Spheres</string>
     <string name="toolbar_settings">Settings</string>
     <string name="gps_summary">Uses your latitude/longitude to mutate the sphere</string>
+    <string name="delete_sphere">Delete Sphere</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+    <string name="button_back">Back</string>
+    <string name="rename_sphere">Rename Sphere</string>
 </resources>

@@ -30,6 +30,7 @@
     <string name="sphere_snapshot">Kugel-Schnappschuss</string>
     <string name="not_set">nicht gesetzt</string>
     <string name="delete">Löschen</string>
+    <string name="delete_warning">Sie dürfen Ihre einzige Kugel nicht löschen</string>
     <string name="rename">Umbenennen</string>
     <string name="test">test</string>
     <string name="toolbar_import_sphere">Kugel importieren</string>
@@ -38,4 +39,9 @@
     <string name="toolbar_no_spheres">Keine Kugeln</string>
     <string name="toolbar_settings">Einstellungen</string>
     <string name="gps_summary">Verwendet Ihren Breiten-/Längengrad, um die Kugel zu mutieren</string>
+    <string name="delete_sphere">Kugel löschen</string>
+    <string name="button_yes">Ja</string>
+    <string name="button_no">Nein</string>
+    <string name="button_back">Zurück</string>
+    <string name="rename_sphere">Kugel umbenennen</string>
 </resources>
