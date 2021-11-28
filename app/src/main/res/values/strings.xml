@@ -53,4 +53,11 @@
     <string name="gps_warning">Give Location Permissions to use GPS data or disable "Use GPS data" in settings</string>
     <string name="no_sensors_warning">Enable at least one sensor in settings before mutating</string>
     <string name="export_sphere">Export Sphere</string>
+    <string name="exported">Exported</string>
+    <string name="export_failure">failed to export, check your network connection and try again</string>
+    <string name="imported">Imported</string>
+    <string name="does_not_exist">does not exist.</string>
+    <string name="read_failure">failed to be read, check your network connection and try again</string>
+    <string name="deleted">Deleted</string>
+    <string name="delete_failure">failed to be deleted, check your network connection and try again</string>
 </resources>
