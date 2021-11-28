@@ -28,7 +28,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
                     Toast.makeText(
                         requireActivity(),
-                        "Device does not support Ambient Temperature",
+                        R.string.ambient_temp_unsupported,
                         Toast.LENGTH_SHORT
                     ).show()
                 }

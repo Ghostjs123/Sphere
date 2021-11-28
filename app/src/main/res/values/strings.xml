@@ -46,4 +46,5 @@
     <string name="rename_sphere">Rename Sphere</string>
     <string name="enter_name">Please enter a sphere name</string>
     <string name="enter_subs">Please choose a subdivision</string>
+    <string name="ambient_temp_unsupported">Device does not support Ambient Temperature</string>
 </resources>
