@@ -77,13 +77,6 @@ class SphereActivity : AppCompatActivity() {
             .commit()
     }
 
-    fun onRadioButtonClicked(view: View) {
-        val f = supportFragmentManager.findFragmentById(R.id.sphere_menu_fragment_container)
-
-        if (f is NewSphereFragment) f.onRadioButtonClicked(view)
-        else Log.w(TAG, "onRadioButtonClicked() occurred on a fragment that was not a NewSphereFragment")
-    }
-
     override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory {
         return SphereViewModelFactory((application as SphereApplication).repository)
     }

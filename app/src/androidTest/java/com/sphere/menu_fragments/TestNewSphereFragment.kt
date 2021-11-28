@@ -1,96 +1,95 @@
 package com.sphere.menu_fragments
 
-import androidx.core.os.bundleOf
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.sphere.R
+import com.sphere.TestFragmentActivity
 import com.sphere.ToastMatcher
-import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.Matchers.not
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.Before
 import org.junit.Rule
+import android.app.Activity
+import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.typeText
+import java.util.concurrent.atomic.AtomicReference
+import kotlin.reflect.typeOf
 
 
 @RunWith(AndroidJUnit4::class)
 class TestNewSphereFragment {
 
-    private lateinit var scenario: FragmentScenario<NewSphereFragment>
-
-    private fun updateSphereCallback(sphereName: String, seed: Long?, subdivision: Int) {}
+    private lateinit var mActivity: ActivityScenario<TestFragmentActivity>
 
     @Before
     fun setup() {
-        val args = bundleOf(
-            "callback" to ::updateSphereCallback
-        )
+        mActivity = ActivityScenario.launch(TestFragmentActivity::class.java)
+    }
 
-        scenario = launchFragmentInContainer(
-            fragmentArgs = args,
-            initialState = Lifecycle.State.RESUMED,
-            factory = null
-        )
+    private fun <T : Activity?> getActivity(activityScenarioRule: ActivityScenarioRule<T>): T {
+        val activityRef: AtomicReference<T> = AtomicReference()
+        activityScenarioRule.scenario.onActivity(activityRef::set)
+        return activityRef.get()
     }
 
     @Test
     fun newSphereFragment_TestRadioButtons() {
-        scenario.onFragment { fragment ->
-            // setup state
-            fragment.binding.radioNew2.isChecked = false
-            fragment.binding.radioNew3.isChecked = true
-            fragment.binding.radioNew4.isChecked = false
-            fragment.binding.radioNew5.isChecked = true
+        mActivity.onActivity { it.replaceFragment(NewSphereFragment()) }
 
-            // simulate press
-            fragment.binding.radioNew1.isChecked = true
-            fragment.onRadioButtonClicked(fragment.binding.radioNew1)
+        // simulate press
+        onView(withId(R.id.radio_new_1)).perform(click())
 
-            // assert
-            assert(fragment.binding.radioNew1.isChecked)
-            assert(!fragment.binding.radioNew2.isChecked)
-            assert(!fragment.binding.radioNew3.isChecked)
-            assert(!fragment.binding.radioNew4.isChecked)
-            assert(!fragment.binding.radioNew5.isChecked)
-        }
+        // assert
+        onView(withId(R.id.radio_new_1)).check(matches(isChecked()))
+        onView(withId(R.id.radio_new_2)).check(matches(isNotChecked()))
+        onView(withId(R.id.radio_new_3)).check(matches(isNotChecked()))
+        onView(withId(R.id.radio_new_4)).check(matches(isNotChecked()))
+        onView(withId(R.id.radio_new_5)).check(matches(isNotChecked()))
     }
 
     @Test
     fun newSphereFragment_TestCreateSphereButton_DoesNotAcceptEmptyString() {
-        scenario.onFragment { fragment ->
-            // setup state
-            fragment.onRadioButtonClicked(fragment.binding.radioNew1)
+        var before = 0
 
-            // simulate press
-            fragment.binding.createSphereButton.performClick()
-
-            // assert
-            onView(withText(R.string.enter_name))
-                .inRoot(ToastMatcher())
-                .check(matches(isDisplayed()))
+        mActivity.onActivity {
+            it.replaceFragment(NewSphereFragment())
+            before = it.supportFragmentManager.backStackEntryCount
         }
+
+        onView(withId(R.id.radio_new_1)).perform(click())
+
+        // simulate press
+        onView(withId(R.id.create_sphere_button)).perform(click())
+
+        // assert
+        mActivity.onActivity { assert(it.supportFragmentManager.backStackEntryCount == before) }
+
     }
 
     @Test
     fun newSphereFragment_TestCreateSphereButton_DoesNotAcceptNoSubdivisions() {
-        scenario.onFragment { fragment ->
-            // setup state
-            onView(withId(R.id.enter_sphere_name_text)).perform(typeText("asd"))
+        var before = 0
 
-            // simulate press
-            fragment.binding.createSphereButton.performClick()
-
-            // assert
-            onView(withText(R.string.enter_subs)).inRoot(withDecorView(not(`is`(fragment.activity?.window?.decorView)))).check(matches(isDisplayed()))
+        mActivity.onActivity {
+            it.replaceFragment(NewSphereFragment())
+            before = it.supportFragmentManager.backStackEntryCount
         }
+
+        onView(withId(R.id.sphere_name_input)).perform(typeText("asd"))
+        closeSoftKeyboard()
+
+        // simulate press
+        onView(withId(R.id.create_sphere_button)).perform(click())
+
+        // assert
+        mActivity.onActivity { assert(it.supportFragmentManager.backStackEntryCount == before) }
     }
 }

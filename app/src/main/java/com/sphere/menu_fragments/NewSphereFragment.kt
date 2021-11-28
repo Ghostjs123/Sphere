@@ -78,6 +78,12 @@ class NewSphereFragment(
             }
         }
 
+        binding.radioNew1.setOnClickListener { onRadioButtonClicked(it) }
+        binding.radioNew2.setOnClickListener { onRadioButtonClicked(it) }
+        binding.radioNew3.setOnClickListener { onRadioButtonClicked(it) }
+        binding.radioNew4.setOnClickListener { onRadioButtonClicked(it) }
+        binding.radioNew5.setOnClickListener { onRadioButtonClicked(it) }
+
         binding.newSphereToolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
         binding.newSphereToolbar.setNavigationOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
@@ -120,6 +126,7 @@ class NewSphereFragment(
                     updateChecks(view)
                 }
             }
+            Log.i(TAG, "subdivisions set to $subdivisions")
         }
     }
 }
