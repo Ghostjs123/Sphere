@@ -57,14 +57,14 @@ class NewSphereFragment(
                 sphereName == "" -> {
                     Toast.makeText(
                         requireContext(),
-                        "Please enter a sphere name",
+                        R.string.enter_name,
                         Toast.LENGTH_LONG
                     ).show()
                 }
                 subdivisions == 0 -> {
                     Toast.makeText(
                         requireContext(),
-                        "Please choose a subdivision",
+                        R.string.enter_subs,
                         Toast.LENGTH_LONG
                     ).show()
                 }
