@@ -11,7 +11,7 @@
     android:focusable="true"
     tools:context="com.sphere.menu_fragments.NoSphereFragment">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/no_sphere_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +19,18 @@
         android:title="@string/toolbar_no_spheres"
         android:titleTextAppearance="@style/Toolbar.TitleText"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/toolbar_no_spheres"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@+id/no_sphere_toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/no_sphere_toolbar"
+        app:layout_constraintStart_toStartOf="@+id/no_sphere_toolbar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

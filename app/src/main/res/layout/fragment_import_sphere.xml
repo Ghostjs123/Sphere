@@ -9,7 +9,7 @@
     android:focusable="true"
     tools:context="com.sphere.menu_fragments.ImportSphereFragment">
 
-    <Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/import_sphere_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +17,18 @@
         android:title="@string/toolbar_import_sphere"
         android:titleTextAppearance="@style/Toolbar.TitleText"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/toolbar_import_sphere"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@+id/import_sphere_toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/import_sphere_toolbar"
+        app:layout_constraintStart_toStartOf="@+id/import_sphere_toolbar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
